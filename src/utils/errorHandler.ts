@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-// import errorLogger from 'errorLogger';
+// import * as errorLogger from './errorLogger';
 
 // function isArray(value) {
 //   return value && typeof value === 'object' && value.constructor === Array;
@@ -29,7 +29,7 @@ export function* extractMessages(error: AxiosError) {
   }
 
   if (status === 500) {
-    // Raven.captureException(error);
+    // errorLogger.captureException(error);
   }
 
   return error.response.data.message;
