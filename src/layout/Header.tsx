@@ -1,12 +1,12 @@
-import * as React from 'react';
-// import { HeaderTop } from './Header.style';
+import React, { Component } from 'react';
+import { HeaderTop } from './Header.style';
 export interface HeaderProps {}
 
-export default class Header extends React.Component<HeaderProps, any> {
+export default class Header extends Component<HeaderProps, any> {
   public render() {
     return (
       <header>
-        {/*<HeaderTop>qwe</HeaderTop>*/}
+        <HeaderTop>qwe</HeaderTop>
       </header>
     );
   }

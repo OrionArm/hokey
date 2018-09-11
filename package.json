@@ -3,15 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "history": "^4.7.2",
+    "raven-js": "^3.27.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-scripts-ts": "2.17.0"
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-redux": "^4.0.8",
+    "react-scripts-ts": "2.17.0",
+    "react-select": "^2.0.0",
+    "redux": "^4.0.0",
+    "redux-act": "^1.7.4",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-saga": "^0.16.0",
+    "reselect": "^3.0.1",
+    "styled-components": "^3.4.6"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "pre-commit": "npm run tslint:fix && npm run test"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.13",
@@ -24,6 +38,12 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "react-addons-test-utils": "^15.6.2",
-    "react-test-renderer": "^16.3.2"
+    "react-test-renderer": "^16.3.2",
+    "@types/history": "^4.7.0",
+    "@types/react-redux": "^6.0.7",
+    "@types/react-router-redux": "^5.0.15",
+    "husky": "^0.14.3",
+    "redux-saga-testing": "^1.0.5",
+    "tslint-config-airbnb": "^5.11.0"
   }
 }
