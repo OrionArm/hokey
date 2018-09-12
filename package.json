@@ -30,20 +30,20 @@
   "devDependencies": {
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-16": "^1.0.3",
+    "@types/history": "^4.7.0",
     "@types/jest": "^23.3.2",
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
-    "typescript": "^3.0.3",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "react-addons-test-utils": "^15.6.2",
-    "react-test-renderer": "^16.3.2",
-    "@types/history": "^4.7.0",
     "@types/react-redux": "^6.0.7",
     "@types/react-router-redux": "^5.0.15",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "husky": "^0.14.3",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.3.2",
     "redux-saga-testing": "^1.0.5",
-    "tslint-config-airbnb": "^5.11.0"
+    "tslint-config-airbnb": "^5.11.0",
+    "typescript": "^3.0.3"
   }
 }
