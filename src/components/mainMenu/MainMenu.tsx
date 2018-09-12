@@ -1,24 +1,31 @@
-import * as React from 'react';
-export interface MainMenuProps {}
-import styledComponents from 'styled-components';
+import React, { Component, SyntheticEvent } from 'react';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+export interface IMainMenuProps {
+  classes?: any;
+}
+export interface IMainMenuState {
+  value: number;
+  classes?: any;
+}
 
-export default class MainMenu extends React.Component<MainMenuProps, any> {
+class MainMenu extends Component<IMainMenuProps, IMainMenuState> {
+  state = {
+    value: 0,
+  };
+
+  handleChange = (event: SyntheticEvent<HTMLInputElement>, value: number) => {
+    this.setState({ value });
+  }
+
   public render() {
+    const { value } = this.state;
     return (
-      <ListMenu>
-        <ItemMenu>My drills</ItemMenu>
-        <ItemMenu>My Logos </ItemMenu>
-      </ListMenu>
+      <BottomNavigation value={value} onChange={this.handleChange} showLabels>
+        <BottomNavigationAction label="My drills" />
+        <BottomNavigationAction label="My Logos" />
+      </BottomNavigation>
     );
   }
 }
 
-export const ListMenu = styledComponents.ul`
-  margin: 0
-  padding-left: 0
-  list-style: none
-  display:flex;
-`;
-export const ItemMenu = styledComponents.li`
-  margin-right: 20px
-`;
+export default MainMenu;

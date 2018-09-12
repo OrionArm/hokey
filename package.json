@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.0.3",
     "axios": "^0.18.0",
     "history": "^4.7.2",
     "raven-js": "^3.27.0",
@@ -18,7 +19,7 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "styled-components": "^3.4.6"
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts-ts start",

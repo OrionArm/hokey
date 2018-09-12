@@ -11,6 +11,8 @@
     "variable-name": false,
     "arrow-parens": [true, "ban-single-arg-parens"],
     "ter-arrow-parens": [true, "as-needed"],
-    "import-name": false
+    "import-name": false,
+    "jsx-boolean-value": false,
+    "jsx-no-multiline-js": false
   }
 }
