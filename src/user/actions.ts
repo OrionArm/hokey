@@ -1,14 +1,18 @@
-import { createActionGenerator, IAsyncAction } from '../utils/actionsGenerator';
+import { createAction } from '../utils/typedAction/createAction';
+import { ActionsUnion } from 'src/utils/typedAction/action';
 
-const createAsyncAction = createActionGenerator('userActions');
-const setTokenToStorage     = createAsyncAction('SELECT_SUBJECT');
+export const LOGIN_REQUEST = '[user] LOGIN_REQUEST';
+export const LOGIN_SUCCESS = '[user] LOGIN_SUCCESS';
 
-export interface IUserActionsActions {
-  setTokenToStorage: IAsyncAction<{token: string}>;
-}
+const loginRequest = (loginData: ILoginRequest) => createAction(LOGIN_REQUEST, loginData);
+const loginSuccess = (token: string) => createAction(LOGIN_SUCCESS, token);
+export type loginRequest = ReturnType<typeof loginRequest>;
+export type loginSuccess = ReturnType<typeof loginSuccess>;
 
-export const userActions: IUserActionsActions = {
-  setTokenToStorage,
+export const userActions = {
+  loginRequest,
+  loginSuccess,
 };
+export type userActions = ActionsUnion<typeof userActions>;
 
 export default userActions;

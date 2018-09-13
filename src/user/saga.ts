@@ -1,17 +1,16 @@
-import { call, fork, put } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
-// import { Action } from 'redux-act';
-
-// import userActions from './actions';
+import { call, put } from 'redux-saga/effects';
+// import { push } from 'react-router-redux';
 import { errorHandler } from 'src/utils/errorHandler';
+import userActions, { loginRequest } from 'src/user/actions';
+import userAPI from 'src/user/api';
+import { takeEvery } from 'redux-saga';
 
-// import userSagaAPI from './api';
-
-function* loginSaga() {
-  // const action = take(userActions.setTokenToStorage.REQUEST);
+function* loginSaga(action: loginRequest) {
   try {
-    // yield call(userAPI);
-    yield put(push('/emails'));
+    const { data }  = yield call(userAPI.login, action.payload);
+    const token: string = data.token;
+    yield put(userActions.loginSuccess(token));
+    // yield put(push('/'));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -21,7 +20,7 @@ function* loginSaga() {
 
 function* watcher() {
   while (true) {
-    yield fork(loginSaga);
+    yield takeEvery(userActions.loginRequest, loginSaga);
   }
 }
 
