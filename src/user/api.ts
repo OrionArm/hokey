@@ -1,8 +1,8 @@
-import { Request } from '../utils/request';
+import request from '../utils/request';
 import { AxiosPromise } from 'axios';
 
-function login(loginRequest: ILoginRequest): AxiosPromise<any> {
-  return Request.post('/login', loginRequest);
+function login(loginRequest: ILoginRequest): AxiosPromise<ILoginResponse> {
+  return request.post('/login', loginRequest);
 }
 
 const userAPI = {

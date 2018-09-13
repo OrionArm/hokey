@@ -1,15 +1,14 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 // import { push } from 'react-router-redux';
 import { errorHandler } from 'src/utils/errorHandler';
-import userActions, { loginRequest } from 'src/user/actions';
 import userAPI from 'src/user/api';
-import { takeEvery } from 'redux-saga';
+import * as fromActions from './actions';
 
-function* loginSaga(action: loginRequest) {
+function* loginSaga(action: fromActions.loginRequest) {
   try {
-    const { data }  = yield call(userAPI.login, action.payload);
-    const token: string = data.token;
-    yield put(userActions.loginSuccess(token));
+    const response    = yield call(userAPI.login, action.payload);
+    const userData: ILoginResponse = response.data;
+    yield put(fromActions.userActions.loginSuccess(userData));
     // yield put(push('/'));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
@@ -19,9 +18,7 @@ function* loginSaga(action: loginRequest) {
 }
 
 function* watcher() {
-  while (true) {
-    yield takeEvery(userActions.loginRequest, loginSaga);
-  }
+  yield takeLatest(fromActions.LOGIN_SUCCESS, loginSaga);
 }
 
 export default watcher;

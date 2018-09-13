@@ -5,7 +5,7 @@ export const LOGIN_REQUEST = '[user] LOGIN_REQUEST';
 export const LOGIN_SUCCESS = '[user] LOGIN_SUCCESS';
 
 const loginRequest = (loginData: ILoginRequest) => createAction(LOGIN_REQUEST, loginData);
-const loginSuccess = (token: string) => createAction(LOGIN_SUCCESS, token);
+const loginSuccess = (userData: ILoginResponse) => createAction(LOGIN_SUCCESS, userData);
 export type loginRequest = ReturnType<typeof loginRequest>;
 export type loginSuccess = ReturnType<typeof loginSuccess>;
 
