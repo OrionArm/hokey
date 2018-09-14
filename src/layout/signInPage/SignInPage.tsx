@@ -24,7 +24,7 @@ const spacing = {
 };
 
 const styles = (theme: any) => {
-  console.log(theme.palette);
+  console.log(theme);
 
   return {
     cssLabel: {
@@ -84,7 +84,7 @@ class SignInPage extends Component<SignInProps, any> {
             />
           </FormControl>
           <Button
-            variant="contained"
+            variant="extendedFab"
             color="secondary"
             type="submit"
             style={{ marginTop: 20 }}
