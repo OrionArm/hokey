@@ -1,9 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-// import { push } from 'react-router-redux';
 import { errorHandler } from 'src/utils/errorHandler';
 import userAPI from 'src/user/api';
 import * as fromActions from './actions';
 import * as fromTokenActions from './token/actions';
+import { push } from 'react-router-redux';
 // import { customStorage } from 'src/utils/customStorage';
 
 function* watcher() {
@@ -27,7 +27,7 @@ function* logInSaga(action: fromActions.loginRequest) {
 
     yield put(fromTokenActions.tokenActions.setToState(token));
     yield put(fromActions.userActions.loginSuccess(user));
-    // yield put(push('/'));
+    yield put(push('/'));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
