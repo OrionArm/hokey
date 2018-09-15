@@ -18,13 +18,11 @@ const fromStyle = {
   padding: 30,
   margin: '200px auto 0',
 };
-
 const spacing = {
   margin: '15px 0',
 };
-const styles  = (theme: any) => {
-  console.log(theme.palette);
 
+const styles = (theme: any) => {
   return {
     cssLabel: {
       '&$cssFocused': {
@@ -94,7 +92,7 @@ class SignInPage extends Component<Props & injectProps, State> {
             />
           </FormControl>
           <Button
-            variant="contained"
+            variant="extendedFab"
             color="secondary"
             type="submit"
             style={{ marginTop: 20 }}

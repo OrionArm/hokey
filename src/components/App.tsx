@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Header } from 'src/layout/header';
-import { Main } from 'src/layout/main';
+import Main from 'src/layout/Main';
 import { SignInPage } from 'src/layout/signInPage';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch } from 'react-router';
