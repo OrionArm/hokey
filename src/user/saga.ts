@@ -1,13 +1,14 @@
+import { push } from 'react-router-redux';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { errorHandler } from 'src/utils/errorHandler';
+
 import userAPI from 'src/user/api';
 import * as fromActions from './actions';
 import * as fromTokenActions from './token/actions';
-import { push } from 'react-router-redux';
-// import { customStorage } from 'src/utils/customStorage';
+import { errorHandler } from 'src/utils/errorHandler';
 
 function* watcher() {
   yield takeLatest(fromActions.LOGIN_REQUEST, logInSaga);
+  yield takeLatest(fromActions.LOGOUT_REQUEST, logOut);
 }
 
 /*function* loadingUserIfHasToken() {
@@ -35,9 +36,10 @@ function* logInSaga(action: fromActions.loginRequest) {
   }
 }
 
-/*function* logOut() {
+function* logOut() {
   yield put(fromTokenActions.tokenActions.clearToken());
+  yield put(push('/login'));
   // Toasts.info('Logout');
-}*/
+}
 
 export default watcher;

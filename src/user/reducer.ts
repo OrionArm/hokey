@@ -10,11 +10,11 @@ export const initialState = {
     username: '',
   },
 };
-export type State = typeof initialState;
+export type UserState = typeof initialState;
 
 export const reducer = (
   state = initialState,
-  action: fromActions.userActions): State => {
+  action: fromActions.userActions): UserState => {
   switch (action.type) {
     case fromActions.LOGIN_SUCCESS: {
       const profile = action.payload;

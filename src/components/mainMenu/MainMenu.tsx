@@ -26,6 +26,8 @@ class MainMenu extends Component<IMainMenuProps, IMainMenuState> {
       <>
         <NavLink to="/" activeClassName="active">My drills</NavLink>
         <NavLink to="/logos" activeClassName="active">My Logos</NavLink>
+        <NavLink to="/login" activeClassName="active">Login</NavLink>
+
         {/*<BottomNavigation value={value} onChange={this.handleChange} showLabels>*/}
           {/*<BottomNavigationAction label="My drills"/>*/}
           {/*<BottomNavigationAction label="My Logos"/>*/}

@@ -39,11 +39,11 @@ const styles = (theme: any) => {
 };
 
 type State = Readonly<typeof initialState>;
-type Props = { classes?: any; };
+type Props = { classes?: any; } & injectProps;
 type injectProps = ReturnType<typeof mapDispatchToProps>;
 const initialState = { username: 'asdfasdf', password: '123456' };
 
-class SignInPage extends Component<Props & injectProps, State> {
+class SignInPage extends Component<Props, State> {
   readonly state: State = initialState;
 
   public render() {
