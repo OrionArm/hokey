@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
+import { AppBar, Toolbar } from '@material-ui/core';
 
 import Profile from './Profile';
 import Logo from 'src/UI/Logo';
-import MainMenu from 'src/components/mainMenu/MainMenu';
-import { AppBar, Toolbar } from '@material-ui/core';
-export interface HeaderProps {}
+interface HeaderProps {}
 
 class Header extends Component<HeaderProps, any> {
   public render() {
@@ -14,7 +13,6 @@ class Header extends Component<HeaderProps, any> {
           <Logo />
           <Profile />
         </Toolbar>
-        <MainMenu />
       </AppBar>
     );
   }

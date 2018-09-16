@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Header } from 'src/layout/header';
-import Main from 'src/layout/Main';
 import { SignInPage } from 'src/layout/signInPage';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch } from 'react-router';
+import LogoListPage from 'src/layout/logoListPage';
+import DrillsPage from 'src/layout/drillsPage';
 
 class App extends Component {
   render() {
@@ -12,8 +13,9 @@ class App extends Component {
         <CssBaseline/>
         <Header/>
         <Switch>
-          <Route exact path="/" component={Main} />
+          <Route exact path="/" component={DrillsPage} />
           <Route path="/login" component={SignInPage} />
+          <Route path="/logos" component={LogoListPage} />
         </Switch>
       </>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
-
 import {
   Button,
   MenuItem,
@@ -10,6 +9,7 @@ import {
   createStyles,
   IconButton,
 } from '@material-ui/core';
+
 interface ToolsPanelProps {
   classes?: any;
 }

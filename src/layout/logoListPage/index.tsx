@@ -11,6 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import MainMenu from 'src/components/mainMenu/MainMenu';
 
 const styles = (theme: any) =>
   createStyles({
@@ -49,7 +50,7 @@ interface ILogoListProps {
   classes?: any;
 }
 
-class LogoList extends Component<ILogoListProps> {
+class LogoListPage extends Component<ILogoListProps> {
   state = {
     checked: false,
   };
@@ -58,6 +59,7 @@ class LogoList extends Component<ILogoListProps> {
 
     return (
       <>
+        <MainMenu/>
         <Grid item container justify="space-between" md={12}>
           <Typography variant="headline">My Logos</Typography>
           <Button variant="contained" color="primary">
@@ -115,4 +117,4 @@ class LogoList extends Component<ILogoListProps> {
   }
 }
 
-export default withStyles(styles)(LogoList);
+export default withStyles(styles)(LogoListPage);
