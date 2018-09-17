@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import {
   Grid,
   Typography,
@@ -6,12 +9,14 @@ import {
   Button,
   FormControlLabel,
   Radio,
+  CardMedia,
+  CardContent,
+  Card,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+
 import MainMenu from 'src/components/mainMenu/MainMenu';
+import { IRootReducer } from 'src/store/rootReducers';
+import { logosActions } from 'src/logos/actions';
 
 const styles = (theme: any) =>
   createStyles({
@@ -46,14 +51,19 @@ const styles = (theme: any) =>
       backgroundColor: '#f1f1f1',
     },
   });
-interface ILogoListProps {
-  classes?: any;
-}
 
-class LogoListPage extends Component<ILogoListProps> {
-  state = {
-    checked: false,
-  };
+type State = Readonly<typeof initialState>;
+type Props = { classes?: any; } & injectProps;
+type injectProps = ReturnType<typeof mapDispatchToProps>;
+const initialState = { checked: false };
+
+class LogoListPage extends Component<Props, State> {
+  state = initialState;
+
+  componentDidMount() {
+    this.props.logosAction.getLogosRequest();
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -88,6 +98,7 @@ class LogoListPage extends Component<ILogoListProps> {
                             colorPrimary: classes.colorPrimary,
                             colorSecondary: classes.colorSecondary,
                           }}
+                          onChange={this.setDefaultLogo}
                         />
                       }
                       label="Set as Default"
@@ -115,6 +126,28 @@ class LogoListPage extends Component<ILogoListProps> {
       </>
     );
   }
+
+  setDefaultLogo = () => {
+    // this.props.logosAction.changeDefaultLogoRequest(logo);
+  }
+
+  // deleteLogo = (logo) => {
+  //   this.props.logosAction.deleteLogosRequest(logo);
+  // };
+  //
+  // addLogo = (logo) => {
+  //   this.props.logosAction.setLogosRequest(logo);
+  // };
 }
 
-export default withStyles(styles)(LogoListPage);
+const mapStateToProps = (state: IRootReducer) => ({
+  // logos: state.logos,
+});
+
+const mapDispatchToProps = (state: Dispatch) => ({
+  logosAction: bindActionCreators(logosActions, state),
+});
+
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(LogoListPage),
+);
