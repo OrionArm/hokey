@@ -1,113 +1,34 @@
 import React, { Component } from 'react';
-import {
-  Grid,
-  Typography,
-  createStyles,
-  Button,
-  FormControlLabel,
-  Radio,
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import MainMenu from 'src/components/mainMenu/MainMenu';
+import { Grid } from '@material-ui/core';
 
-const styles = (theme: any) =>
-  createStyles({
-    checked: {
-      color: '#fff',
-      background: '#fff',
-    },
+import Header from './Header';
+import ItemLogo from './ItemLogo';
 
-    card: {
-      height: 280,
-      position: 'relative',
+type State = Readonly<typeof initialState>;
 
-      // '&:hover $logosHoverBlock': {
-      //   display: 'block',
-      // },
-    },
-    logosHoverBlock: {
-      width: '100%',
-      height: 200,
-      backgroundColor: '#4e4e4e',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      padding: theme.spacing.unit * 3,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
-    media: {
-      width: '100%',
-      height: 200,
-      backgroundColor: '#f1f1f1',
-    },
-  });
-interface ILogoListProps {
-  classes?: any;
-}
+const initialState = {
+  checked: false,
+};
 
-class LogoListPage extends Component<ILogoListProps> {
-  state = {
-    checked: false,
-  };
+class LogoListPage extends Component {
+  readonly state: State = initialState;
+
   render() {
-    const { classes } = this.props;
-
     return (
       <>
-        <MainMenu/>
         <Grid item container justify="space-between" md={12}>
-          <Typography variant="headline">My Logos</Typography>
-          <Button variant="contained" color="primary">
-            new logos
-          </Button>
+          <Header />
         </Grid>
-
-        <Grid item container spacing={24}>
+        <Grid
+          item
+          container
+          spacing={24}
+          style={{ justifyContent: 'space-between' }}
+        >
           {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
             return (
-              <Grid item md={2} key={index}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    component="img"
-                    className={classes.media}
-                    title="log"
-                  />
-                  <div className={classes.logosHoverBlock}>
-                    <FormControlLabel
-                      value="Set as Default"
-                      control={
-                        <Radio
-                          classes={{
-                            root: classes.root,
-                            checked: classes.checked,
-                            colorPrimary: classes.colorPrimary,
-                            colorSecondary: classes.colorSecondary,
-                          }}
-                        />
-                      }
-                      label="Set as Default"
-                    />
-                    <div style={{ textAlign: 'right' }}>
-                      <div>Edit</div>
-                      <div>Delete</div>
-                    </div>
-                  </div>
-                  <CardContent>
-                    <Typography
-                      align="center"
-                      variant="headline"
-                      component="h2"
-                    >
-                      {`${item} NameLogo`}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                ;
+              <Grid item key={index}>
+                <ItemLogo item={item} />
               </Grid>
             );
           })}
@@ -117,4 +38,4 @@ class LogoListPage extends Component<ILogoListProps> {
   }
 }
 
-export default withStyles(styles)(LogoListPage);
+export default LogoListPage;
