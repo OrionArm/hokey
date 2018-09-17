@@ -58,7 +58,7 @@ type injectProps = ReturnType<typeof mapDispatchToProps>;
 const initialState = { checked: false };
 
 class LogoListPage extends Component<Props, State> {
-  state = initialState;
+  readonly state = initialState;
 
   componentDidMount() {
     this.props.logosAction.getLogosRequest();

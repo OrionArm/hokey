@@ -21,7 +21,7 @@ function* setToState(action: fromActions.setToState) {
 
 function setToResponse(action: fromActions.setToResponse) {
   const token = action.payload;
-  axios.defaults.headers.common.authorization = `Bearer ${token}`;
+  axios.defaults.headers.common.jwt = `Bearer ${token}`;
 }
 
 function saveTokenInStorage(action: fromActions.setToStorage) {
