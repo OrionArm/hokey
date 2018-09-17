@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router';
 import { Dispatch } from 'redux';
 
-import { IRootReducer } from 'src/store/rootReducers';
+import { RootState } from 'src/store/rootReducers';
 import * as fromUserActions from 'src/user/actions';
 import { customStorage } from 'src/utils/customStorage';
 
@@ -26,7 +26,7 @@ const PrivateRoute: React.SFC<Props> = (
   return <Route {...rest} render={check} />;
 };
 
-const mapStateToProps = (state: IRootReducer) => ({
+const mapStateToProps = (state: RootState) => ({
   user: state.user,
 });
 

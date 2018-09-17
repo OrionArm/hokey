@@ -3,20 +3,28 @@ import {
   Select,
   MenuItem,
   Paper,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
   Button,
   withStyles,
   createStyles,
 } from '@material-ui/core';
+import { CategoriesList } from './CategoriesList';
+import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
+import { compose, Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { RootState } from '../../store/rootReducers';
+import { getDrillsByCategoryIdRequest } from '../../drills/actions';
+import { getGrouppedDrillsSelector } from '../../drills/selectors';
+
 export interface ICategoriesProps {
   classes?: any;
+  categories: DrillCategoriesGroupped;
+  actions: {
+    getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest,
+  };
 }
 
 export interface ICategoriesState {
-  category: string;
+  categoryType: string;
 }
 
 const styles = createStyles({
@@ -42,8 +50,7 @@ const styles = createStyles({
 
 class CategoriesBar extends Component<ICategoriesProps, any> {
   state = {
-    category: 'public',
-    selectedIndex: 1,
+    categoryType: DrillCategoryType.Public,
   };
 
   handleChange = (event: any) =>
@@ -51,11 +58,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
       [event.target.name]: event.target.value,
     })
 
-  handleListItemClick = (event: any, index: number) => {
-    this.setState({ selectedIndex: index });
-  }
-
-  public render() {
+  render() {
     const { classes } = this.props;
     return (
       <Paper style={{ padding: 20 }}>
@@ -66,9 +69,9 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
           }}
         >
           <Select
-            value={this.state.category}
+            value={this.state.categoryType}
             onChange={this.handleChange}
-            name="category"
+            name="categoryType"
             disableUnderline
             style={{
               width: '100%',
@@ -78,32 +81,28 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
               root: classes.root,
             }}
           >
-            <MenuItem value="public">Public Categories</MenuItem>
-            <MenuItem value="custom">Custom Categories</MenuItem>
+            <MenuItem value={DrillCategoryType.Public}>Public Categories</MenuItem>
+            <MenuItem value={DrillCategoryType.Custom}>Custom Categories</MenuItem>
           </Select>
         </Button>
-
-        <List component="ul">
-          <ListItem
-            button
-            selected={this.state.selectedIndex === 0}
-            onClick={event => this.handleListItemClick(event, 0)}
-          >
-            <ListItemText primary="1 on 0" />
-            <ListItemSecondaryAction>10</ListItemSecondaryAction>
-          </ListItem>
-          <ListItem
-            button
-            selected={this.state.selectedIndex === 1}
-            onClick={event => this.handleListItemClick(event, 1)}
-          >
-            <ListItemText primary="1 on 1" />
-            <ListItemSecondaryAction>10</ListItemSecondaryAction>
-          </ListItem>
-        </List>
+        <CategoriesList
+          categories={this.props.categories[this.state.categoryType]}
+          onSelectCategory={this.props.actions.getDrillsByCategoryIdRequest}
+        />
       </Paper>
     );
   }
 }
 
-export default withStyles(styles)(CategoriesBar);
+const mapStateToProps = (state: RootState) => ({
+  categories: getGrouppedDrillsSelector(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators({ getDrillsByCategoryIdRequest }, dispatch),
+});
+
+export default
+  compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withStyles(styles),
+  )(CategoriesBar);

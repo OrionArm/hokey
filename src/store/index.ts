@@ -6,7 +6,7 @@ import { routerMiddleware } from 'react-router-redux';
 
 import rootReducers from './rootReducers';
 import rootSaga from './rootSaga';
-import { IRootReducer } from 'src/store/rootReducers';
+import { RootState } from 'src/store/rootReducers';
 
 export const history = createHistory();
 const sagaMiddleware = reduxSaga();
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
   middleware       = [...middleware];
 }
 
-const createCustomStore: Store<IRootReducer> = (() => {
+const createCustomStore: Store<RootState> = (() => {
   const store: any = createStore(
     rootReducers,
     {},

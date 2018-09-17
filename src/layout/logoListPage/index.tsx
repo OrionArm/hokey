@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 
 import MainMenu from 'src/components/mainMenu/MainMenu';
-import { IRootReducer } from 'src/store/rootReducers';
+import { RootState } from 'src/store/rootReducers';
 import { logosActions } from 'src/logos/actions';
 
 const styles = (theme: any) =>
@@ -140,7 +140,7 @@ class LogoListPage extends Component<Props, State> {
   // };
 }
 
-const mapStateToProps = (state: IRootReducer) => ({
+const mapStateToProps = (state: RootState) => ({
   // logos: state.logos,
 });
 
