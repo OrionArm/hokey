@@ -9,36 +9,40 @@ const logosAPI = {
   refreshLogo,
 };
 
-function getLogos(): AxiosPromise<any> {
-  return request.get('/users/me/watermarks');
+function getLogos(payload: { userId: string }): AxiosPromise<any> {
+  return request.get(`/users/${payload.userId}/watermarks`);
 }
 
-function changeDefaultLogo(logo: IChangeDefaultLogoRequest): AxiosPromise<any> {
-  return request.post('/users/me/watermarks/default', logo);
+function changeDefaultLogo(payload: IChangeDefaultLogoRequest): AxiosPromise<any> {
+  return request.post(`/users/${payload.userId}/watermarks/default`, payload.logoId);
 }
 
-function deleteLogos(logos: IDeleteLogosRequest): AxiosPromise<any> {
-  return request.delete('/users/me/watermarks', { data: logos });
+function deleteLogos(payload: IDeleteLogosRequest): AxiosPromise<any> {
+  return request.delete(`/users/${payload.userId}/watermarks`, { data: payload.logosIds });
 }
 
-function setLogo(files: File[]): AxiosPromise<any> {
+function setLogo(payload: ISetLogosRequest): AxiosPromise<any> {
   const headers = { 'Content-Type': 'image/png' };
   const config  = { headers };
 
   // name="image[]"; filename="file.png"
   const fd = new FormData();
-  for (let i = 0; i < files.length; i += 1) {
-    fd.append(`images[${i}]`, files[i]);
+  for (let i = 0; i < payload.images.length; i += 1) {
+    fd.append(`images[${i}]`, payload.images[i]);
   }
   console.log('FormData = ', FormData);
-  return request.post('/users/me/watermarks', fd, config);
+  return request.post(`/users/${payload.userId}/watermarks`, fd, config);
 }
 
-function refreshLogo(logo: ILoginRequest): AxiosPromise<any> {
+function refreshLogo(payload: IRefreshLogosRequest): AxiosPromise<any> {
   const headers = { 'Content-Type': 'image/png' };
   // name="image[]"; filename="file.png"
   const config  = { headers };
-  return request.post('/login', logo, config);
+  return request.patch(
+    `/users/${payload.userId}/watermarks/${payload.logoId}`,
+    payload.images,
+    config,
+  );
 }
 
 export default logosAPI;

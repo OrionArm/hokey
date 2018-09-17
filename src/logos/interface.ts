@@ -1,11 +1,22 @@
 interface IChangeDefaultLogoRequest {
-  id: string;
+  logoId: string;
+  userId: string;
 }
 
 interface IDeleteLogosRequest {
-  ids: string[];
+  logosIds: string[];
+  userId: string;
 }
 
+interface ISetLogosRequest {
+  images: File[];
+  userId: string;
+}
+interface IRefreshLogosRequest {
+  logoId: string;
+  images: File[];
+  userId: string;
+}
 // interface ISetLogoRequest {
 //   name;
 //   filename;

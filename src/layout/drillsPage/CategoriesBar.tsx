@@ -61,7 +61,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
   render() {
     const { classes } = this.props;
     return (
-      <Paper style={{ padding: 20 }}>
+      <Paper>
         <Button
           fullWidth
           classes={{
@@ -75,6 +75,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             disableUnderline
             style={{
               width: '100%',
+              fontSize: '0.875rem',
             }}
             classes={{
               select: classes.select,

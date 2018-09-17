@@ -4,22 +4,17 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import {
   Grid,
-  Typography,
   createStyles,
-  Button,
-  FormControlLabel,
-  Radio,
-  CardMedia,
-  CardContent,
-  Card,
 } from '@material-ui/core';
 
-import MainMenu from 'src/components/mainMenu/MainMenu';
+import MainMenu from 'src/components/MainMenu';
 import { RootState } from 'src/store/rootReducers';
+import ItemLogo from 'src/layout/logoListPage/ItemLogo';
+import HeaderLogo from 'src/layout/logoListPage/headerLogo';
 import { logosActions } from 'src/logos/actions';
 
-const styles = (theme: any) =>
-  createStyles({
+const styles = (theme: any) => createStyles(
+  {
     checked: {
       color: '#fff',
       background: '#fff',
@@ -50,7 +45,8 @@ const styles = (theme: any) =>
       height: 200,
       backgroundColor: '#f1f1f1',
     },
-  });
+  },
+);
 
 type State = Readonly<typeof initialState>;
 type Props = { classes?: any; } & injectProps;
@@ -58,67 +54,28 @@ type injectProps = ReturnType<typeof mapDispatchToProps>;
 const initialState = { checked: false };
 
 class LogoListPage extends Component<Props, State> {
-  state = initialState;
+  readonly state = initialState;
 
   componentDidMount() {
     this.props.logosAction.getLogosRequest();
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <>
-        <MainMenu/>
         <Grid item container justify="space-between" md={12}>
-          <Typography variant="headline">My Logos</Typography>
-          <Button variant="contained" color="primary">
-            new logos
-          </Button>
+          <HeaderLogo/>
         </Grid>
-
-        <Grid item container spacing={24}>
+        <Grid
+          item
+          container
+          spacing={24}
+          style={{ justifyContent: 'space-between' }}
+        >
           {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
             return (
-              <Grid item md={2} key={index}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    component="img"
-                    className={classes.media}
-                    title="log"
-                  />
-                  <div className={classes.logosHoverBlock}>
-                    <FormControlLabel
-                      value="Set as Default"
-                      control={
-                        <Radio
-                          classes={{
-                            root: classes.root,
-                            checked: classes.checked,
-                            colorPrimary: classes.colorPrimary,
-                            colorSecondary: classes.colorSecondary,
-                          }}
-                          onChange={this.setDefaultLogo}
-                        />
-                      }
-                      label="Set as Default"
-                    />
-                    <div style={{ textAlign: 'right' }}>
-                      <div>Edit</div>
-                      <div>Delete</div>
-                    </div>
-                  </div>
-                  <CardContent>
-                    <Typography
-                      align="center"
-                      variant="headline"
-                      component="h2"
-                    >
-                      {`${item} NameLogo`}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                ;
+              <Grid item key={index}>
+                <ItemLogo item={item}/>
               </Grid>
             );
           })}

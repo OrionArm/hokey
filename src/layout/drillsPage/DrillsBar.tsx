@@ -59,7 +59,7 @@ class DrillsBar extends Component<DrillsProps, any> {
   public render() {
     const { classes } = this.props;
     return (
-      <Paper style={{ padding: 20 }}>
+      <Paper>
         <header
           style={{
             justifyContent: 'space-between',
@@ -68,7 +68,11 @@ class DrillsBar extends Component<DrillsProps, any> {
           }}
         >
           <div
-            style={{ border: '1px solid rgba(0, 0, 0, 0.12)', borderRadius: 4 }}
+            style={{
+              border: '1px solid rgba(0, 0, 0, 0.12)',
+              borderRadius: 4,
+              display: 'flex',
+            }}
           >
             <Button
               classes={{
