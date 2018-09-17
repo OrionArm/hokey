@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators, Dispatch } from 'redux';
-import { IRootReducer } from 'src/store/rootReducers';
-import { logosActions } from 'src/logos/actions';
 import { connect } from 'react-redux';
 import {
   Grid,
   createStyles,
 } from '@material-ui/core';
 
-const styles = (theme: any) =>
-  createStyles({
+import ItemLogo from 'src/layout/logoListPage/ItemLogo';
+import HeaderLogo from 'src/layout/logoListPage/headerLogo';
+import { IRootReducer } from 'src/store/rootReducers';
+import { logosActions } from 'src/logos/actions';
+
+const styles = (theme: any) => createStyles(
+  {
     checked: {
       color: '#fff',
       background: '#fff',
@@ -41,7 +44,8 @@ const styles = (theme: any) =>
       height: 200,
       backgroundColor: '#f1f1f1',
     },
-  });
+  },
+);
 
 type State = Readonly<typeof initialState>;
 type Props = { classes?: any; } & injectProps;
@@ -59,7 +63,7 @@ class LogoListPage extends Component<Props, State> {
     return (
       <>
         <Grid item container justify="space-between" md={12}>
-          <Header />
+          <HeaderLogo/>
         </Grid>
         <Grid
           item
@@ -70,7 +74,7 @@ class LogoListPage extends Component<Props, State> {
           {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
             return (
               <Grid item key={index}>
-                <ItemLogo item={item} />
+                <ItemLogo item={item}/>
               </Grid>
             );
           })}
