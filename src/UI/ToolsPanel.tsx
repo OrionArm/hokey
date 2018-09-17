@@ -63,6 +63,9 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             onChange={this.handleChange}
             name="selected"
             disableUnderline
+            style={{
+              fontSize: '0.875rem',
+            }}
             classes={{
               select: classes.select,
             }}

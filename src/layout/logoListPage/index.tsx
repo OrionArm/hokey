@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators, Dispatch } from 'redux';
+import { IRootReducer } from 'src/store/rootReducers';
+import { logosActions } from 'src/logos/actions';
 import { connect } from 'react-redux';
 import {
   Grid,
-  Typography,
   createStyles,
-  Button,
-  FormControlLabel,
-  Radio,
-  CardMedia,
-  CardContent,
-  Card,
 } from '@material-ui/core';
-
-import MainMenu from 'src/components/mainMenu/MainMenu';
-import { IRootReducer } from 'src/store/rootReducers';
-import { logosActions } from 'src/logos/actions';
 
 const styles = (theme: any) =>
   createStyles({
@@ -65,60 +56,21 @@ class LogoListPage extends Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <>
-        <MainMenu/>
         <Grid item container justify="space-between" md={12}>
-          <Typography variant="headline">My Logos</Typography>
-          <Button variant="contained" color="primary">
-            new logos
-          </Button>
+          <Header />
         </Grid>
-
-        <Grid item container spacing={24}>
+        <Grid
+          item
+          container
+          spacing={24}
+          style={{ justifyContent: 'space-between' }}
+        >
           {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
             return (
-              <Grid item md={2} key={index}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    component="img"
-                    className={classes.media}
-                    title="log"
-                  />
-                  <div className={classes.logosHoverBlock}>
-                    <FormControlLabel
-                      value="Set as Default"
-                      control={
-                        <Radio
-                          classes={{
-                            root: classes.root,
-                            checked: classes.checked,
-                            colorPrimary: classes.colorPrimary,
-                            colorSecondary: classes.colorSecondary,
-                          }}
-                          onChange={this.setDefaultLogo}
-                        />
-                      }
-                      label="Set as Default"
-                    />
-                    <div style={{ textAlign: 'right' }}>
-                      <div>Edit</div>
-                      <div>Delete</div>
-                    </div>
-                  </div>
-                  <CardContent>
-                    <Typography
-                      align="center"
-                      variant="headline"
-                      component="h2"
-                    >
-                      {`${item} NameLogo`}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                ;
+              <Grid item key={index}>
+                <ItemLogo item={item} />
               </Grid>
             );
           })}
