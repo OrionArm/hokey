@@ -24,11 +24,13 @@ function getLogos(payload: { userId: string }) {
 }
 
 function changeDefaultLogo(payload: IChangeDefaultLogoRequest): AxiosPromise<any> {
-  return request.post(`/users/${payload.userId}/watermarks/default`, payload.logoId);
+  return request.patch(`/users/${payload.userId}/watermarks/default`, { id: payload.logoId });
 }
 
 function deleteLogos(payload: IDeleteLogosRequest): AxiosPromise<any> {
-  return request.delete(`/users/${payload.userId}/watermarks`, { data: payload.logosIds });
+  return request.delete(`/users/${payload.userId}/watermarks`, {
+    data: { ids: payload.logosIds },
+  });
 }
 
 function setLogo(payload: ISetLogosRequest): AxiosPromise<any> {

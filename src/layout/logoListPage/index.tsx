@@ -48,9 +48,11 @@ const styles = (theme: any) => createStyles(
 );
 
 type State = Readonly<typeof initialState>;
-type Props = { classes?: any; } & injectProps;
-type injectProps = ReturnType<typeof mapDispatchToProps>;
-const initialState = { checked: false };
+type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
+type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type injectStateProps = ReturnType<typeof mapStateToProps>;
+
+const initialState = { defaultLogo: '' };
 
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
@@ -60,6 +62,7 @@ class LogoListPage extends Component<Props, State> {
   }
 
   render() {
+    const { logos } = this.props;
     return (
       <>
         <Grid item container justify="space-between" md={12}>
@@ -71,20 +74,36 @@ class LogoListPage extends Component<Props, State> {
           spacing={24}
           style={{ justifyContent: 'space-between' }}
         >
-          {[1, 2, 3, 4, 5, 6, 7].map((item, index) => {
-            return (
-              <Grid item key={index}>
-                <ItemLogo item={item}/>
-              </Grid>
-            );
-          })}
+          {
+            logos.map((item, index) => {
+              return (
+                <Grid item key={index}>
+                  <ItemLogo
+                    item={item}
+                    pickDefaultLogo={this.setDefaultLogo}
+                    editLogo={this.handleEditLogo}
+                    deleteLogo={this.handleDeleteLogo}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
       </>
     );
   }
 
-  setDefaultLogo = () => {
-    // this.props.logosAction.changeDefaultLogoRequest(logo);
+  handleEditLogo = (logoId: string) => {
+    // Now we don't need call this api! We'ill be use redirect
+    // this.props.logosAction.setLogosRequest(logoId)
+  }
+
+  handleDeleteLogo = (logoId: string) => {
+    this.props.logosAction.deleteLogosRequest({ logosIds: [logoId] });
+  }
+
+  setDefaultLogo = (logoId: string) => {
+    this.setState({ defaultLogo: logoId });
+    this.props.logosAction.changeDefaultLogoRequest({ logoId });
   }
 
   // deleteLogo = (logo) => {
@@ -97,7 +116,7 @@ class LogoListPage extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  // logos: state.logos,
+  logos: state.watermarks.logos,
 });
 
 const mapDispatchToProps = (state: Dispatch) => ({

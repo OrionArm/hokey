@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Typography,
   createStyles,
@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import { LogoModel } from 'src/logos/model';
 
 const styles = (theme: any) =>
   createStyles({
@@ -61,43 +62,71 @@ const styles = (theme: any) =>
     },
   });
 
-type Props = { classes?: any; item: any };
+type Props = {
+  classes?: any;
+  item: LogoModel;
+  pickDefaultLogo(logoId: string): void;
+  editLogo(logoId: string): void;
+  deleteLogo(logoId: string): void;
+};
+const LogoListPage: React.SFC<Props> = (
+  { classes, item, pickDefaultLogo, editLogo, deleteLogo },
+) => {
+  const setDefault   = () => pickDefaultLogo(item.id);
+  const onEditLogo   = () => editLogo(item.id);
+  const onDeleteLogo = () => deleteLogo(item.id);
 
-class LogoListPage extends Component<Props> {
-  render() {
-    const { classes } = this.props;
-    return (
-      <Card className={classes.card}>
-        <CardMedia component="img" className={classes.media} title="log" />
-        <div className={classes.logosHoverBlock}>
-          <FormControlLabel
-            value="Set as Default"
-            classes={{
-              label: classes.labelRadio,
-            }}
-            control={
-              <Radio
-                classes={{
-                  root: classes.root,
-                  checked: classes.checked,
-                }}
-              />
-            }
-            label="Set as Default"
-          />
-          <div className={classes.HoverGroupButton}>
-            <Button color="secondary">Edit</Button>
-            <Button color="primary">Delete</Button>
-          </div>
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        component="img"
+        className={classes.media}
+        title="log"
+        image={item.url}
+      />
+      <div className={classes.logosHoverBlock}>
+        <FormControlLabel
+          value="Set as Default"
+          classes={{
+            label: classes.labelRadio,
+          }}
+          control={
+            <Radio
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+              onChange={setDefault}
+            />
+          }
+          label="Set as Default"
+        />
+        <div className={classes.HoverGroupButton}>
+          <Button
+            color="secondary"
+            onClick={onEditLogo}
+          >
+            Edit
+          </Button>
+          <Button
+            color="primary"
+            onClick={onDeleteLogo}
+          >
+            Delete
+          </Button>
         </div>
-        <CardContent>
-          <Typography align="center" variant="headline" component="h2">
-            {`${this.props.item} NameLogo`}
-          </Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+      </div>
+      <CardContent>
+        <Typography align="center" variant="headline" component="h2">
+          {clearName(item.name)}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+function clearName(name: string) {
+  return name.replace(/.png/gi, '');
 }
 
 export default withStyles(styles)(LogoListPage);

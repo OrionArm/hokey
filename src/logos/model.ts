@@ -3,7 +3,7 @@ export class LogoModel {
     public id = '',
     public userId = '',
     public isMain = '',
-    public name = '',
+    public name = 'default logo',
     public transparency = '',
     public url = '',
     public coordX = '',

@@ -6,6 +6,7 @@ import Logo from 'src/UI/Logo';
 import MainManu from '../../components/MainMenu';
 interface HeaderProps {}
 
+// ToDo(): connect to store, add user to button
 class Header extends Component<HeaderProps, any> {
   public render() {
     return (
