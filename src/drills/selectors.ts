@@ -9,3 +9,7 @@ export const getGrouppedCategoriesSelector = (state: RootState) => {
   // };
   return state.drills.categories;
 };
+
+export const getDrillsSelector = (state: RootState) => {
+  return state.drills.drills;
+};

@@ -9,7 +9,11 @@ interface Response {
 }
 
 function getDrillsByCategoryId({ id }: Payload): AxiosPromise<Response> {
-  return request.get(`/users/me/drill-categories/public/${id}/drills`);
+  const toEntity = (x: any) => ({ id: x.drillid, name: x.drillname });
+  return request.get(`/users/me/drill-categories/public/${id}/drills`).then(res => {
+    res.data = res.data.map(toEntity);
+    return res;
+  });
 }
 
 function getCategories(): AxiosPromise<any> {

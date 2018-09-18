@@ -3,25 +3,31 @@ import {
   Paper,
   Checkbox,
   FormControlLabel,
-  IconButton,
   List,
-  ListItem,
-  ListItemText,
-  Divider,
   Button,
   withStyles,
   createStyles,
 } from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSyncAlt,
-  faDownload,
-  faFilm,
-} from '@fortawesome/free-solid-svg-icons';
+
+import { compose, Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import ToolsPanel from '../../UI/ToolsPanel';
-export interface DrillsProps {
+import { RootState } from '../../store/rootReducers';
+import { getDrillsSelector } from '../../drills/selectors';
+import { Drill } from 'src/drills/model';
+import DrillsItem from './DrillsItem';
+
+interface DrillsProps {
   classes: any;
+  drills: Drill[];
+  actions: {
+
+  };
+}
+interface State {
+  checkedIds: { [id: string]: boolean };
+  // drills: Drill[];
 }
 
 const styles = createStyles({
@@ -35,25 +41,29 @@ const styles = createStyles({
   },
 });
 
-class DrillsBar extends Component<DrillsProps, any> {
+class DrillsBar extends Component<DrillsProps, State> {
   state = {
-    checked: [0],
+    checkedIds: {},
+    // drills: [],
   };
 
-  handleToggle = (value: number) => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  // static getDerivedStateFromProps(props: DrillsProps) {
+  //   return {
+  //     checkedIds: {},
+  //     drills: props.drills,
+  //   };
+  // }
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+  handleToggle = (id: string) => () => {
+    const checkedIds = { ...this.state.checkedIds, [id]: !this.state.checkedIds[id] };
+    this.setState({ checkedIds });
+  }
 
-    this.setState({
-      checked: newChecked,
-    });
+  toggleAll = (event: any, checked: boolean) => {
+    console.log('befor', this.state.checkedIds);
+    const checkedIds = this.props.drills.reduce((a, drill) => ({ ...a, [drill.id]: checked }), {});
+    console.log('aft', checkedIds);
+    this.setState({ checkedIds });
   }
 
   public render() {
@@ -87,6 +97,7 @@ class DrillsBar extends Component<DrillsProps, any> {
                 classes={{
                   root: classes.rootLabel,
                 }}
+                onChange={this.toggleAll}
                 control={<Checkbox color="primary" />}
                 label="All"
               />
@@ -108,35 +119,13 @@ class DrillsBar extends Component<DrillsProps, any> {
           <ToolsPanel />
         </header>
         <List>
-          {[0, 1, 2, 3].map(value => (
-            <>
-              <ListItem
-                component="li"
-                key={value}
-                role={undefined}
-                button
-                onClick={this.handleToggle(value)}
-              >
-                <Checkbox
-                  checked={this.state.checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                  color="primary"
-                />
-                <ListItemText primary={`Line item ${value + 1}`} />
-
-                <IconButton aria-label="Refresh">
-                  <FontAwesomeIcon icon={faSyncAlt} />
-                </IconButton>
-                <IconButton aria-label="Video">
-                  <FontAwesomeIcon icon={faFilm} />
-                </IconButton>
-                <IconButton aria-label="Download">
-                  <FontAwesomeIcon icon={faDownload} />
-                </IconButton>
-              </ListItem>
-              <Divider />
-            </>
+          {this.props.drills.map((value: Drill) => (
+            <DrillsItem
+              key={value.id}
+              onSelect={this.handleToggle}
+              drill={value}
+              checked={this.state.checkedIds[value.id]}
+            />
           ))}
         </List>
       </Paper>
@@ -144,4 +133,14 @@ class DrillsBar extends Component<DrillsProps, any> {
   }
 }
 
-export default withStyles(styles)(DrillsBar);
+const mapStateToProps = (state: RootState) => ({
+  drills: getDrillsSelector(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators({}, dispatch),
+});
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps),
+)(DrillsBar);
