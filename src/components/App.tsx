@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch, Redirect } from 'react-router';
 import PrivateRoute from 'src/components/privateRoute/PrivateRoute';
 import ProtectedContent from 'src/components/protectedContent/ProtectedContent';
+import AddLogoModal from 'src/components/modals/addLogo/AddLogoModal';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
       <>
         <CssBaseline />
         <Header />
+        <AddLogoModal />
         <Switch>
           <Redirect from="/" to="/drills" exact />
           <Route path="/login" component={SignInPage} />

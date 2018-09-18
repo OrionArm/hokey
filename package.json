@@ -25,7 +25,9 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "redux-act": "^1.7.4",
+    "react-modal": "^3.5.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -42,6 +44,7 @@
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "@types/react-modal": "^3.2.1",
     "@types/react-redux": "^6.0.7",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-router-redux": "^5.0.15",

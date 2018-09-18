@@ -36,7 +36,7 @@ function* addLogo(action: fromActions.addLogosRequest) {
     const response = yield call(logosAPI.addLogo, { images, userId });
 
     console.log('setLogosSaga response.data', response.data);
-
+    yield put(fromActions.logosActions.getLogosRequest());
     // yield put(fromActions.logosActions.getLogosSuccess, response.data);
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {

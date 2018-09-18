@@ -25,7 +25,7 @@ interface IDeleteLogosRequest {
 }
 
 interface ISetLogosRequest {
-  images: File[];
+  images: FileList;
   userId: string;
 }
 

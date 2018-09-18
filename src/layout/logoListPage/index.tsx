@@ -11,6 +11,8 @@ import { RootState } from 'src/store/rootReducers';
 import ItemLogo from 'src/layout/logoListPage/ItemLogo';
 import HeaderLogo from 'src/layout/logoListPage/headerLogo';
 import { logosActions } from 'src/logos/actions';
+import { show } from 'src/modal-juggler/reducer';
+import { ModalNames } from 'src/modal-juggler/interface';
 
 const styles = (theme: any) => createStyles(
   {
@@ -61,7 +63,7 @@ class LogoListPage extends Component<Props, any> {
     return (
       <>
         <Grid item container justify="space-between" md={12}>
-          <HeaderLogo/>
+          <HeaderLogo addLogo={this.handleAddLogo} />
         </Grid>
         <Grid
           item
@@ -92,6 +94,10 @@ class LogoListPage extends Component<Props, any> {
     // this.props.logosAction.setLogosRequest(logoId)
   }
 
+  handleAddLogo = () => {
+    this.props.showModal();
+  }
+
   handleDeleteLogo = (logoId: string) => {
     this.props.logosAction.deleteLogosRequest({ logosIds: [logoId] });
   }
@@ -114,8 +120,9 @@ const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
 });
 
-const mapDispatchToProps = (state: Dispatch) => ({
-  logosAction: bindActionCreators(logosActions, state),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  logosAction: bindActionCreators(logosActions, dispatch),
+  showModal: () => dispatch(show(ModalNames.addLogo)),
 });
 
 export default withStyles(styles)(

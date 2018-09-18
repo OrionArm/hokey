@@ -39,12 +39,12 @@ function addLogo(payload: ISetLogosRequest): AxiosPromise<any> {
   const config  = { headers };
 
   // name="image[]"; filename="file.png"
-  const fd = new FormData();
-  for (let i = 0; i < payload.images.length; i += 1) {
-    fd.append(`images[${i}]`, payload.images[i]);
-  }
-  console.log('FormData = ', FormData);
-  return request.post(`/users/${payload.userId}/watermarks`, fd, config);
+  // const fd = new FormData();
+  // for (let i = 0; i < payload.images.length; i += 1) {
+  //   fd.append(`images[${i}]`, payload.images[i]);
+  // }
+  // console.log('FormData = ', FormData);
+  return request.post(`/users/${payload.userId}/watermarks`, payload.images, config);
 }
 
 function editLogo(payload: IRefreshLogosRequest): AxiosPromise<any> {

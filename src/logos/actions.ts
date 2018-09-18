@@ -32,11 +32,13 @@ export const DELETE_LOGOS_SUCCESS = '[logos] DELETE_LOGOS_SUCCESS';
 export type deleteLogosSuccess = ReturnType<typeof deleteLogosSuccess>;
 const deleteLogosSuccess = () => createAction(DELETE_LOGOS_SUCCESS);
 
-export const ADD_LOGO_REQUEST = '[logos] SET_LOGOS_REQUEST';
+export const ADD_LOGO_REQUEST = '[logos] ADD_LOGO_REQUEST';
 export type addLogosRequest = ReturnType<typeof addLogosRequest>;
-const addLogosRequest = (payload: { images: File[] }) => createAction(ADD_LOGO_REQUEST, payload);
+const addLogosRequest = (payload: { images: FileList }) => {
+  return createAction(ADD_LOGO_REQUEST, payload);
+};
 
-export const ADD_LOGO_SUCCESS = '[logos] SET_LOGOS_SUCCESS';
+export const ADD_LOGO_SUCCESS = '[logos] ADD_LOGO_SUCCESS';
 export type addLogosSuccess = ReturnType<typeof addLogosSuccess>;
 const addLogosSuccess = () => createAction(ADD_LOGO_SUCCESS);
 
