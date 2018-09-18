@@ -12,14 +12,15 @@ import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
 import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/rootReducers';
-import { getDrillsByCategoryIdRequest } from '../../drills/actions';
-import { getGrouppedDrillsSelector } from '../../drills/selectors';
+import { getDrillsByCategoryIdRequest, getDrillsCategoriesRequest } from '../../drills/actions';
+import { getGrouppedCategoriesSelector } from '../../drills/selectors';
 
 export interface ICategoriesProps {
   classes?: any;
   categories: DrillCategoriesGroupped;
   actions: {
     getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest,
+    getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest,
   };
 }
 
@@ -53,10 +54,15 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     categoryType: DrillCategoryType.Public,
   };
 
-  handleChange = (event: any) =>
+  componentDidMount() {
+    this.props.actions.getDrillsCategoriesRequest();
+  }
+
+  onCategoryTypeChange = (event: any) => {
     this.setState({
       [event.target.name]: event.target.value,
-    })
+    });
+  }
 
   render() {
     const { classes } = this.props;
@@ -70,7 +76,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
         >
           <Select
             value={this.state.categoryType}
-            onChange={this.handleChange}
+            onChange={this.onCategoryTypeChange}
             name="categoryType"
             disableUnderline
             style={{
@@ -96,10 +102,14 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  categories: getGrouppedDrillsSelector(state),
+  categories: getGrouppedCategoriesSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({ getDrillsByCategoryIdRequest }, dispatch),
+  actions: bindActionCreators({
+    getDrillsByCategoryIdRequest,
+    getDrillsCategoriesRequest,
+  // tslint:disable-next-line:align
+  }, dispatch),
 });
 
 export default

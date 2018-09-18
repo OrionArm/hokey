@@ -30,6 +30,7 @@ class ListComponent extends Component<Props, State> {
   };
 
   onSelect = (category: DrillCategory) => (event: any) => {
+    this.setState({ selectedId: category.id });
     this.props.onSelectCategory(category.id);
   }
 
