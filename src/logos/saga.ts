@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import * as fromActions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import logosAPI from 'src/logos/api';
-import { IRootReducer } from 'src/store/rootReducers';
+import { RootState } from 'src/store/rootReducers';
 
 function* watcher() {
   yield takeLatest(fromActions.GET_LOGOS_REQUEST, getLogos);
@@ -13,7 +13,7 @@ function* watcher() {
   yield takeLatest(fromActions.CHANGE_DEFAULT_LOGOS_REQUEST, changeDefaultLogo);
 }
 
-const getState  = (state: IRootReducer) => state;
+const getState  = (state: RootState) => state;
 const getUserId = createSelector(getState, state => state.user.profile.userid);
 
 function* getLogos(action: fromActions.getLogosRequest) {

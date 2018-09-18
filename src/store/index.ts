@@ -21,7 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
 const createCustomStore: Store<RootState> = (() => {
   const store: any = createStore(
     rootReducers,
-    {},
     composeWithDevTools(applyMiddleware(...middleware)),
   );
 
