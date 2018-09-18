@@ -6,8 +6,8 @@ const logosAPI = {
   getLogos,
   changeDefaultLogo,
   deleteLogos,
-  setLogo,
-  refreshLogo,
+  addLogo,
+  editLogo,
 };
 
 function getLogos(payload: { userId: string }) {
@@ -33,7 +33,7 @@ function deleteLogos(payload: IDeleteLogosRequest): AxiosPromise<any> {
   });
 }
 
-function setLogo(payload: ISetLogosRequest): AxiosPromise<any> {
+function addLogo(payload: ISetLogosRequest): AxiosPromise<any> {
   const headers = { 'Content-Type': 'image/png' };
   const config  = { headers };
 
@@ -46,7 +46,7 @@ function setLogo(payload: ISetLogosRequest): AxiosPromise<any> {
   return request.post(`/users/${payload.userId}/watermarks`, fd, config);
 }
 
-function refreshLogo(payload: IRefreshLogosRequest): AxiosPromise<any> {
+function editLogo(payload: IRefreshLogosRequest): AxiosPromise<any> {
   const headers = { 'Content-Type': 'image/png' };
   // name="image[]"; filename="file.png"
   const config  = { headers };

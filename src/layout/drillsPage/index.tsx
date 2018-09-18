@@ -1,7 +1,7 @@
 import React from 'react';
 import CategoriesBar from './CategoriesBar';
 import DetailsBar from './DetailsBar';
-import DrillsBar from './DrillsBar';
+// import DrillsBar from './DrillsBar';
 import { Grid, Typography } from '@material-ui/core';
 
 const AsideGrid = ({ children }: any) => (
@@ -20,7 +20,7 @@ const DrillsPage = () => (
         <CategoriesBar />
       </AsideGrid>
       <Grid item style={{ flexGrow: 1 }}>
-        <DrillsBar />
+        {/*<DrillsBar />*/}
       </Grid>
       <AsideGrid>
         <DetailsBar />

@@ -32,13 +32,13 @@ export const DELETE_LOGOS_SUCCESS = '[logos] DELETE_LOGOS_SUCCESS';
 export type deleteLogosSuccess = ReturnType<typeof deleteLogosSuccess>;
 const deleteLogosSuccess = () => createAction(DELETE_LOGOS_SUCCESS);
 
-export const SET_LOGOS_REQUEST = '[logos] SET_LOGOS_REQUEST';
-export type setLogosRequest = ReturnType<typeof setLogosRequest>;
-const setLogosRequest = (payload: { images: File[] }) => createAction(SET_LOGOS_REQUEST, payload);
+export const ADD_LOGO_REQUEST = '[logos] SET_LOGOS_REQUEST';
+export type addLogosRequest = ReturnType<typeof addLogosRequest>;
+const addLogosRequest = (payload: { images: File[] }) => createAction(ADD_LOGO_REQUEST, payload);
 
-export const SET_LOGOS_SUCCESS = '[logos] SET_LOGOS_SUCCESS';
-export type setLogosSuccess = ReturnType<typeof setLogosSuccess>;
-const setLogosSuccess = () => createAction(SET_LOGOS_SUCCESS);
+export const ADD_LOGO_SUCCESS = '[logos] SET_LOGOS_SUCCESS';
+export type addLogosSuccess = ReturnType<typeof addLogosSuccess>;
+const addLogosSuccess = () => createAction(ADD_LOGO_SUCCESS);
 
 export const logosActions = {
   getLogosRequest,
@@ -47,8 +47,8 @@ export const logosActions = {
   changeDefaultLogoSuccess,
   deleteLogosRequest,
   deleteLogosSuccess,
-  setLogosRequest,
-  setLogosSuccess,
+  addLogosRequest,
+  addLogosSuccess,
 };
 
 export type logosActions = ActionsUnion<typeof logosActions>;

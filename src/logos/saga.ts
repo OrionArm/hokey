@@ -9,7 +9,7 @@ import { LogoModel } from 'src/logos/model';
 
 function* watcher() {
   yield takeLatest(fromActions.GET_LOGOS_REQUEST, getLogos);
-  yield takeEvery(fromActions.SET_LOGOS_REQUEST, setLogos);
+  yield takeEvery(fromActions.ADD_LOGO_REQUEST, addLogo);
   yield takeEvery(fromActions.DELETE_LOGOS_REQUEST, deleteLogos);
   yield takeLatest(fromActions.CHANGE_DEFAULT_LOGOS_REQUEST, changeDefaultLogo);
 }
@@ -29,11 +29,11 @@ function* getLogos(action: fromActions.getLogosRequest) {
   }
 }
 
-function* setLogos(action: fromActions.setLogosRequest) {
+function* addLogo(action: fromActions.addLogosRequest) {
   const userId: string = yield select(getUserId);
   const images         = action.payload.images;
   try {
-    const response = yield call(logosAPI.setLogo, { images, userId });
+    const response = yield call(logosAPI.addLogo, { images, userId });
 
     console.log('setLogosSaga response.data', response.data);
 
