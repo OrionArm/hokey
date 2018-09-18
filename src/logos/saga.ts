@@ -66,7 +66,7 @@ function* changeDefaultLogo(action: fromActions.changeDefaultLogoRequest) {
   try {
     const response = yield call(logosAPI.changeDefaultLogo, { userId, logoId });
     console.log('changeDefaultLogoSaga response.data', response.data);
-
+    yield put(fromActions.logosActions.getLogosRequest());
     // yield put(fromActions.logosActions.getLogosSuccess, response.data);
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {

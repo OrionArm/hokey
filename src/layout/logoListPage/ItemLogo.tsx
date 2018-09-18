@@ -90,6 +90,7 @@ const LogoListPage: React.SFC<Props> = (
           classes={{
             label: classes.labelRadio,
           }}
+          checked={item.isMain}
           control={
             <Radio
               classes={{

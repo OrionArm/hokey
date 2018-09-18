@@ -1,25 +1,36 @@
 export class LogoModel {
   constructor(
-    public id = '',
-    public userId = '',
-    public isMain = '',
-    public name = 'default logo',
+    public id           = '',
+    public userId       = '',
+    public isMain       = false,
+    public name         = 'default logo',
     public transparency = '',
-    public url = '',
-    public coordX = '',
-    public coordY = '',
-    public fileId = '',
-    public height = '',
-    public width = '',
+    public url          = '',
+    public coordX       = '',
+    public coordY       = '',
+    public fileId       = '',
+    public height       = '',
+    public width        = '',
   ) {
   }
 
   static logoResponseToModel(json: LogoResponse): LogoModel {
     const logo = new LogoModel();
 
+    function isTrue(defaultLogo: any) {
+      if (defaultLogo && ((defaultLogo === 1) || defaultLogo === '1')) {
+        console.log('cgeck defaultLogo ', json.name);
+        console.log('++++++++++++++++ ');
+        return true;
+      }
+      console.log('cgeck defaultLogo ', json.name);
+      console.log('------------------ ');
+      return false;
+    }
+
     logo.id           = json.id;
     logo.userId       = json.user_id;
-    logo.isMain       = json.is_main;
+    logo.isMain       = isTrue(json.is_main);
     logo.name         = json.name;
     logo.transparency = json.transparency;
     logo.url          = json.url;
@@ -31,5 +42,6 @@ export class LogoModel {
     logo.width        = json.width;
 
     return logo;
+
   }
 }

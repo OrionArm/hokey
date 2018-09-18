@@ -16,8 +16,6 @@ type Props = { path: string, component: React.ReactType }
 const PrivateRoute: React.SFC<Props> = (
   { logout, path, component: Component, ...rest }) => {
   const token: string | null = customStorage.getToken() || null;
-  console.log('token', token);
-
   if (!token) {
     return <Redirect to="/login"/>;
   }

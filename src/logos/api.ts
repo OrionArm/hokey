@@ -16,9 +16,10 @@ function getLogos(payload: { userId: string }) {
   return requestWatermarks
     .then(response => {
       const logos: IGetLogosResponse = response.data;
-      logos
-        .map((logo: LogoResponse) => LogoModel.logoResponseToModel(logo));
-      return logos;
+      const logoData: LogoModel[]    = logos.map((logo: LogoResponse) =>
+        LogoModel.logoResponseToModel(logo),
+      );
+      return logoData;
     });
 
 }

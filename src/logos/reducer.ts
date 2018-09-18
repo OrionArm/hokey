@@ -3,7 +3,6 @@ import { LogoModel } from 'src/logos/model';
 
 export const initialState = {
   logos: [new LogoModel()],
-  defaultLogo: {},
   loaded: false,
   error: false,
 };

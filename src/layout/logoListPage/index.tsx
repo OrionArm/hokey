@@ -47,16 +47,11 @@ const styles = (theme: any) => createStyles(
   },
 );
 
-type State = Readonly<typeof initialState>;
 type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 
-const initialState = { defaultLogo: '' };
-
-class LogoListPage extends Component<Props, State> {
-  readonly state = initialState;
-
+class LogoListPage extends Component<Props, any> {
   componentDidMount() {
     this.props.logosAction.getLogosRequest();
   }
