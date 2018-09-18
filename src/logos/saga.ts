@@ -1,10 +1,11 @@
-import { call, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
 import * as fromActions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import logosAPI from 'src/logos/api';
-import { IRootReducer } from 'src/store/rootReducers';
+import { RootState } from 'src/store/rootReducers';
+import { LogoModel } from 'src/logos/model';
 
 function* watcher() {
   yield takeLatest(fromActions.GET_LOGOS_REQUEST, getLogos);
@@ -13,16 +14,15 @@ function* watcher() {
   yield takeLatest(fromActions.CHANGE_DEFAULT_LOGOS_REQUEST, changeDefaultLogo);
 }
 
-const getState  = (state: IRootReducer) => state;
+const getState  = (state: RootState) => state;
 const getUserId = createSelector(getState, state => state.user.profile.userid);
 
 function* getLogos(action: fromActions.getLogosRequest) {
   const userId: string = yield select(getUserId);
   try {
-    const response    = yield call(logosAPI.getLogos, { userId });
-    const data: any[] = response.data;
-    console.log('getLogosSaga response.data', data);
-    // yield put(fromActions.logosActions.getLogosSuccess, data);
+    const logos: LogoModel[] = yield call(logosAPI.getLogos, { userId });
+    console.log('getLogosSaga response.data', logos);
+    yield put(fromActions.logosActions.getLogosSuccess({ logos }));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);

@@ -1,5 +1,6 @@
 import { AxiosPromise } from 'axios';
 import request from '../utils/request';
+import { LogoModel } from 'src/logos/model';
 
 const logosAPI = {
   getLogos,
@@ -9,8 +10,17 @@ const logosAPI = {
   refreshLogo,
 };
 
-function getLogos(payload: { userId: string }): AxiosPromise<any> {
-  return request.get(`/users/${payload.userId}/watermarks`);
+function getLogos(payload: { userId: string }) {
+  const requestWatermarks: AxiosPromise<IGetLogosResponse> = request
+    .get(`/users/${payload.userId}/watermarks`);
+  return requestWatermarks
+    .then(response => {
+      const logos: IGetLogosResponse = response.data;
+      logos
+        .map((logo: LogoResponse) => LogoModel.logoResponseToModel(logo));
+      return logos;
+    });
+
 }
 
 function changeDefaultLogo(payload: IChangeDefaultLogoRequest): AxiosPromise<any> {

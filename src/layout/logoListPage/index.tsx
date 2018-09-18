@@ -7,7 +7,6 @@ import {
   createStyles,
 } from '@material-ui/core';
 
-import MainMenu from 'src/components/MainMenu';
 import { RootState } from 'src/store/rootReducers';
 import ItemLogo from 'src/layout/logoListPage/ItemLogo';
 import HeaderLogo from 'src/layout/logoListPage/headerLogo';

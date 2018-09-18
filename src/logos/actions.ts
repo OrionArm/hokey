@@ -1,5 +1,6 @@
 import { createAction } from 'src/utils/typedAction/createAction';
 import { ActionsUnion } from 'src/utils/typedAction/action';
+import { LogoModel } from 'src/logos/model';
 
 export const GET_LOGOS_REQUEST = '[logos] GET_LOGOS_REQUEST';
 export type getLogosRequest = ReturnType<typeof getLogosRequest>;
@@ -7,7 +8,9 @@ const getLogosRequest = () => createAction(GET_LOGOS_REQUEST);
 
 export const GET_LOGOS_SUCCESS = '[logos] GET_LOGOS_SUCCESS';
 export type getLogosSuccess = ReturnType<typeof getLogosSuccess>;
-const getLogosSuccess = (payload: any[]) => createAction(GET_LOGOS_SUCCESS);
+const getLogosSuccess = (payload: { logos: LogoModel[]}) => {
+  return createAction(GET_LOGOS_SUCCESS, payload);
+};
 
 export const CHANGE_DEFAULT_LOGOS_REQUEST = '[logos] CHANGE_DEFAULT_LOGOS_REQUEST';
 export type changeDefaultLogoRequest = ReturnType<typeof changeDefaultLogoRequest>;
@@ -48,5 +51,5 @@ export const logosActions = {
   setLogosSuccess,
 };
 
-export type userActions = ActionsUnion<typeof logosActions>;
-export default userActions;
+export type logosActions = ActionsUnion<typeof logosActions>;
+export default logosActions;
