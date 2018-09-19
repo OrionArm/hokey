@@ -3,15 +3,9 @@ import { AxiosPromise } from 'axios';
 import request from '../utils/request';
 import downloadRequest from '../utils/download-request';
 
-interface Payload {
-  id: number;
-}
-interface Response {
-}
-
-function getDrillsByCategoryId({ id }: Payload): AxiosPromise<Response> {
+function getDrillsByCategoryId({ id, categoryType }: any): AxiosPromise<any> {
   const toEntity = (x: any) => ({ id: x.drillid, name: x.drillname });
-  return request.get(`/users/me/drill-categories/public/${id}/drills`).then(res => {
+  return request.get(`/users/me/drill-categories/${categoryType}/${id}/drills`).then(res => {
     res.data = res.data.map(toEntity);
     return res;
   });

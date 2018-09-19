@@ -1,4 +1,4 @@
-import { DrillCategoriesGroupped, Drill, DrillDetailed } from '../drills/model';
+import { DrillCategoriesGroupped, Drill, DrillDetailed, DrillCategoryType } from '../drills/model';
 import { createAction } from '../utils/typedAction/createAction';
 import { ActionsUnion } from '../utils/typedAction/action';
 
@@ -7,7 +7,8 @@ export const GET_DRILLS_SUCCESS = '[drills] GET_DRILLS_SUCCESS';
 export const GET_DRILLS_FAIL = '[drills] GET_DRILLS_FAIL';
 
 // tslint:disable-next-line:max-line-length
-export const getDrillsByCategoryIdRequest = (id: number) => createAction(GET_DRILLS_REQUEST, { id });
+export const getDrillsByCategoryIdRequest = (id: string, categoryType: DrillCategoryType) =>
+   createAction(GET_DRILLS_REQUEST, { id, categoryType });
 export type getDrillsByCategoryIdRequest = ReturnType<typeof getDrillsByCategoryIdRequest>;
 export const getDrillsByCategoryIdSuccess = (drills: Drill[]) =>
   createAction(GET_DRILLS_SUCCESS, { drills });

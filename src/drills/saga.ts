@@ -33,7 +33,7 @@ function* getCategoriesSaga(action: actions.getDrillsCategoriesRequest) {
     const categories: DrillCategoriesGroupped = response.data;
     yield put(actions.getDrillsCategoriesSuccess(categories));
     const firstCategory = categories[DrillCategoryType.Public][0];
-    yield put(actions.getDrillsByCategoryIdRequest(firstCategory.id));
+    yield put(actions.getDrillsByCategoryIdRequest(firstCategory.id, DrillCategoryType.Public));
   } catch (error) {
     yield call(errorHandler, error);
   }

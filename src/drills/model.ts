@@ -11,7 +11,7 @@ export interface DrillDetailed extends Drill {
 export interface DrillCategory {
   name: string;
   count: number;
-  id: number;
+  id: string;
 }
 
 export enum DrillCategoryType {

@@ -64,6 +64,9 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     });
   }
 
+  getDrills = (id: string) =>
+    this.props.actions.getDrillsByCategoryIdRequest(id, this.state.categoryType)
+
   render() {
     const { classes } = this.props;
     return (
@@ -94,7 +97,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
         </Button>
         <CategoriesList
           categories={this.props.categories[this.state.categoryType]}
-          onSelectCategory={this.props.actions.getDrillsByCategoryIdRequest}
+          onSelectCategory={this.getDrills}
         />
       </Paper>
     );
@@ -108,7 +111,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({
     getDrillsByCategoryIdRequest,
     getDrillsCategoriesRequest,
-  // tslint:disable-next-line:align
+    // tslint:disable-next-line:align
   }, dispatch),
 });
 

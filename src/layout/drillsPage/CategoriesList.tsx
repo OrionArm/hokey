@@ -12,11 +12,11 @@ import { DrillCategory } from '../../drills/model';
 interface Props {
   classes?: any;
   categories: DrillCategory[];
-  onSelectCategory: (id: number) => void;
+  onSelectCategory: (id: string) => void;
 }
 
 interface State {
-  selectedId: number | null;
+  selectedId: string | null;
 }
 
 const styles = createStyles({
