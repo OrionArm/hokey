@@ -1,6 +1,7 @@
 
 import { AxiosPromise } from 'axios';
 import request from '../utils/request';
+import downloadRequest from '../utils/download-request';
 
 interface Payload {
   id: number;
@@ -25,8 +26,22 @@ function getCategories(): AxiosPromise<any> {
   });
 }
 
+function downloadPdf(id: string): any {
+  return downloadRequest(`/users/me/watermarks/${id}`);
+}
+
+function downloadVideo(id: string): any {
+  return request.get(`/users/me/drills/${id}/animation`).then(response => {
+    const url = response.data.s3video;
+    window.open(url, '_blank');
+    // return downloadRequest(url);
+  });
+}
+
 const drillsAPI = {
   getDrillsByCategoryId,
   getCategories,
+  downloadPdf,
+  downloadVideo,
 };
 export default drillsAPI;
