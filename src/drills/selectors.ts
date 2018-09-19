@@ -17,3 +17,8 @@ export const getDrillsSelector = (state: RootState) => {
 export const getSelectedDrillSelector = (state: RootState) => {
   return state.drills.selectedDrill;
 };
+
+export const getSelectedDrillPreviewSelector = (state: RootState) => {
+  const drill = getSelectedDrillSelector(state);
+  return drill ? drill.s3url_1 : null;
+};

@@ -8,9 +8,16 @@ import {
   createStyles,
 } from '@material-ui/core';
 import SwipeableViews from 'react-swipeable-views';
+import { compose, bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { RootState } from 'src/store/rootReducers';
+import { getSelectedDrillPreviewSelector } from 'src/drills/selectors';
+// import { DrillDetailed } from 'src/drills/model';
+
 export interface DetailsProps {
   classes?: any;
   theme: any;
+  preview: string | null;
 }
 
 const TabContainer = (props: any) => {
@@ -99,7 +106,9 @@ class DetailsBar extends Component<DetailsProps, any> {
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
-          <TabContainer dir={theme.direction}>Item One</TabContainer>
+          <TabContainer dir={theme.direction}>
+            <img style={{ width: '100%' }} src={this.props.preview || undefined} />
+          </TabContainer>
           <TabContainer dir={theme.direction}>Item Two</TabContainer>
           <TabContainer dir={theme.direction}>Item Three</TabContainer>
         </SwipeableViews>
@@ -108,4 +117,15 @@ class DetailsBar extends Component<DetailsProps, any> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(DetailsBar);
+const mapStateToProps = (state: RootState) => ({
+  preview: getSelectedDrillPreviewSelector(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators({}, dispatch),
+});
+
+export default
+  compose(
+    withStyles(styles, { withTheme: true }),
+    connect(mapStateToProps, mapDispatchToProps),
+  )(DetailsBar);
