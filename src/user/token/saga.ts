@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 
 import { customStorage } from 'src/utils/customStorage';
@@ -13,9 +13,8 @@ function* watcherToken() {
   ];
 }
 
-function* setToState(action: fromActions.setToState) {
+function setToState(action: fromActions.setToState) {
   const token = action.payload;
-  yield put(fromActions.tokenActions.setToResponse(token));
   customStorage.setToken(token);
 }
 
