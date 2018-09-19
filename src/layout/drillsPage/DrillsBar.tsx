@@ -60,9 +60,7 @@ class DrillsBar extends Component<DrillsProps, State> {
   }
 
   toggleAll = (event: any, checked: boolean) => {
-    console.log('befor', this.state.checkedIds);
     const checkedIds = this.props.drills.reduce((a, drill) => ({ ...a, [drill.id]: checked }), {});
-    console.log('aft', checkedIds);
     this.setState({ checkedIds });
   }
 
@@ -122,7 +120,7 @@ class DrillsBar extends Component<DrillsProps, State> {
           {this.props.drills.map((value: Drill) => (
             <DrillsItem
               key={value.id}
-              onSelect={this.handleToggle}
+              onSelect={this.handleToggle(value.id)}
               drill={value}
               checked={this.state.checkedIds[value.id]}
             />

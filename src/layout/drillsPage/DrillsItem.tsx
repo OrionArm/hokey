@@ -21,7 +21,7 @@ import { Drill } from 'src/drills/model';
 interface DrillsProps {
   drill: Drill;
   checked: boolean;
-  onSelect: (id: string) => void;
+  onSelect: () => void;
 }
 interface State {
 
@@ -32,7 +32,7 @@ const styles = createStyles({
 });
 
 class DrillsItem extends Component<DrillsProps, State> {
-  onChange = () => setTimeout(() => this.props.onSelect(this.props.drill.id));
+
   public render() {
     return (
       <>
@@ -42,11 +42,11 @@ class DrillsItem extends Component<DrillsProps, State> {
           button
         >
           <Checkbox
-            checked={this.props.checked}
+            checked={Boolean(this.props.checked)}
             tabIndex={-1}
             disableRipple
             color="primary"
-            onChange={this.onChange}
+            onChange={this.props.onSelect}
           />
           <ListItemText primary={this.props.drill.name} />
 
