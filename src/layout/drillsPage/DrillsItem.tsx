@@ -21,7 +21,7 @@ import { Drill } from 'src/drills/model';
 interface DrillsProps {
   drill: Drill;
   checked: boolean;
-  onSelect: () => void;
+  onCheck: () => void;
 }
 interface State {
 
@@ -34,6 +34,11 @@ const styles = createStyles({
 class DrillsItem extends Component<DrillsProps, State> {
   downloadPdf = () => drillsApi.downloadPdf(this.props.drill.id);
   downloadVideo = () => drillsApi.downloadVideo(this.props.drill.id);
+  regenerate = () => drillsApi.regenerate(this.props.drill.id).then(x => console.log(x));
+  selectDrill = (event: any) => {
+    event.stopPropogation();
+    drillsApi.getDrill(this.props.drill.id).then(x => console.log(x));
+  }
 
   public render() {
     return (
@@ -42,17 +47,22 @@ class DrillsItem extends Component<DrillsProps, State> {
           component="li"
           role={undefined}
           button
+          onClick={this.selectDrill}
         >
           <Checkbox
             checked={Boolean(this.props.checked)}
             tabIndex={-1}
             disableRipple
             color="primary"
-            onChange={this.props.onSelect}
+            onChange={this.props.onCheck}
           />
           <ListItemText primary={this.props.drill.name} />
 
-          <IconButton aria-label="Regenerate" title="Regenerate">
+          <IconButton
+            aria-label="Regenerate"
+            title="Regenerate"
+            onClick={this.regenerate}
+          >
             <FontAwesomeIcon icon={faSyncAlt} />
           </IconButton>
           <IconButton

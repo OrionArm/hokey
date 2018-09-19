@@ -120,7 +120,7 @@ class DrillsBar extends Component<DrillsProps, State> {
           {this.props.drills.map((value: Drill) => (
             <DrillsItem
               key={value.id}
-              onSelect={this.handleToggle(value.id)}
+              onCheck={this.handleToggle(value.id)}
               drill={value}
               checked={this.state.checkedIds[value.id]}
             />

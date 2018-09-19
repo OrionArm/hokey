@@ -38,10 +38,20 @@ function downloadVideo(id: string): any {
   });
 }
 
+function getDrill(id: string): AxiosPromise<any> {
+  return request.get(`/users/me/drills/${id}`);
+}
+
+function regenerate(id: string): AxiosPromise<any> {
+  return request.post(`/users/me/drills/${id}/regenerate`);
+}
+
 const drillsAPI = {
   getDrillsByCategoryId,
   getCategories,
   downloadPdf,
   downloadVideo,
+  getDrill,
+  regenerate,
 };
 export default drillsAPI;
