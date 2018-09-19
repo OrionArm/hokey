@@ -25,13 +25,13 @@ interface IDeleteLogosRequest {
 }
 
 interface ISetLogosRequest {
-  images: FileList;
+  image: File;
   userId: string;
 }
 
 interface IRefreshLogosRequest {
   logoId: string;
-  images: File[];
+  images: File;
   userId: string;
 }
 

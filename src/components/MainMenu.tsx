@@ -25,14 +25,23 @@ const styles = (theme: any) => {
       padding: 0,
     },
     menuItem: {},
+
     linkItem: {
       color: theme.palette.primary.contrastText,
-      textDecoration: 'none',
-      textAlign: 'center',
-      padding: 16,
+
+      padding: '12px 16px',
+      '&:hover, &:active, &:focus': {
+        textDecoration: 'none',
+        outline: 'none',
+        color: theme.palette.primary.main,
+      },
     },
-    selected: {
+    LinkSelected: {
       color: theme.palette.primary.main,
+      textDecoration: 'none',
+      '&:hover, &:active': {
+        color: theme.palette.primary.dark,
+      },
     },
   });
 };
@@ -45,7 +54,7 @@ class MainMenu extends Component<IMainMenuProps, IMainMenuState> {
           <NavLink
             className={classes.linkItem}
             to="/drills"
-            activeClassName={classes.selected}
+            activeClassName={classes.LinkSelected}
           >
             My Drills
           </NavLink>
@@ -54,7 +63,7 @@ class MainMenu extends Component<IMainMenuProps, IMainMenuState> {
           <NavLink
             className={classes.linkItem}
             to="/logos"
-            activeClassName={classes.selected}
+            activeClassName={classes.LinkSelected}
           >
             My Logos
           </NavLink>
