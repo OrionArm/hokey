@@ -12,15 +12,18 @@ import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
 import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/rootReducers';
-import { getDrillsByCategoryIdRequest, getDrillsCategoriesRequest } from '../../drills/actions';
+import {
+  getDrillsByCategoryIdRequest,
+  getDrillsCategoriesRequest,
+} from '../../drills/actions';
 import { getGrouppedCategoriesSelector } from '../../drills/selectors';
 
 export interface ICategoriesProps {
   classes?: any;
   categories: DrillCategoriesGroupped;
   actions: {
-    getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest,
-    getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest,
+    getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
+    getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
   };
 }
 
@@ -91,8 +94,12 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
               root: classes.root,
             }}
           >
-            <MenuItem value={DrillCategoryType.Public}>Public Categories</MenuItem>
-            <MenuItem value={DrillCategoryType.Custom}>Custom Categories</MenuItem>
+            <MenuItem value={DrillCategoryType.Public}>
+              Public Categories
+            </MenuItem>
+            <MenuItem value={DrillCategoryType.Custom}>
+              Custom Categories
+            </MenuItem>
           </Select>
         </Button>
         <CategoriesList
@@ -108,15 +115,20 @@ const mapStateToProps = (state: RootState) => ({
   categories: getGrouppedCategoriesSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({
-    getDrillsByCategoryIdRequest,
-    getDrillsCategoriesRequest,
-    // tslint:disable-next-line:align
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      getDrillsByCategoryIdRequest,
+      getDrillsCategoriesRequest,
+      // tslint:disable-next-line:align
+    },
+    dispatch,
+  ),
 });
 
-export default
-  compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    withStyles(styles),
-  )(CategoriesBar);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withStyles(styles),
+)(CategoriesBar);

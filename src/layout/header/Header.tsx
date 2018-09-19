@@ -10,15 +10,8 @@ interface HeaderProps {}
 class Header extends Component<HeaderProps, any> {
   public render() {
     return (
-      <AppBar position="static" style={{ backgroundColor: '#4F5467' }}>
-        <Toolbar
-          style={{
-            flexWrap: 'wrap',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+      <AppBar position="static">
+        <Toolbar style={{ backgroundColor: '#4F5467' }}>
           <Logo />
           <Profile />
         </Toolbar>

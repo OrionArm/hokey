@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Header } from 'src/layout/header';
 import { SignInPage } from 'src/layout/signInPage';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch, Redirect } from 'react-router';
@@ -12,7 +11,6 @@ class App extends Component {
     return (
       <>
         <CssBaseline />
-        <Header />
         <AddLogoModal />
         <Switch>
           <Redirect from="/" to="/drills" exact />
