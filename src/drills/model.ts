@@ -2,6 +2,7 @@
 export interface Drill {
   id: string;
   name: string;
+  has_animation: boolean;
 }
 
 export interface DrillDetailed extends Drill {

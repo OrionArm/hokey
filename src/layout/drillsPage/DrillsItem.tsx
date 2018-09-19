@@ -70,6 +70,7 @@ class DrillsItem extends Component<DrillsProps, State> {
           <IconButton
             aria-label="Regenerate"
             title="Regenerate"
+            disabled={!this.props.drill.has_animation}
             onClick={this.regenerate}
           >
             <FontAwesomeIcon icon={faSyncAlt} />
@@ -77,6 +78,7 @@ class DrillsItem extends Component<DrillsProps, State> {
           <IconButton
             aria-label="Download Video"
             title="Download Video"
+            disabled={!this.props.drill.has_animation}
             onClick={this.downloadVideo}
           >
             <FontAwesomeIcon icon={faFilm} />

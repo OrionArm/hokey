@@ -4,7 +4,11 @@ import request from '../utils/request';
 import downloadRequest from '../utils/download-request';
 
 function getDrillsByCategoryId({ id, categoryType }: any): AxiosPromise<any> {
-  const toEntity = (x: any) => ({ id: x.drillid, name: x.drillname });
+  const toEntity = (x: any) => ({
+    id: x.drillid,
+    name: x.drillname,
+    has_animation: x.has_animation === '1',
+  });
   return request.get(`/users/me/drill-categories/${categoryType}/${id}/drills`).then(res => {
     res.data = res.data.map(toEntity);
     return res;
