@@ -18,7 +18,7 @@ function getDrillsByCategoryId({ id }: Payload): AxiosPromise<Response> {
 }
 
 function getCategories(): AxiosPromise<any> {
-  const toEntity = (x: any) => ({ id: x.categoryid, name: x.categoryname, count: 10 });
+  const toEntity = (x: any) => ({ id: x.categoryid, name: x.categoryname, count: +x.total_drills });
   return request.get('/users/me/drill-categories').then(res => {
     res.data.custom = res.data.custom.map(toEntity);
     res.data.public = res.data.public.map(toEntity);
