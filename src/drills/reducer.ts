@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux';
-import { DrillCategoryType, Drill, DrillCategoriesGroupped } from './model';
-import { drillActions, GET_DRILLS_SUCCESS, GET_CATEGORIES_SUCCESS } from './actions';
+import { DrillCategoryType, Drill, DrillDetailed, DrillCategoriesGroupped } from './model';
+import {
+  drillActions, GET_DRILL_SUCCESS,
+  GET_DRILLS_SUCCESS, GET_CATEGORIES_SUCCESS,
+} from './actions';
 
 export interface DrillsState {
   categories: DrillCategoriesGroupped;
   drills: Drill[];
+  selectedDrill: DrillDetailed | null;
 }
 
 const initialState: DrillCategoriesGroupped = {
@@ -30,7 +34,17 @@ const drills = (state: Drill[] = [], action: drillActions): Drill[] => {
   }
 };
 
+const selectedDrill = (state = null, action: drillActions): DrillDetailed | null => {
+  switch (action.type) {
+    case GET_DRILL_SUCCESS:
+      return action.payload.drill;
+    default:
+      return state;
+  }
+};
+
 export const reducer = combineReducers<DrillsState, drillActions>({
   categories,
   drills,
+  selectedDrill,
 });

@@ -17,12 +17,13 @@ import { RootState } from '../../store/rootReducers';
 import { getDrillsSelector } from '../../drills/selectors';
 import { Drill } from 'src/drills/model';
 import DrillsItem from './DrillsItem';
+import { getDrillRequest } from 'src/drills/actions';
 
 interface DrillsProps {
   classes: any;
   drills: Drill[];
   actions: {
-
+    selectDrill: typeof getDrillRequest,
   };
 }
 interface State {
@@ -123,6 +124,7 @@ class DrillsBar extends Component<DrillsProps, State> {
               onCheck={this.handleToggle(value.id)}
               drill={value}
               checked={this.state.checkedIds[value.id]}
+              selectDrill={this.props.actions.selectDrill}
             />
           ))}
         </List>
@@ -135,7 +137,9 @@ const mapStateToProps = (state: RootState) => ({
   drills: getDrillsSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({}, dispatch),
+  actions: bindActionCreators({
+    selectDrill: getDrillRequest,
+  },                          dispatch),
 });
 
 export default compose(

@@ -1,4 +1,4 @@
-import { DrillCategoriesGroupped, Drill } from '../drills/model';
+import { DrillCategoriesGroupped, Drill, DrillDetailed } from '../drills/model';
 import { createAction } from '../utils/typedAction/createAction';
 import { ActionsUnion } from '../utils/typedAction/action';
 
@@ -23,6 +23,15 @@ export const getDrillsCategoriesSuccess =
   (categories: DrillCategoriesGroupped) => createAction(GET_CATEGORIES_SUCCESS, { categories });
 export const getDrillsCategoriesFail = (error: any) => createAction(GET_CATEGORIES_FAIL, { error });
 
+export const GET_DRILL_REQUEST = '[drills] GET_DRILL_REQUEST';
+export const GET_DRILL_SUCCESS = '[drills] GET_DRILL_SUCCESS';
+export const GET_DRILL_FAIL = '[drills] GET_DRILL_FAIL';
+
+export const getDrillRequest = (id: string) => createAction(GET_DRILL_REQUEST, { id });
+export type getDrillRequest = ReturnType<typeof getDrillRequest>;
+export const getDrillSuccess = (drill: DrillDetailed) => createAction(GET_DRILL_SUCCESS, { drill });
+export const getDrillFail = (error: any) => createAction(GET_DRILL_FAIL, { error });
+
 export const drillActions = {
   getDrillsByCategoryIdRequest,
   getDrillsByCategoryIdSuccess,
@@ -30,6 +39,9 @@ export const drillActions = {
   getDrillsCategoriesRequest,
   getDrillsCategoriesSuccess,
   getDrillsCategoriesFail,
+  getDrillRequest,
+  getDrillSuccess,
+  getDrillFail,
 };
 
 export type drillActions = ActionsUnion<typeof drillActions>;

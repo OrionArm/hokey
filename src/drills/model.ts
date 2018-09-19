@@ -4,6 +4,10 @@ export interface Drill {
   name: string;
 }
 
+export interface DrillDetailed extends Drill {
+
+}
+
 export interface DrillCategory {
   name: string;
   count: number;

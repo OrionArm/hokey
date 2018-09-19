@@ -22,6 +22,7 @@ interface DrillsProps {
   drill: Drill;
   checked: boolean;
   onCheck: () => void;
+  selectDrill: (id: string) => void;
 }
 interface State {
 
@@ -32,12 +33,20 @@ const styles = createStyles({
 });
 
 class DrillsItem extends Component<DrillsProps, State> {
-  downloadPdf = () => drillsApi.downloadPdf(this.props.drill.id);
-  downloadVideo = () => drillsApi.downloadVideo(this.props.drill.id);
-  regenerate = () => drillsApi.regenerate(this.props.drill.id).then(x => console.log(x));
-  selectDrill = (event: any) => {
-    event.stopPropogation();
-    drillsApi.getDrill(this.props.drill.id).then(x => console.log(x));
+  downloadPdf = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    drillsApi.downloadPdf(this.props.drill.id);
+  }
+  downloadVideo = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    drillsApi.downloadVideo(this.props.drill.id);
+  }
+  regenerate = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    drillsApi.regenerate(this.props.drill.id).then(x => console.log(x));
+  }
+  selectDrill = (event: React.MouseEvent) => {
+    this.props.selectDrill(this.props.drill.id);
   }
 
   public render() {

@@ -13,3 +13,7 @@ export const getGrouppedCategoriesSelector = (state: RootState) => {
 export const getDrillsSelector = (state: RootState) => {
   return state.drills.drills;
 };
+
+export const getSelectedDrillSelector = (state: RootState) => {
+  return state.drills.selectedDrill;
+};

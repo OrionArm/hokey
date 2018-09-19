@@ -2,18 +2,19 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import api from 'src/drills/api';
-import { Drill, DrillCategoriesGroupped, DrillCategoryType } from 'src/drills/model';
+import { Drill, DrillDetailed, DrillCategoriesGroupped, DrillCategoryType } from 'src/drills/model';
 import * as actions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 
 function* watcher() {
   yield [
-    takeLatest(actions.GET_DRILLS_REQUEST, getDrillsSaga),
+    takeLatest(actions.GET_DRILLS_REQUEST, getDrillsListSaga),
     takeLatest(actions.GET_CATEGORIES_REQUEST, getCategoriesSaga),
+    takeLatest(actions.GET_DRILL_REQUEST, getDrillSaga),
   ];
 }
 
-function* getDrillsSaga(action: actions.getDrillsByCategoryIdRequest) {
+function* getDrillsListSaga(action: actions.getDrillsByCategoryIdRequest) {
   try {
     const response = yield call(api.getDrillsByCategoryId, action.payload);
     const drills: Drill[] = response.data;
@@ -34,6 +35,16 @@ function* getCategoriesSaga(action: actions.getDrillsCategoriesRequest) {
     const firstCategory = categories[DrillCategoryType.Public][0];
     yield put(actions.getDrillsByCategoryIdRequest(firstCategory.id));
   } catch (error) {
+    yield call(errorHandler, error);
+  }
+}
+
+function* getDrillSaga(action: actions.getDrillRequest) {
+  try {
+    const response = yield call(api.getDrill, action.payload.id);
+    const drill: DrillDetailed = response.data;
+    yield put(actions.getDrillSuccess(drill));
+  }  catch (error) {
     yield call(errorHandler, error);
   }
 }
