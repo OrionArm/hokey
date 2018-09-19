@@ -15,17 +15,19 @@ import { RootState } from 'src/store/rootReducers';
 import { compose, Dispatch } from 'redux';
 import { logosActions } from 'src/logos/actions';
 
-const styles = (theme: any) => {
+const styles = (theme: any) => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
   uploadInput: {
-    opacity: 0;
-    visibility: 'hidden';
-  }
-};
+    display: 'none',
+  },
+});
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
 
-const AddLogoModal: React.SFC<Props> = ({ addLogo }) => {
+const AddLogoModal: React.SFC<Props> = ({ addLogo, classes }) => {
   const onClose       = () => {
     hideAllModal();
   };
@@ -68,19 +70,25 @@ const AddLogoModal: React.SFC<Props> = ({ addLogo }) => {
             {/*</Button>*/}
             {/*))*/}
             {/*}*/}
-            <Button
-              color="primary"
-              variant="contained"
-            >
-              Upload
-              <input
-                style={{ opacity: 0 }}
-                id="upload"
-                type="file"
-                multiple
-                onChange={onUploadFiles}
-              />
-            </Button>
+            <input
+              accept="image/*"
+              className={classes.uploadInput}
+              id="outlined-button-file"
+              multiple
+              type="file"
+              onChange={onUploadFiles}
+            />
+            <label htmlFor="outlined-button-file">
+              <Button
+                variant="contained"
+                color="primary"
+                component="span"
+                className={classes.button}
+              >
+                Upload
+              </Button>
+            </label>
+
             <Button onClick={onClose}>
               Close
             </Button>
