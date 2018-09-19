@@ -7,7 +7,6 @@ const ProtectedContent: SFC<any> = ({ children }) => {
       container
       justify="space-between"
       component="main"
-      spacing={16}
       style={{ marginTop: 24, padding: '0 24px' }}
     >
       {children}
