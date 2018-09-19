@@ -14,22 +14,26 @@ type Props = { path: string, component: React.ReactType }
   & injectStateToProps;
 
 const PrivateRoute: React.SFC<Props> = (
-  { logout, path, component: Component, ...rest }) => {
+  { component: Component, logout, tokenLogin, path, user, ...rest }) => {
   const token: string | null = customStorage.getToken() || null;
   if (!token) {
     return <Redirect to="/login"/>;
   }
-  const check = () => <Component />;
+  const privateComponent = () => <Component/>;
 
-  return <Route {...rest} render={check} />;
+  if (user.userid === '') {
+    tokenLogin({ token });
+  }
+  return <Route {...rest} render={privateComponent}/>;
 };
 
 const mapStateToProps = (state: RootState) => ({
-  user: state.user,
+  user: state.user.profile,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   logout: () => dispatch(fromUserActions.userActions.logoutRequest()),
+  tokenLogin: (token: { token: string }) => dispatch(fromUserActions.userActions.tokenLogin(token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);

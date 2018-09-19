@@ -1,11 +1,10 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { createSelector } from 'reselect';
 
 import * as fromActions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import logosAPI from 'src/logos/api';
-import { RootState } from 'src/store/rootReducers';
 import { LogoModel } from 'src/logos/model';
+import { getUserId } from 'src/store/selectors';
 
 function* watcher() {
   yield takeLatest(fromActions.GET_LOGOS_REQUEST, getLogos);
@@ -13,9 +12,6 @@ function* watcher() {
   yield takeEvery(fromActions.DELETE_LOGOS_REQUEST, deleteLogos);
   yield takeLatest(fromActions.CHANGE_DEFAULT_LOGOS_REQUEST, changeDefaultLogo);
 }
-
-const getState  = (state: RootState) => state;
-const getUserId = createSelector(getState, state => state.user.profile.userid);
 
 function* getLogos(action: fromActions.getLogosRequest) {
   const userId: string = yield select(getUserId);

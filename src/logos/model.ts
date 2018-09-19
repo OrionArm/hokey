@@ -19,12 +19,8 @@ export class LogoModel {
 
     function isTrue(defaultLogo: any) {
       if (defaultLogo && ((defaultLogo === 1) || defaultLogo === '1')) {
-        console.log('cgeck defaultLogo ', json.name);
-        console.log('++++++++++++++++ ');
         return true;
       }
-      console.log('cgeck defaultLogo ', json.name);
-      console.log('------------------ ');
       return false;
     }
 
