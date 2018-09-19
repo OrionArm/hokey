@@ -1,5 +1,5 @@
 import { RootState } from '../store/rootReducers';
-// import { DrillCategoryType } from 'src/drills/model';
+import { DrillDetailed } from 'src/drills/model';
 
 // TODO: add reselect
 export const getGrouppedCategoriesSelector = (state: RootState) => {
@@ -14,11 +14,11 @@ export const getDrillsSelector = (state: RootState) => {
   return state.drills.drills;
 };
 
-export const getSelectedDrillSelector = (state: RootState) => {
+export const getSelectedDrillSelector = (state: RootState): DrillDetailed | null => {
   return state.drills.selectedDrill;
 };
 
-export const getSelectedDrillPreviewSelector = (state: RootState) => {
+export const getSelectedDrillPreviewSelector = (state: RootState): string | null => {
   const drill = getSelectedDrillSelector(state);
-  return drill ? drill.s3url_1 : null;
+  return drill ? drill.preview : null;
 };

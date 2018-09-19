@@ -23,6 +23,7 @@ interface DrillsProps {
   checked: boolean;
   onCheck: () => void;
   selectDrill: (id: string) => void;
+  isSelected: boolean;
 }
 interface State {
 
@@ -57,6 +58,7 @@ class DrillsItem extends Component<DrillsProps, State> {
           role={undefined}
           button
           onClick={this.selectDrill}
+          selected={this.props.isSelected}
         >
           <Checkbox
             checked={Boolean(this.props.checked)}

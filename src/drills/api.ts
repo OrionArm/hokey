@@ -37,7 +37,16 @@ function downloadVideo(id: string): any {
 }
 
 function getDrill(id: string): AxiosPromise<any> {
-  return request.get(`/users/me/drills/${id}`);
+  const toEntity = (x: any) => ({
+    id: x.drillid,
+    preview: x.s3url_1,
+    name: x.drillname,
+    has_animation: x.has_animation === '1',
+  });
+  return request.get(`/users/me/drills/${id}`).then(res => {
+    res.data = toEntity(res.data);
+    return res;
+  });
 }
 
 function regenerate(id: string): AxiosPromise<any> {

@@ -6,7 +6,7 @@ export interface Drill {
 }
 
 export interface DrillDetailed extends Drill {
-  s3url_1?: string;
+  preview: string;
 }
 
 export interface DrillCategory {

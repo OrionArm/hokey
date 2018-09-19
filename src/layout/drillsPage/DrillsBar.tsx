@@ -14,8 +14,8 @@ import { connect } from 'react-redux';
 
 import ToolsPanel from '../../UI/ToolsPanel';
 import { RootState } from '../../store/rootReducers';
-import { getDrillsSelector } from '../../drills/selectors';
-import { Drill } from 'src/drills/model';
+import { getDrillsSelector, getSelectedDrillSelector } from '../../drills/selectors';
+import { Drill, DrillDetailed } from 'src/drills/model';
 import DrillsItem from './DrillsItem';
 import { getDrillRequest } from 'src/drills/actions';
 
@@ -25,6 +25,7 @@ interface DrillsProps {
   actions: {
     selectDrill: typeof getDrillRequest,
   };
+  selectedDrill: DrillDetailed | null;
 }
 interface State {
   checkedIds: { [id: string]: boolean };
@@ -63,6 +64,10 @@ class DrillsBar extends Component<DrillsProps, State> {
       .filter(drill => drill.has_animation)
       .reduce((a, drill) => ({ ...a, [drill.id]: checked }), this.state.checkedIds);
     this.setState({ checkedIds });
+  }
+
+  isDrillSelected = (id: string) => {
+    return this.props.selectedDrill ? this.props.selectedDrill.id === id : false;
   }
 
   public render() {
@@ -126,6 +131,7 @@ class DrillsBar extends Component<DrillsProps, State> {
               drill={value}
               checked={this.state.checkedIds[value.id]}
               selectDrill={this.props.actions.selectDrill}
+              isSelected={this.isDrillSelected(value.id)}
             />
           ))}
         </List>
@@ -136,6 +142,7 @@ class DrillsBar extends Component<DrillsProps, State> {
 
 const mapStateToProps = (state: RootState) => ({
   drills: getDrillsSelector(state),
+  selectedDrill: getSelectedDrillSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({
