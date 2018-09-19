@@ -48,13 +48,6 @@ class DrillsBar extends Component<DrillsProps, State> {
     // drills: [],
   };
 
-  // static getDerivedStateFromProps(props: DrillsProps) {
-  //   return {
-  //     checkedIds: {},
-  //     drills: props.drills,
-  //   };
-  // }
-
   handleToggle = (id: string) => () => {
     const checkedIds = { ...this.state.checkedIds, [id]: !this.state.checkedIds[id] };
     this.setState({ checkedIds });
@@ -62,6 +55,13 @@ class DrillsBar extends Component<DrillsProps, State> {
 
   toggleAll = (event: any, checked: boolean) => {
     const checkedIds = this.props.drills.reduce((a, drill) => ({ ...a, [drill.id]: checked }), {});
+    this.setState({ checkedIds });
+  }
+
+  toggleAnimated = (event: any, checked: boolean) => {
+    const checkedIds = this.props.drills
+      .filter(drill => drill.has_animation)
+      .reduce((a, drill) => ({ ...a, [drill.id]: checked }), this.state.checkedIds);
     this.setState({ checkedIds });
   }
 
@@ -110,6 +110,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                 classes={{
                   root: classes.rootLabel,
                 }}
+                onChange={this.toggleAnimated}
                 control={<Checkbox color="primary" />}
                 label="Animated"
               />
