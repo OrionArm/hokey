@@ -7,8 +7,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Paper, withStyles,
+  DialogTitle, FormControl, Input, InputLabel, withStyles, Paper, Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/rootReducers';
@@ -21,6 +20,9 @@ const styles = (theme: any) => ({
   },
   uploadInput: {
     display: 'none',
+  },
+  input: {
+    margin: '15px 0',
   },
 });
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -45,6 +47,9 @@ const AddLogoModal: React.SFC<Props> = ({ addLogo, classes }) => {
       // }
     }
   };
+  const onChangeName  = () => {
+
+  };
 
   return (
     <ModalJuggler
@@ -58,42 +63,58 @@ const AddLogoModal: React.SFC<Props> = ({ addLogo, classes }) => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="form-dialog-title">{'Upload logo'}</DialogTitle>
-        <Paper elevation={4}>
-          <DialogContent>
-            {/*{children}*/} КОНТЕНТ
-          </DialogContent>
-          <DialogActions>
-            {/*{*/}
-            {/*actions.map((action, index) => (*/}
-            {/*<Button key={index} onClick={action.onClick} color={action.color}>*/}
-            {/*{action.title}*/}
-            {/*</Button>*/}
-            {/*))*/}
-            {/*}*/}
-            <input
-              accept="image/*"
-              className={classes.uploadInput}
-              id="outlined-button-file"
-              multiple
-              type="file"
-              onChange={onUploadFiles}
+        <DialogContent>
+          <Paper elevation={4}>
+            <Typography variant="subheading" gutterBottom align="center">
+              Use only *.png files 610*360px max size
+            </Typography>
+          </Paper>
+          <FormControl
+            className={classes.spacing}
+            fullWidth
+          >
+            <InputLabel
+              FormLabelClasses={{
+                root: classes.cssLabel,
+                focused: classes.cssFocused,
+              }}
+              htmlFor="LogoName-input"
+            >
+              Enter logo name
+            </InputLabel>
+            <Input
+              classes={{
+                underline: classes.cssUnderline,
+              }}
+              id="LogoName-input"
+              onChange={onChangeName}
             />
-            <label htmlFor="outlined-button-file">
-              <Button
-                variant="contained"
-                color="primary"
-                component="span"
-                className={classes.button}
-              >
-                Upload
-              </Button>
-            </label>
-
-            <Button onClick={onClose}>
-              Close
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <input
+            accept="image/*"
+            className={classes.uploadInput}
+            id="outlined-button-file"
+            multiple
+            type="file"
+            onChange={onUploadFiles}
+          />
+          <label htmlFor="outlined-button-file">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              className={classes.button}
+            >
+              Upload
             </Button>
-          </DialogActions>
-        </Paper>
+          </label>
+
+          <Button onClick={onClose}>
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </ModalJuggler>
   );
