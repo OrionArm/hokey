@@ -62,13 +62,18 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
   }
 
   onCategoryTypeChange = (event: any) => {
+    const categoryType = event.target.value;
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: categoryType,
     });
+    const firstDrill = this.props.categories[categoryType][0];
+    if (firstDrill) {
+      this.getDrills(firstDrill.id, categoryType);
+    }
   }
 
-  getDrills = (id: string) =>
-    this.props.actions.getDrillsByCategoryIdRequest(id, this.state.categoryType)
+  getDrills = (id: string, category = this.state.categoryType) =>
+    this.props.actions.getDrillsByCategoryIdRequest(id, category)
 
   render() {
     const { classes } = this.props;
