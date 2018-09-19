@@ -30,7 +30,7 @@ function changeDefaultLogo(payload: IChangeDefaultLogoRequest): AxiosPromise<any
 
 function deleteLogos(payload: IDeleteLogosRequest): AxiosPromise<any> {
   return request.delete(`/users/${payload.userId}/watermarks`, {
-    data: { ids: payload.logosIds },
+    params: { ids: payload.logosIds },
   });
 }
 
