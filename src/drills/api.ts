@@ -16,7 +16,11 @@ function getDrillsByCategoryId({ id, categoryType }: any): AxiosPromise<any> {
 }
 
 function getCategories(): AxiosPromise<any> {
-  const toEntity = (x: any) => ({ id: x.categoryid, name: x.categoryname, count: +x.total_drills });
+  const toEntity = (x: any) => ({
+    id: x.categoryid,
+    name: x.categoryname,
+    count: x.total_drills === undefined ? undefined : +x.total_drills,
+  });
   return request.get('/users/me/drill-categories').then(res => {
     res.data.custom = res.data.custom.map(toEntity);
     res.data.public = res.data.public.map(toEntity);
@@ -25,7 +29,7 @@ function getCategories(): AxiosPromise<any> {
 }
 
 function downloadPdf(id: string): any {
-  return downloadRequest(`/users/me/watermarks/${id}`);
+  return downloadRequest(`https://www.hockeyshare.com/drills/pdf/?id=${id}`);
 }
 
 function downloadVideo(id: string): any {
