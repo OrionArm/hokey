@@ -34,17 +34,10 @@ const AddLogoModal: React.SFC<Props> = ({ addLogo, classes }) => {
     hideAllModal();
   };
   const onUploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      console.log('file', e.target.files);
-      addLogo(e.target.files);
-      // let files = [];
-      // // tslint:disable-next-line
-      // for (let i = 0; i < e.target.files.length; i++) {
-      //   files = files.concat(e.target.files[i]);
-      // }
-      // if (files.length) {
-      //   this.props.actions.uploadImagesRequest(files);
-      // }
+    const file = e.currentTarget.files && e.currentTarget.files[0];
+    if (file) {
+      console.log('file', file);
+      addLogo(file);
     }
   };
   const onChangeName  = () => {
@@ -96,7 +89,6 @@ const AddLogoModal: React.SFC<Props> = ({ addLogo, classes }) => {
             accept="image/*"
             className={classes.uploadInput}
             id="outlined-button-file"
-            multiple
             type="file"
             onChange={onUploadFiles}
           />
@@ -125,7 +117,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addLogo: (file: FileList) => dispatch(logosActions.addLogosRequest({ images: file })),
+  addLogo: (file: File) => dispatch(logosActions.addLogosRequest({ image: file })),
 });
 
 export default compose(
