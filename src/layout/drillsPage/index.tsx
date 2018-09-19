@@ -4,27 +4,21 @@ import DetailsBar from './DetailsBar';
 import DrillsBar from './DrillsBar';
 import { Grid, Typography } from '@material-ui/core';
 
-const AsideGrid = ({ children }: any) => (
-  <Grid item sm={3} style={{ minWidth: 300 }}>
-    {children}
-  </Grid>
-);
-
 const DrillsPage = () => (
   <>
-    <Grid item sm={12}>
+    <Grid item sm={12} style={{ marginBottom: 16 }}>
       <Typography variant="headline">My Drills</Typography>
     </Grid>
     <Grid container wrap="nowrap" spacing={16} justify="space-between">
-      <AsideGrid>
+      <Grid item sm={3}>
         <CategoriesBar />
-      </AsideGrid>
-      <Grid item style={{ flexGrow: 1 }}>
+      </Grid>
+      <Grid item sm={6}>
         <DrillsBar />
       </Grid>
-      <AsideGrid>
+      <Grid item sm={3}>
         <DetailsBar />
-      </AsideGrid>
+      </Grid>
     </Grid>
   </>
 );

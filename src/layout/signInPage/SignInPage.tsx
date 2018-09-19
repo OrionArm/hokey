@@ -17,8 +17,10 @@ const styles = (theme: any) => {
     formStyle: {
       width: 400,
       padding: theme.spacing.unit * 4,
-      margin: '200px auto 0',
+      margin: ' 0 auto',
+      transform: 'translateY(50%)',
       boxShadow: theme.shadows[2],
+      backgroundColor: '#fff',
     },
     cssLabel: {
       '&$cssFocused': {

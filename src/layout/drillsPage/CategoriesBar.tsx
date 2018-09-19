@@ -95,6 +95,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             onChange={this.onCategoryTypeChange}
             name="categoryType"
             disableUnderline
+            autoWidth
             style={{
               width: '100%',
               fontSize: '0.875rem',
@@ -112,7 +113,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             </MenuItem>
           </Select>
         </Button>
-        {this.props.loading ?
+        {this.props.loading ? (
           <ContentLoader
             height={200}
             width={373}
@@ -123,11 +124,13 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38" />
             <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38" />
             <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
-          </ContentLoader> :
+          </ContentLoader>
+        ) : (
           <CategoriesList
             categories={this.props.categories[this.state.categoryType]}
             onSelectCategory={this.getDrills}
-          />}
+          />
+        )}
       </Paper>
     );
   }

@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import {
-  Grid,
-  createStyles,
-} from '@material-ui/core';
+import { Grid, createStyles } from '@material-ui/core';
 
 import { RootState } from 'src/store/rootReducers';
 import ItemLogo from 'src/layout/logoListPage/ItemLogo';
@@ -14,8 +11,8 @@ import { logosActions } from 'src/logos/actions';
 import { show } from 'src/modal-juggler/reducer';
 import { ModalNames } from 'src/modal-juggler/interface';
 
-const styles = (theme: any) => createStyles(
-  {
+const styles = (theme: any) =>
+  createStyles({
     checked: {
       color: '#fff',
       background: '#fff',
@@ -46,10 +43,9 @@ const styles = (theme: any) => createStyles(
       height: 200,
       backgroundColor: '#f1f1f1',
     },
-  },
-);
+  });
 
-type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
+type Props = { classes?: any } & injectDispatchProps & injectStateProps;
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 
@@ -62,28 +58,37 @@ class LogoListPage extends Component<Props, any> {
     const { logos } = this.props;
     return (
       <>
-        <Grid item container justify="space-between" md={12}>
+        <Grid
+          item
+          container
+          justify="space-between"
+          md={12}
+          style={{ marginBottom: 16 }}
+        >
           <HeaderLogo addLogo={this.handleAddLogo} />
         </Grid>
         <Grid
           item
           container
-          spacing={24}
-          style={{ justifyContent: 'space-between' }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
+            gridGap: 24,
+            alignItems: 'stretch',
+          }}
         >
-          {
-            logos.map((item, index) => {
-              return (
-                <Grid item key={index}>
-                  <ItemLogo
-                    item={item}
-                    pickDefaultLogo={this.setDefaultLogo}
-                    editLogo={this.handleEditLogo}
-                    deleteLogo={this.handleDeleteLogo}
-                  />
-                </Grid>
-              );
-            })}
+          {logos.map((item, index) => {
+            return (
+              <Grid item key={index}>
+                <ItemLogo
+                  item={item}
+                  pickDefaultLogo={this.setDefaultLogo}
+                  editLogo={this.handleEditLogo}
+                  deleteLogo={this.handleDeleteLogo}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </>
     );
@@ -126,5 +131,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(LogoListPage),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(LogoListPage),
 );

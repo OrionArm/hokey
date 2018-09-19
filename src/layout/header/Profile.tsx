@@ -42,7 +42,7 @@ class Profile extends React.Component<Props, any> {
     return (
       <div className={classes.wrapperProfile}>
         <Typography variant="subheading" style={{ paddingRight: 8 }}>
-          {userName ? userName : 'John Doe'}
+          {userName}
         </Typography>
         <Link to="/login" className={classes.textLogout}>
           <Typography variant="body1">logout</Typography>
@@ -53,7 +53,7 @@ class Profile extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  userName: state.user.profile.username,
+  userName: state.user.profile.last,
 });
 
 export default compose(
