@@ -7,11 +7,18 @@ export const getGrouppedCategoriesSelector = (state: RootState) => {
   //   [DrillCategoryType.Custom]: [{ id: 1, name: 'Sample custom category', count: 10 }],
   //   [DrillCategoryType.Public]: [{ id: 2, name: 'Sample public category', count: 22 }],
   // };
-  return state.drills.categories;
+  return state.drills.categories.data;
+};
+export const getCategoriesRequestStatusSelector = (state: RootState) => {
+  return state.drills.categories.loading;
 };
 
 export const getDrillsSelector = (state: RootState) => {
-  return state.drills.drills;
+  return state.drills.drills.data;
+};
+
+export const getDrillsRequestStatusSelector = (state: RootState) => {
+  return state.drills.drills.loading;
 };
 
 export const getSelectedDrillSelector = (state: RootState): DrillDetailed | null => {

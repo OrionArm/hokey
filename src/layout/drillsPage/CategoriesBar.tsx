@@ -16,7 +16,11 @@ import {
   getDrillsByCategoryIdRequest,
   getDrillsCategoriesRequest,
 } from '../../drills/actions';
-import { getGrouppedCategoriesSelector } from '../../drills/selectors';
+import {
+  getGrouppedCategoriesSelector,
+  getCategoriesRequestStatusSelector,
+} from '../../drills/selectors';
+import ContentLoader from 'react-content-loader';
 
 export interface ICategoriesProps {
   classes?: any;
@@ -25,6 +29,7 @@ export interface ICategoriesProps {
     getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
     getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
   };
+  loading: boolean;
 }
 
 export interface ICategoriesState {
@@ -62,13 +67,18 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
   }
 
   onCategoryTypeChange = (event: any) => {
+    const categoryType = event.target.value;
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: categoryType,
     });
+    const firstDrill = this.props.categories[categoryType][0];
+    if (firstDrill) {
+      this.getDrills(firstDrill.id, categoryType);
+    }
   }
 
-  getDrills = (id: string) =>
-    this.props.actions.getDrillsByCategoryIdRequest(id, this.state.categoryType)
+  getDrills = (id: string, category = this.state.categoryType) =>
+    this.props.actions.getDrillsByCategoryIdRequest(id, category)
 
   render() {
     const { classes } = this.props;
@@ -102,10 +112,22 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             </MenuItem>
           </Select>
         </Button>
-        <CategoriesList
-          categories={this.props.categories[this.state.categoryType]}
-          onSelectCategory={this.getDrills}
-        />
+        {this.props.loading ?
+          <ContentLoader
+            height={200}
+            width={373}
+            speed={2}
+            primaryColor="#f3f3f3"
+            secondaryColor="#ecebeb"
+          >
+            <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38" />
+            <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38" />
+            <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
+          </ContentLoader> :
+          <CategoriesList
+            categories={this.props.categories[this.state.categoryType]}
+            onSelectCategory={this.getDrills}
+          />}
       </Paper>
     );
   }
@@ -113,6 +135,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
 
 const mapStateToProps = (state: RootState) => ({
   categories: getGrouppedCategoriesSelector(state),
+  loading: getCategoriesRequestStatusSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(

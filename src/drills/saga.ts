@@ -22,6 +22,7 @@ function* getDrillsListSaga(action: actions.getDrillsByCategoryIdRequest) {
     yield put(actions.getDrillsByCategoryIdSuccess(drills));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
+    yield put(actions.getDrillsByCategoryIdFail(error));
     yield call(errorHandler, error);
     // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));
   }
@@ -35,6 +36,7 @@ function* getCategoriesSaga(action: actions.getDrillsCategoriesRequest) {
     const firstCategory = categories[DrillCategoryType.Public][0];
     yield put(actions.getDrillsByCategoryIdRequest(firstCategory.id, DrillCategoryType.Public));
   } catch (error) {
+    yield put(actions.getDrillsCategoriesFail(error));
     yield call(errorHandler, error);
   }
 }
