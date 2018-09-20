@@ -7,6 +7,8 @@ export interface Drill {
 
 export interface DrillDetailed extends Drill {
   preview: string;
+  animation: string;
+  logo_url: string;
 }
 
 export interface DrillCategory {

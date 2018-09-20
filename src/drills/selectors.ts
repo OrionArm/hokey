@@ -25,7 +25,17 @@ export const getSelectedDrillSelector = (state: RootState): DrillDetailed | null
   return state.drills.selectedDrill;
 };
 
-export const getSelectedDrillPreviewSelector = (state: RootState): string | null => {
+export const getSelectedDrillPreviewSelector = (state: RootState): string => {
   const drill = getSelectedDrillSelector(state);
-  return drill ? drill.preview : null;
+  return drill ? drill.preview : '';
+};
+
+export const getSelectedDrillAnimationSelector = (state: RootState): string => {
+  const drill = getSelectedDrillSelector(state);
+  return drill ? drill.animation : '';
+};
+
+export const getSelectedDrillLogoSelector = (state: RootState): string => {
+  const drill = getSelectedDrillSelector(state);
+  return drill ? drill.logo_url : '';
 };

@@ -11,13 +11,16 @@ import SwipeableViews from 'react-swipeable-views';
 import { compose, bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/rootReducers';
-import { getSelectedDrillPreviewSelector } from 'src/drills/selectors';
+import { getSelectedDrillPreviewSelector, getSelectedDrillLogoSelector,
+  getSelectedDrillAnimationSelector } from 'src/drills/selectors';
 // import { DrillDetailed } from 'src/drills/model';
 
 export interface DetailsProps {
   classes?: any;
   theme: any;
-  preview: string | null;
+  preview: string;
+  animation: string;
+  logo: string;
 }
 
 const TabContainer = (props: any) => {
@@ -109,8 +112,16 @@ class DetailsBar extends Component<DetailsProps, any> {
           <TabContainer dir={theme.direction}>
             <img style={{ width: '100%' }} src={this.props.preview || undefined} />
           </TabContainer>
-          <TabContainer dir={theme.direction}>Item Two</TabContainer>
-          <TabContainer dir={theme.direction}>Item Three</TabContainer>
+          <TabContainer dir={theme.direction}>
+            {this.props.animation &&
+              <video style={{ width: '100%' }} controls>
+                <source src={this.props.animation} type="video/mp4" />
+              </video>
+            }
+          </TabContainer>
+          <TabContainer dir={theme.direction}>
+            {this.props.logo && <img style={{ width: '100%' }} src={this.props.logo} />}
+          </TabContainer>
         </SwipeableViews>
       </Paper>
     );
@@ -119,6 +130,8 @@ class DetailsBar extends Component<DetailsProps, any> {
 
 const mapStateToProps = (state: RootState) => ({
   preview: getSelectedDrillPreviewSelector(state),
+  animation: getSelectedDrillAnimationSelector(state),
+  logo: getSelectedDrillLogoSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({}, dispatch),

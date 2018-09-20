@@ -46,6 +46,8 @@ function getDrill(id: string): AxiosPromise<any> {
     preview: x.s3url_1,
     name: x.drillname,
     has_animation: x.has_animation === '1',
+    animation: x.animation ? x.animation.s3video : '',
+    logo_url: x.logo_url ? x.logo_url.watermark_url : '',
   });
   return request.get(`/users/me/drills/${id}`).then(res => {
     res.data = toEntity(res.data);
