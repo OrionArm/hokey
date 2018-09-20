@@ -11,6 +11,7 @@ import { logosActions } from 'src/logos/actions';
 import { show } from 'src/modal-juggler/reducer';
 import { ModalNames } from 'src/modal-juggler/interface';
 import ContentLoader from 'react-content-loader';
+import ConfirmDeleteModal from 'src/components/modals/confirmDelete';
 
 const styles = (theme: any) =>
   createStyles({
@@ -45,11 +46,15 @@ const styles = (theme: any) =>
     },
   });
 
+type State = Readonly<typeof initialState>;
 type Props = { classes?: any } & injectDispatchProps & injectStateProps;
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
+const initialState = { open: false, logoIdForDeleting: '' };
 
-class LogoListPage extends Component<Props, any> {
+class LogoListPage extends Component<Props, State> {
+  readonly state = initialState;
+
   componentDidMount() {
     this.props.logosAction.getLogosRequest();
   }
@@ -58,15 +63,12 @@ class LogoListPage extends Component<Props, any> {
     const { logos, loading } = this.props;
     return (
       <>
-        <Grid
-          item
-          container
-          justify="space-between"
-          md={12}
-          style={{ marginBottom: 16 }}
-        >
-          <HeaderLogo addLogo={this.handleAddLogo}/>
-        </Grid>
+        <ConfirmDeleteModal
+          open={this.state.open}
+          close={this.closePopup}
+          confirm={this.confirmDelete}
+        />
+        <HeaderLogo addLogo={this.handleAddLogo}/>
         <Grid
           item
           container
@@ -86,12 +88,12 @@ class LogoListPage extends Component<Props, any> {
                 primaryColor="#f3f3f3"
                 secondaryColor="#ecebeb"
               >
-                <rect x="0" y="8" rx="0" ry="0" width="55" height="60" />
-                <rect x="70" y="8" rx="0" ry="0" width="55" height="60" />
-                <rect x="140" y="8" rx="0" ry="0" width="55" height="60" />
-                <rect x="210" y="8" rx="0" ry="0" width="55" height="60" />
-                <rect x="280" y="8" rx="0" ry="0" width="55" height="60" />
-                <rect x="350" y="8" rx="0" ry="0" width="55" height="60" />
+                <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
               </ContentLoader>
             ) : logos.map((item, index) => {
               return (
@@ -119,12 +121,20 @@ class LogoListPage extends Component<Props, any> {
     this.props.showModal();
   }
 
+  confirmDelete = () => {
+    this.props.logosAction.deleteLogosRequest({ logosIds: [this.state.logoIdForDeleting] });
+    this.setState({ ...this.state, open: false });
+  }
+
+  closePopup = () => {
+    this.setState({ ...this.state, open: false });
+  }
+
   handleDeleteLogo = (logoId: string) => {
-    this.props.logosAction.deleteLogosRequest({ logosIds: [logoId] });
+    this.setState({ ...this.state, logoIdForDeleting: logoId, open: true });
   }
 
   setDefaultLogo = (logoId: string) => {
-    this.setState({ defaultLogo: logoId });
     this.props.logosAction.changeDefaultLogoRequest({ logoId });
   }
 
