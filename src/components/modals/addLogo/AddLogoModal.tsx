@@ -24,18 +24,29 @@ const styles = (theme: any) => ({
     margin: '15px 0',
   },
 });
+
+enum fileError {
+  notChecked         = 0,
+  incorrectExtension = 1,
+  correctExtension   = 2,
+}
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
-type State = Readonly<{ file?: File, logoName: string, preview: any }>;
-const initialState: State = { file: undefined, logoName: '', preview: null };
+type State = Readonly<{ file?: File | null, fileValid: fileError, logoName: string, preview: any }>;
+const initialState: State = {
+  file: null,
+  fileValid: fileError.notChecked,
+  logoName: '',
+  preview: null,
+};
 
 class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
   render() {
-    const { classes }       = this.props;
-    const { preview, file } = this.state;
+    const { classes } = this.props;
+    const { preview, file, fileValid } = this.state;
     return (
       <ModalJuggler
         name={ModalNames.addLogo}
@@ -53,6 +64,13 @@ class AddLogoModal extends Component<Props, State> {
               <Typography variant="subheading" gutterBottom align="center">
                 Use only *.png files 610*360px max size
               </Typography>
+              {
+                fileValid === fileError.incorrectExtension
+                  ? <Typography variant="subheading" gutterBottom align="center" color={'error'}>
+                    You can load only PNG file
+                  </Typography>
+                  : null
+              }
               <InCenter>
                 {
                   file && preview
@@ -108,21 +126,30 @@ class AddLogoModal extends Component<Props, State> {
     );
   }
 
-  onClose       = () => {
-    this.setState({ file: undefined, preview: undefined });
+  onClose       = (): void => {
+    this.setState({ file: undefined, preview: undefined, logoName: '' });
     hideAllModal();
   }
-  onUploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const file    = e.currentTarget.files && e.currentTarget.files[0];
-    const preview = URL.createObjectURL(file);
+  onUploadFiles = (e: ChangeEvent<HTMLInputElement>): void => {
+    const file = e.currentTarget.files && e.currentTarget.files[0];
     if (file) {
-      this.setState({ file, preview, logoName: file.name });
+      const preview  = URL.createObjectURL(file);
+      const logoName = file.name;
+      const validateExtensions = logoName.endsWith('.png');
+      if (validateExtensions) {
+        this.setState({
+          file, preview, logoName,
+          fileValid: fileError.correctExtension,
+        });
+      } else {
+        this.setState({ fileValid: fileError.incorrectExtension });
+      }
     }
   }
-  onChangeName  = (e: ChangeEvent<HTMLInputElement>) => {
+  onChangeName  = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ logoName: e.currentTarget.value });
   }
-  onSubmit      = () => {
+  onSubmit      = (): void => {
     const { file } = this.state;
     if (file) {
       this.props.addLogo(file);

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Grid, createStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import { RootState } from 'src/store/rootReducers';
 import ItemLogo from 'src/layout/logoListPage/ItemLogo';
@@ -21,7 +21,6 @@ const styles = (theme: any) =>
     card: {
       height: 280,
       position: 'relative',
-
       // '&:hover $logosHoverBlock': {
       //   display: 'block',
       // },
@@ -112,13 +111,6 @@ class LogoListPage extends Component<Props, any> {
     this.props.logosAction.changeDefaultLogoRequest({ logoId });
   }
 
-  // deleteLogo = (logo) => {
-  //   this.props.logosAction.deleteLogosRequest(logo);
-  // };
-  //
-  // addLogo = (logo) => {
-  //   this.props.logosAction.setLogosRequest(logo);
-  // };
 }
 
 const mapStateToProps = (state: RootState) => ({
