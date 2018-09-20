@@ -13,6 +13,8 @@ import { RootState } from '../../store/rootReducers';
 import { DrillDetailed } from 'src/drills/model';
 import { logosActions } from 'src/logos/actions';
 import ItemLogo from '../logoListPage/ItemLogo';
+import drillsApi from 'src/drills/api';
+import { getSelectedDrillSelector } from 'src/drills/selectors';
 
 interface DrillsProps {
   classes: any;
@@ -22,7 +24,6 @@ type Props = DrillsProps &
   ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps>;
 interface State {
-  checkedLogo: { [id: string]: boolean };
 }
 
 const styles = createStyles({
@@ -37,13 +38,11 @@ const styles = createStyles({
 });
 
 class AvailableLogos extends Component<Props, State> {
-  state = {
-    checkedLogo: {},
-  };
-
-  useLogo = (id: string) => {
-    const checkedLogo = { [id]: !this.state.checkedLogo[id] };
-    this.setState({ checkedLogo });
+  regenerateWithNewLogo = (id: string) => {
+    console.log(this.props.selectedDrill, id);
+    this.props.selectedDrill &&
+      drillsApi.regenerateWithNewLogo(this.props.selectedDrill.id, id)
+        .then(x => console.log(x));
   }
   componentDidMount() {
     this.props.actions.getLogosRequest();
@@ -82,8 +81,7 @@ class AvailableLogos extends Component<Props, State> {
               <Grid item key={index}>
                 <ItemLogo
                   item={item}
-                  useThisLogo={this.useLogo}
-                  logoIsUsed={this.state.checkedLogo[item.id]}
+                  regenerateWithNewLogo={this.regenerateWithNewLogo}
                 />
               </Grid>
             );
@@ -96,6 +94,7 @@ class AvailableLogos extends Component<Props, State> {
 
 const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
+  selectedDrill: getSelectedDrillSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(logosActions, dispatch),

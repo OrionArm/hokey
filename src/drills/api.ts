@@ -59,6 +59,10 @@ function regenerate(id: string): AxiosPromise<any> {
   return request.post(`/users/me/drills/${id}/regenerate`);
 }
 
+function regenerateWithNewLogo(id: string, logoId: string): AxiosPromise<any> {
+  return request.post(`/users/me/watermarks/${logoId}/splice`, {}, { params: { drill_ids: [id] } });
+}
+
 const drillsAPI = {
   getDrillsByCategoryId,
   getCategories,
@@ -66,5 +70,6 @@ const drillsAPI = {
   downloadVideo,
   getDrill,
   regenerate,
+  regenerateWithNewLogo,
 };
 export default drillsAPI;

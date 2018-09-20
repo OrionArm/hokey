@@ -69,18 +69,19 @@ type Props = {
   editLogo?: (logoId: string) => void;
   deleteLogo?: (logoId: string) => void;
 
-  useThisLogo?: (logoId: string) => void;
-  logoIsUsed?: boolean;
+  regenerateWithNewLogo?: (logoId: string) => void;
 };
 const LogoItem: React.SFC<Props> = (
-  { classes, item, pickDefaultLogo, editLogo, deleteLogo, useThisLogo, logoIsUsed },
+  { classes, item, pickDefaultLogo, editLogo, deleteLogo, regenerateWithNewLogo },
 ) => {
-  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(item.id) : null;
-  const onEditLogo   = editLogo ? () => editLogo(item.id) : null;
+  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(item.id) : null;
+  const onEditLogo = editLogo ? () => editLogo(item.id) : null;
   const onDeleteLogo = deleteLogo ? () => deleteLogo(item.id) : null;
 
-  const onUseThisLogo  = useThisLogo ? () => useThisLogo(item.id) : null;
-  const radioLabel = onUseThisLogo ? 'Use this logo for a drill' : 'Set as Default';
+  const onRegenerateWithNewLogo = regenerateWithNewLogo
+    ? () => regenerateWithNewLogo(item.id)
+    : null;
+  const radioLabel = regenerateWithNewLogo ? 'Use this logo for a drill' : 'Set as Default';
 
   return (
     <Card className={classes.card}>
@@ -96,14 +97,14 @@ const LogoItem: React.SFC<Props> = (
           classes={{
             label: classes.labelRadio,
           }}
-          checked={onUseThisLogo ? Boolean(logoIsUsed) : item.isMain}
+          checked={regenerateWithNewLogo ? false : item.isMain}
           control={
             <Radio
               classes={{
                 root: classes.root,
                 checked: classes.checked,
               }}
-              onChange={(onUseThisLogo || setDefault) as any}
+              onChange={(onRegenerateWithNewLogo || setDefault) as any}
             />
           }
           label={radioLabel}
