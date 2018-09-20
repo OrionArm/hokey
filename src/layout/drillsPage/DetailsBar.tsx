@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { RootState } from 'src/store/rootReducers';
 import { getSelectedDrillPreviewSelector, getSelectedDrillLogoSelector,
   getSelectedDrillAnimationSelector } from 'src/drills/selectors';
+import { isLogosAvailableSelector } from 'src/user/selectors';
 // import { DrillDetailed } from 'src/drills/model';
 
 export interface DetailsProps {
@@ -21,6 +22,7 @@ export interface DetailsProps {
   preview: string;
   animation: string;
   logo: string;
+  showLogo: boolean;
 }
 
 const TabContainer = (props: any) => {
@@ -99,10 +101,10 @@ class DetailsBar extends Component<DetailsProps, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          <Tab
+          {this.props.showLogo && <Tab
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Logo"
-          />
+          />}
         </Tabs>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -132,6 +134,7 @@ const mapStateToProps = (state: RootState) => ({
   preview: getSelectedDrillPreviewSelector(state),
   animation: getSelectedDrillAnimationSelector(state),
   logo: getSelectedDrillLogoSelector(state),
+  showLogo: isLogosAvailableSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({}, dispatch),
