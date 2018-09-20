@@ -14,13 +14,11 @@ import { RootState } from 'src/store/rootReducers';
 import { compose, Dispatch } from 'redux';
 import { logosActions } from 'src/logos/actions';
 import InCenter from 'src/UI/InCenter';
+import FileLoadButton from 'src/UI/FileLoadButton';
 
 const styles = (theme: any) => ({
   button: {
     margin: theme.spacing.unit,
-  },
-  uploadInput: {
-    display: 'none',
   },
   input: {
     margin: '15px 0',
@@ -29,14 +27,15 @@ const styles = (theme: any) => ({
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
-type State = Readonly<{ file?: File, logoName: string }>;
-const initialState = { file: undefined, logoName: '' };
+type State = Readonly<{ file?: File, logoName: string, preview: any }>;
+const initialState: State = { file: undefined, logoName: '', preview: null };
 
 class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
   render() {
-    const { classes } = this.props;
+    const { classes }       = this.props;
+    const { preview, file } = this.state;
     return (
       <ModalJuggler
         name={ModalNames.addLogo}
@@ -55,23 +54,15 @@ class AddLogoModal extends Component<Props, State> {
                 Use only *.png files 610*360px max size
               </Typography>
               <InCenter>
-                <input
-                  accept="image/*"
-                  className={classes.uploadInput}
-                  id="outlined-button-file"
-                  type="file"
-                  onChange={this.onUploadFiles}
-                />
-                <label htmlFor="outlined-button-file">
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    component="span"
-                    className={classes.button}
-                  >
-                    Upload
-                  </Button>
-                </label>
+                {
+                  file && preview
+                    ?
+                    <img src={preview} height={200}/>
+                    :
+                    <div style={{ marginBottom: 10, marginTop: 10 }}>
+                      <FileLoadButton onClick={this.onUploadFiles}/>
+                    </div>
+                }
               </InCenter>
             </Paper>
             <FormControl
@@ -117,19 +108,21 @@ class AddLogoModal extends Component<Props, State> {
     );
   }
 
-  onClose = () => {
+  onClose       = () => {
+    this.setState({ file: undefined, preview: undefined });
     hideAllModal();
   }
   onUploadFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.currentTarget.files && e.currentTarget.files[0];
+    const file    = e.currentTarget.files && e.currentTarget.files[0];
+    const preview = URL.createObjectURL(file);
     if (file) {
-      this.setState({ file, logoName: file.name });
+      this.setState({ file, preview, logoName: file.name });
     }
   }
   onChangeName  = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ logoName: e.currentTarget.value });
   }
-  onSubmit = () => {
+  onSubmit      = () => {
     const { file } = this.state;
     if (file) {
       this.props.addLogo(file);
