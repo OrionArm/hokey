@@ -65,16 +65,22 @@ const styles = (theme: any) =>
 type Props = {
   classes?: any;
   item: LogoModel;
-  pickDefaultLogo(logoId: string): void;
-  editLogo(logoId: string): void;
-  deleteLogo(logoId: string): void;
+  pickDefaultLogo?: (logoId: string) => void;
+  editLogo?: (logoId: string) => void;
+  deleteLogo?: (logoId: string) => void;
+
+  useThisLogo?: (logoId: string) => void;
+  logoIsUsed?: boolean;
 };
-const LogoListPage: React.SFC<Props> = (
-  { classes, item, pickDefaultLogo, editLogo, deleteLogo },
+const LogoItem: React.SFC<Props> = (
+  { classes, item, pickDefaultLogo, editLogo, deleteLogo, useThisLogo, logoIsUsed },
 ) => {
-  const setDefault   = () => pickDefaultLogo(item.id);
-  const onEditLogo   = () => editLogo(item.id);
-  const onDeleteLogo = () => deleteLogo(item.id);
+  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(item.id) : null;
+  const onEditLogo   = editLogo ? () => editLogo(item.id) : null;
+  const onDeleteLogo = deleteLogo ? () => deleteLogo(item.id) : null;
+
+  const onUseThisLogo  = useThisLogo ? () => useThisLogo(item.id) : null;
+  const radioLabel = onUseThisLogo ? 'Use this logo for a drill' : 'Set as Default';
 
   return (
     <Card className={classes.card}>
@@ -86,35 +92,35 @@ const LogoListPage: React.SFC<Props> = (
       />
       <div className={classes.logosHoverBlock}>
         <FormControlLabel
-          value="Set as Default"
+          value={radioLabel}
           classes={{
             label: classes.labelRadio,
           }}
-          checked={item.isMain}
+          checked={onUseThisLogo ? Boolean(logoIsUsed) : item.isMain}
           control={
             <Radio
               classes={{
                 root: classes.root,
                 checked: classes.checked,
               }}
-              onChange={setDefault}
+              onChange={(onUseThisLogo || setDefault) as any}
             />
           }
-          label="Set as Default"
+          label={radioLabel}
         />
         <div className={classes.HoverGroupButton}>
-          <Button
+          {onEditLogo && <Button
             color="secondary"
             onClick={onEditLogo}
           >
             Edit
-          </Button>
-          <Button
+          </Button>}
+          {onDeleteLogo && <Button
             color="primary"
             onClick={onDeleteLogo}
           >
             Delete
-          </Button>
+          </Button>}
         </div>
       </div>
       <CardContent>
@@ -130,4 +136,4 @@ function clearName(name: string) {
   return name.replace(/.png/gi, '');
 }
 
-export default withStyles(styles)(LogoListPage);
+export default withStyles(styles)(LogoItem);

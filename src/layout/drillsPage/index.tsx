@@ -3,6 +3,7 @@ import CategoriesBar from './CategoriesBar';
 import DetailsBar from './DetailsBar';
 import DrillsBar from './DrillsBar';
 import { Grid, Typography } from '@material-ui/core';
+import AvailableLogos from './AvailableLogos';
 
 const DrillsPage = () => (
   <>
@@ -18,6 +19,7 @@ const DrillsPage = () => (
       </Grid>
       <Grid item sm={3}>
         <DetailsBar />
+        <AvailableLogos />
       </Grid>
     </Grid>
   </>
