@@ -14,7 +14,6 @@ import { RootState } from 'src/store/rootReducers';
 import { getSelectedDrillPreviewSelector, getSelectedDrillLogoSelector,
   getSelectedDrillAnimationSelector } from 'src/drills/selectors';
 import { isLogosAvailableSelector } from 'src/user/selectors';
-// import { DrillDetailed } from 'src/drills/model';
 
 export interface DetailsProps {
   classes?: any;
@@ -23,6 +22,8 @@ export interface DetailsProps {
   animation: string;
   logo: string;
   showLogo: boolean;
+  selectedTab: number;
+  onTabChange: (index: number) => void;
 }
 
 const TabContainer = (props: any) => {
@@ -66,10 +67,6 @@ const styles = (theme: any) =>
   });
 
 class DetailsBar extends Component<DetailsProps, any> {
-  state = {
-    value: 0,
-  };
-
   handleChange = (event: any, value: any) => {
     this.setState({ value });
   }
@@ -79,14 +76,13 @@ class DetailsBar extends Component<DetailsProps, any> {
   }
 
   public render() {
-    const { value } = this.state;
     const { classes, theme } = this.props;
     return (
       <Paper>
         <Tabs
           fullWidth
-          value={value}
-          onChange={this.handleChange}
+          value={this.props.selectedTab}
+          onChange={(event, value) => this.props.onTabChange(value)}
           classes={{
             root: classes.tabsRoot,
             indicator: classes.tabsIndicator,
@@ -108,8 +104,8 @@ class DetailsBar extends Component<DetailsProps, any> {
         </Tabs>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={this.state.value}
-          onChangeIndex={this.handleChangeIndex}
+          index={this.props.selectedTab}
+          onChangeIndex={this.props.onTabChange}
         >
           <TabContainer dir={theme.direction}>
             <img style={{ width: '100%' }} src={this.props.preview || undefined} />
@@ -144,4 +140,4 @@ export default
   compose(
     withStyles(styles, { withTheme: true }),
     connect(mapStateToProps, mapDispatchToProps),
-  )(DetailsBar);
+  )(DetailsBar) as any;
