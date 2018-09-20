@@ -6,6 +6,7 @@ import { Dispatch } from 'redux';
 import { RootState } from 'src/store/rootReducers';
 import * as fromUserActions from 'src/user/actions';
 import { customStorage } from 'src/utils/customStorage';
+import PreloadPage from 'src/layout/preloadPage';
 
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateToProps = ReturnType<typeof mapStateToProps>;
@@ -23,6 +24,7 @@ const PrivateRoute: React.SFC<Props> = (
 
   if (user.userid === '') {
     tokenLogin({ token });
+    return <PreloadPage />;
   }
   return <Route {...rest} render={privateComponent}/>;
 };

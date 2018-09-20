@@ -15,10 +15,12 @@ function* watcher() {
 function* tokenLogin(action: fromActions.tokenLogin) {
   yield put(fromTokenActions.tokenActions.setToResponse(action.payload.token));
   try {
-    const response                 = yield call(userAPI.loginWithToken);
-    const user: IUser              = response.data.user;
-    const userData: ILoginResponse = { user, jwt: action.payload.token };
-    yield call(loginSuccess, userData);
+    const response      = yield call(userAPI.loginWithToken);
+    const user: IUser   = response.data.user;
+    const token: string = action.payload.token;
+    yield put(fromTokenActions.tokenActions.setToState(token));
+    yield put(fromTokenActions.tokenActions.setToResponse(token));
+    yield put(fromActions.userActions.loginSuccess(user));
   } catch (error) {
     yield call(errorHandler, error);
     yield put(fromTokenActions.tokenActions.clearToken());
@@ -33,25 +35,17 @@ function* tokenLogin(action: fromActions.tokenLogin) {
     yield put(fromTokenActions.tokenActions.setToResponse(token));
   }
 }*/
-function* loginSuccess(userData: ILoginResponse) {
-  const token: string = userData.jwt;
-  const user: IUser   = userData.user;
-  try {
-    yield put(fromTokenActions.tokenActions.setToState(token));
-    yield put(fromTokenActions.tokenActions.setToResponse(token));
-    yield put(fromActions.userActions.loginSuccess(user));
-    yield put(push('/'));
-  } catch (error) {
-    yield call(errorHandler, error);
-  }
-  // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
-}
 
 function* logIn(action: fromActions.loginRequest) {
   try {
     const response                 = yield call(userAPI.login, action.payload);
     const userData: ILoginResponse = response.data;
-    yield call(loginSuccess, userData);
+    const token: string = userData.jwt;
+    const user: IUser   = userData.user;
+    yield put(fromTokenActions.tokenActions.setToState(token));
+    yield put(fromTokenActions.tokenActions.setToResponse(token));
+    yield put(fromActions.userActions.loginSuccess(user));
+    yield put(push('/'));
   } catch (error) {
     yield call(errorHandler, error);
     // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));
