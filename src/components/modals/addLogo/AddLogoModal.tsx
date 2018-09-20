@@ -103,6 +103,7 @@ class AddLogoModal extends Component<Props, State> {
               component="span"
               className={classes.button}
               onClick={this.onSubmit}
+              disabled={!this.state.file}
             >
               Add this logo
             </Button>
