@@ -30,6 +30,7 @@ enum fileError {
   incorrectExtension = 1,
   correctExtension   = 2,
 }
+
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 type Props = { classes?: any; } & injectDispatchProps & injectStateProps;
@@ -45,7 +46,7 @@ class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
   render() {
-    const { classes } = this.props;
+    const { classes }                  = this.props;
     const { preview, file, fileValid } = this.state;
     return (
       <ModalJuggler
@@ -100,6 +101,7 @@ class AddLogoModal extends Component<Props, State> {
                 classes={{
                   underline: classes.cssUnderline,
                 }}
+                value={this.state.logoName}
                 id="LogoName-input"
                 onChange={this.onChangeName}
               />
@@ -133,8 +135,8 @@ class AddLogoModal extends Component<Props, State> {
   onUploadFiles = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.currentTarget.files && e.currentTarget.files[0];
     if (file) {
-      const preview  = URL.createObjectURL(file);
-      const logoName = file.name;
+      const preview            = URL.createObjectURL(file);
+      const logoName           = file.name;
       const validateExtensions = logoName.endsWith('.png');
       if (validateExtensions) {
         this.setState({
@@ -149,10 +151,11 @@ class AddLogoModal extends Component<Props, State> {
   onChangeName  = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ logoName: e.currentTarget.value });
   }
-  onSubmit      = (): void => {
+  onSubmit  = (): void => {
     const { file } = this.state;
     if (file) {
       this.props.addLogo(file);
+      setTimeout(() => this.onClose(), 500);
     }
   }
 }
