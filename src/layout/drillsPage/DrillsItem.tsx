@@ -65,6 +65,7 @@ class DrillsItem extends Component<DrillsProps, State> {
             tabIndex={-1}
             disableRipple
             color="primary"
+            onClick={event => event.stopPropagation()}
             onChange={this.props.onCheck}
           />
           <ListItemText primary={this.props.drill.name} />
