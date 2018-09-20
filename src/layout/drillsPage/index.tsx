@@ -4,8 +4,11 @@ import DetailsBar from './DetailsBar';
 import DrillsBar from './DrillsBar';
 import { Grid, Typography } from '@material-ui/core';
 import AvailableLogos from './AvailableLogos';
+import { connect } from 'react-redux';
+import { RootState } from 'src/store/rootReducers';
+import { hasUserProAccessSelector, isUserAnAdminSelector } from 'src/user/selectors';
 
-const DrillsPage = () => (
+const DrillsPage = ({ showLogsoBar }: any) => (
   <>
     <Grid item sm={12} style={{ marginBottom: 16 }}>
       <Typography variant="headline">My Drills</Typography>
@@ -19,10 +22,13 @@ const DrillsPage = () => (
       </Grid>
       <Grid item sm={3}>
         <DetailsBar />
-        <AvailableLogos />
+        {showLogsoBar && <AvailableLogos />}
       </Grid>
     </Grid>
   </>
 );
 
-export default DrillsPage;
+const mapStateToProps = (state: RootState) => ({
+  showLogsoBar: hasUserProAccessSelector(state) || isUserAnAdminSelector(state),
+});
+export default connect(mapStateToProps)(DrillsPage);

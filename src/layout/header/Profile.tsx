@@ -53,7 +53,7 @@ class Profile extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  userName: state.user.profile.last,
+  userName: state.user.profile ? state.user.profile.last : '',
 });
 
 export default compose(

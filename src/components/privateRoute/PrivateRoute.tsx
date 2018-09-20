@@ -22,7 +22,7 @@ const PrivateRoute: React.SFC<Props> = (
   }
   const privateComponent = () => <Component/>;
 
-  if (user.userid === '') {
+  if (user === null) {
     tokenLogin({ token });
     return <PreloadPage />;
   }

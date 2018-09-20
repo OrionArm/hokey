@@ -1,20 +1,16 @@
 import * as fromActions from './actions';
 
-export const initialState = {
-  profile: {
-    email: '',
-    first: '',
-    last: '',
-    primaryrole: '',
-    userid: '',
-    username: '',
-  },
+export interface UserState {
+  profile: IUser | null;
+}
+
+export const initialState: UserState = {
+  profile: null,
 };
-export type UserState = typeof initialState;
 
 export const reducer = (
   state = initialState,
-  action: fromActions.userActions): UserState => {
+  action: fromActions.userActions): typeof initialState => {
   switch (action.type) {
     case fromActions.LOGIN_SUCCESS: {
       const profile = action.payload;

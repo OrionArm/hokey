@@ -11,7 +11,8 @@ interface IUser {
   email: string;
   first: string;
   last: string;
-  primaryrole: string;
+  user_level: 'U' | 'A';
+  pro_access: '0' | '1';
   userid: string;
   username: string;
 }

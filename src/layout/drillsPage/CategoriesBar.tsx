@@ -21,6 +21,7 @@ import {
   getCategoriesRequestStatusSelector,
 } from '../../drills/selectors';
 import ContentLoader from 'react-content-loader';
+import { isUserAnAdminSelector } from 'src/user/selectors';
 
 export interface ICategoriesProps {
   classes?: any;
@@ -30,6 +31,7 @@ export interface ICategoriesProps {
     getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
   };
   loading: boolean;
+  isAdmin: boolean;
 }
 
 export interface ICategoriesState {
@@ -77,6 +79,10 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     }
   }
 
+  onSelectUser = (event: any) => {
+    // const userId = event.target.value;
+  }
+
   getDrills = (id: string, category = this.state.categoryType) =>
     this.props.actions.getDrillsByCategoryIdRequest(id, category)
 
@@ -84,6 +90,9 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     const { classes } = this.props;
     return (
       <Paper>
+        {this.props.isAdmin &&
+          <div>user select stub</div>
+        }
         <Button
           fullWidth
           classes={{
@@ -126,11 +135,11 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
           </ContentLoader>
         ) : (
-          <CategoriesList
-            categories={this.props.categories[this.state.categoryType]}
-            onSelectCategory={this.getDrills}
-          />
-        )}
+            <CategoriesList
+              categories={this.props.categories[this.state.categoryType]}
+              onSelectCategory={this.getDrills}
+            />
+          )}
       </Paper>
     );
   }
@@ -139,6 +148,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
 const mapStateToProps = (state: RootState) => ({
   categories: getGrouppedCategoriesSelector(state),
   loading: getCategoriesRequestStatusSelector(state),
+  isAdmin: isUserAnAdminSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(
