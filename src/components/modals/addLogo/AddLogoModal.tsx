@@ -1,17 +1,18 @@
 import React, { ChangeEvent, Component } from 'react';
+import { connect } from 'react-redux';
+import { compose, Dispatch } from 'redux';
+import {
+Button,
+Dialog,
+DialogActions,
+DialogContent,
+DialogTitle, FormControl, Input, InputLabel, withStyles, Paper, Typography,
+} from '@material-ui/core';
+
 import ModalJuggler from 'src/UI/modal-juggler/ModalJuggler';
 import { ModalNames } from 'src/modal-juggler/interface';
 import { hideAllModal } from 'src/modal-juggler/modalTriggers';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle, FormControl, Input, InputLabel, withStyles, Paper, Typography,
-} from '@material-ui/core';
-import { connect } from 'react-redux';
 import { RootState } from 'src/store/rootReducers';
-import { compose, Dispatch } from 'redux';
 import { logosActions } from 'src/logos/actions';
 import InCenter from 'src/UI/InCenter';
 import FileLoadButton from 'src/UI/FileLoadButton';
@@ -58,6 +59,7 @@ class AddLogoModal extends Component<Props, State> {
           open={true}
           maxWidth={'sm'}
           aria-labelledby="responsive-dialog-title"
+          onClick={this.onClose}
         >
           <DialogTitle id="form-dialog-title">{'Upload logo'}</DialogTitle>
           <DialogContent>
