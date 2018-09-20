@@ -10,6 +10,7 @@ import HeaderLogo from 'src/layout/logoListPage/headerLogo';
 import { logosActions } from 'src/logos/actions';
 import { show } from 'src/modal-juggler/reducer';
 import { ModalNames } from 'src/modal-juggler/interface';
+import ContentLoader from 'react-content-loader';
 
 const styles = (theme: any) =>
   createStyles({
@@ -54,7 +55,7 @@ class LogoListPage extends Component<Props, any> {
   }
 
   render() {
-    const { logos } = this.props;
+    const { logos, loading } = this.props;
     return (
       <>
         <Grid
@@ -64,7 +65,7 @@ class LogoListPage extends Component<Props, any> {
           md={12}
           style={{ marginBottom: 16 }}
         >
-          <HeaderLogo addLogo={this.handleAddLogo} />
+          <HeaderLogo addLogo={this.handleAddLogo}/>
         </Grid>
         <Grid
           item
@@ -76,18 +77,34 @@ class LogoListPage extends Component<Props, any> {
             alignItems: 'stretch',
           }}
         >
-          {logos.map((item, index) => {
-            return (
-              <Grid item key={index}>
-                <ItemLogo
-                  item={item}
-                  pickDefaultLogo={this.setDefaultLogo}
-                  editLogo={this.handleEditLogo}
-                  deleteLogo={this.handleDeleteLogo}
-                />
-              </Grid>
-            );
-          })}
+          {
+            loading ? (
+              <ContentLoader
+                height={200}
+                width={373}
+                speed={2}
+                primaryColor="#f3f3f3"
+                secondaryColor="#ecebeb"
+              >
+                <rect x="0" y="8" rx="0" ry="0" width="55" height="60" />
+                <rect x="70" y="8" rx="0" ry="0" width="55" height="60" />
+                <rect x="140" y="8" rx="0" ry="0" width="55" height="60" />
+                <rect x="210" y="8" rx="0" ry="0" width="55" height="60" />
+                <rect x="280" y="8" rx="0" ry="0" width="55" height="60" />
+                <rect x="350" y="8" rx="0" ry="0" width="55" height="60" />
+              </ContentLoader>
+            ) : logos.map((item, index) => {
+              return (
+                <Grid item key={index}>
+                  <ItemLogo
+                    item={item}
+                    pickDefaultLogo={this.setDefaultLogo}
+                    editLogo={this.handleEditLogo}
+                    deleteLogo={this.handleDeleteLogo}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
       </>
     );
@@ -115,6 +132,7 @@ class LogoListPage extends Component<Props, any> {
 
 const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
+  loading: state.watermarks.loading,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
