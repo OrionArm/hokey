@@ -8,30 +8,39 @@ import {
   withStyles,
   createStyles,
   IconButton,
+  Theme,
+  WithStyles,
 } from '@material-ui/core';
 
-interface ToolsPanelProps {
-  classes?: any;
-}
+type ToolsPanelProps = WithStyles<typeof styles>;
 
-const styles = createStyles({
-  select: {
-    paddingLeft: 8,
-    paddingTop: 0,
-    paddingBottom: 0,
-    height: 50,
-    display: 'flex',
-    alignItems: 'center',
-  },
-  rootBtn: {
-    textTransform: 'capitalize',
-    padding: 0,
-  },
-  rootIconBtn: {
-    borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
-    borderRadius: 0,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    wrapperPanel: {
+      display: 'flex',
+      border: '1px solid rgba(0, 0, 0, 0.12)',
+      borderRadius: theme.shape.borderRadius,
+    },
+    rootSelect: {
+      fontSize: '0.875rem',
+    },
+    select: {
+      paddingLeft: theme.spacing.unit,
+      paddingTop: 0,
+      paddingBottom: 0,
+      height: 50,
+      display: 'flex',
+      alignItems: 'center',
+    },
+    rootBtn: {
+      textTransform: 'capitalize',
+      padding: 0,
+    },
+    rootIconBtn: {
+      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderRadius: 0,
+    },
+  });
 
 class ToolsPanel extends Component<ToolsPanelProps, any> {
   state = {
@@ -46,13 +55,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
   render() {
     const { classes } = this.props;
     return (
-      <div
-        style={{
-          display: 'flex',
-          border: '1px solid rgba(0, 0, 0, 0.12)',
-          borderRadius: 4,
-        }}
-      >
+      <div className={classes.wrapperPanel}>
         <Button
           classes={{
             root: classes.rootBtn,
@@ -64,10 +67,8 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             name="selected"
             disableUnderline
             autoWidth
-            style={{
-              fontSize: '0.875rem',
-            }}
             classes={{
+              root: classes.rootSelect,
               select: classes.select,
             }}
           >

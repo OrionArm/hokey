@@ -15,15 +15,15 @@ import { LogoModel } from 'src/logos/model';
 const styles = (theme: any) =>
   createStyles({
     root: {
-      color: '#fff',
+      color: theme.palette.common.white,
       '&$checked': {
-        color: '#fff',
+        color: theme.palette.common.white,
       },
     },
     checked: {},
 
     labelRadio: {
-      color: '#fff',
+      color: theme.palette.common.white,
     },
 
     card: {
@@ -32,17 +32,18 @@ const styles = (theme: any) =>
       width: 225,
 
       '&:hover $logosHoverBlock': {
-        display: 'flex',
+        top: 0,
       },
     },
 
     logosHoverBlock: {
-      display: 'none',
+      transition: '0.7s',
+      display: 'flex',
       width: '100%',
       height: 200,
       backgroundColor: 'rgba(78, 78, 78, 0.5)',
       position: 'absolute',
-      top: 0,
+      top: -500,
       left: 0,
       padding: theme.spacing.unit * 3,
       flexDirection: 'column',
@@ -60,6 +61,43 @@ const styles = (theme: any) =>
       height: 200,
       backgroundColor: '#f1f1f1',
     },
+    mark: {
+      position: 'absolute',
+      top: 20,
+      right: 0,
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+      fontSize: 'inherit',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 80,
+      paddingRight: 15,
+      height: 30,
+      zIndex: 2,
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: -15,
+        transform: 'skew(45deg)',
+        width: 30,
+        height: 15,
+        backgroundColor: theme.palette.primary.main,
+        zIndex: -1,
+      },
+      '&:before': {
+        content: '""',
+        position: 'absolute',
+        top: 15,
+        left: -15,
+        transform: 'skew(-45deg)',
+        width: 30,
+        height: 14.5,
+        backgroundColor: theme.palette.primary.main,
+        zIndex: -1,
+      },
+    },
   });
 
 type Props = {
@@ -71,9 +109,14 @@ type Props = {
 
   regenerateWithNewLogo?: (logoId: string) => void;
 };
-const LogoItem: React.SFC<Props> = (
-  { classes, item, pickDefaultLogo, editLogo, deleteLogo, regenerateWithNewLogo },
-) => {
+const LogoItem: React.SFC<Props> = ({
+  classes,
+  item,
+  pickDefaultLogo,
+  editLogo,
+  deleteLogo,
+  regenerateWithNewLogo,
+}) => {
   const setDefault = pickDefaultLogo ? () => pickDefaultLogo(item.id) : null;
   const onEditLogo = editLogo ? () => editLogo(item.id) : null;
   const onDeleteLogo = deleteLogo ? () => deleteLogo(item.id) : null;
@@ -81,7 +124,9 @@ const LogoItem: React.SFC<Props> = (
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(item.id)
     : null;
-  const radioLabel = regenerateWithNewLogo ? 'Use this logo for a drill' : 'Set as Default';
+  const radioLabel = regenerateWithNewLogo
+    ? 'Use this logo for a drill'
+    : 'Set as Default';
 
   return (
     <Card className={classes.card}>
@@ -110,18 +155,16 @@ const LogoItem: React.SFC<Props> = (
           label={radioLabel}
         />
         <div className={classes.HoverGroupButton}>
-          {onEditLogo && <Button
-            color="secondary"
-            onClick={onEditLogo}
-          >
-            Edit
-          </Button>}
-          {onDeleteLogo && <Button
-            color="primary"
-            onClick={onDeleteLogo}
-          >
-            Delete
-          </Button>}
+          {onEditLogo && (
+            <Button color="secondary" onClick={onEditLogo}>
+              Edit
+            </Button>
+          )}
+          {onDeleteLogo && (
+            <Button color="primary" onClick={onDeleteLogo}>
+              Delete
+            </Button>
+          )}
         </div>
       </div>
       <CardContent>
@@ -129,6 +172,7 @@ const LogoItem: React.SFC<Props> = (
           {clearName(item.name)}
         </Typography>
       </CardContent>
+      <div className={classes.mark}>default</div>
     </Card>
   );
 };
