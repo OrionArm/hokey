@@ -116,7 +116,7 @@ class LogoListPage extends Component<Props, State> {
                     <ItemLogo
                       item={item}
                       pickDefaultLogo={this.setDefaultLogo}
-                      editLogo={this.handleEditLogo}
+                      editLogo={this.handleAddLogo}
                       deleteLogo={this.handleDeleteLogo}
                     />
                   </div>
