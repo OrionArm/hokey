@@ -2,11 +2,11 @@ import React, { ChangeEvent, Component } from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
 import {
-Button,
-Dialog,
-DialogActions,
-DialogContent,
-DialogTitle, FormControl, Input, InputLabel, withStyles, Paper, Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle, FormControl, Input, InputLabel, withStyles, Paper, Typography,
 } from '@material-ui/core';
 
 import ModalJuggler from 'src/UI/modal-juggler/ModalJuggler';
@@ -86,13 +86,13 @@ class AddLogoModal extends Component<Props, State> {
                     <img className={'img-uploader__preview'} src={preview} height={200}/>
                     {/*TODO: clear img input by click*/}
                     <div className={'img-uploader__remove'}>
-                      <FontAwesomeIcon icon={faTimes} className={'img-uploader__icon'} />
+                      <FontAwesomeIcon icon={faTimes} className={'img-uploader__icon'}/>
                     </div>
                   </>
                   :
                   <div className={'img-uploader__hint uploader-hint'}>
                     {/*<span className={'uploader-hint__picture'}  />*/}
-                    <FontAwesomeIcon icon={faCloudUploadAlt} className={'uploader-hint__picture'} />
+                    <FontAwesomeIcon icon={faCloudUploadAlt} className={'uploader-hint__picture'}/>
                     <span className={'uploader-hint__text'}>
                       Use only *.png files 610*360px max size
                     </span>
@@ -146,7 +146,7 @@ class AddLogoModal extends Component<Props, State> {
     );
   }
 
-  onClose       = (): void => {
+  onClose = (): void => {
     this.setState({ file: undefined, preview: undefined, logoName: '' });
     hideAllModal();
   }
@@ -169,10 +169,11 @@ class AddLogoModal extends Component<Props, State> {
   onChangeName  = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ logoName: e.currentTarget.value });
   }
-  onSubmit  = (): void => {
-    const { file } = this.state;
+  onSubmit      = (): void => {
+    const { file, logoName } = this.state;
+
     if (file) {
-      this.props.addLogo(file);
+      this.props.addLogo({ image: file, name: logoName });
       setTimeout(() => this.onClose(), 500);
     }
   }
@@ -183,7 +184,9 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addLogo: (file: File) => dispatch(logosActions.addLogosRequest({ image: file })),
+  addLogo: (payload: { image: File, name: string }) => dispatch(
+    logosActions.addLogosRequest({ image: payload.image, name: payload.name }),
+  ),
 });
 
 export default compose(

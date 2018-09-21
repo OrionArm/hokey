@@ -15,6 +15,7 @@ import { logosActions } from 'src/logos/actions';
 import ItemLogo from '../logoListPage/ItemLogo';
 import drillsApi from 'src/drills/api';
 import { getSelectedDrillSelector } from 'src/drills/selectors';
+import { getUserId } from 'src/store/selectors';
 
 interface DrillsProps {
   classes: any;
@@ -39,13 +40,13 @@ const styles = createStyles({
 
 class AvailableLogos extends Component<Props, State> {
   regenerateWithNewLogo = (id: string) => {
-    console.log(this.props.selectedDrill, id);
-    this.props.selectedDrill &&
-      drillsApi.regenerateWithNewLogo(this.props.selectedDrill.id, id)
-        .then(x => console.log(x));
+    if (!this.props.selectedDrill) {
+      return;
+    }
+    drillsApi.regenerateWithNewLogo(this.props.selectedDrill.id, id, this.props.selectedUserId)
+      .then(x => console.log(x));
   }
   componentDidMount() {
-    this.props.actions.getLogosRequest();
   }
 
   public render() {
@@ -95,6 +96,7 @@ class AvailableLogos extends Component<Props, State> {
 const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
   selectedDrill: getSelectedDrillSelector(state),
+  selectedUserId: getUserId(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(logosActions, dispatch),

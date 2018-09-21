@@ -5,11 +5,17 @@ import userAPI from 'src/user/api';
 import * as fromActions from './actions';
 import * as fromTokenActions from './token/actions';
 import { errorHandler } from 'src/utils/errorHandler';
+import { logosActions } from 'src/logos/actions';
 
 function* watcher() {
   yield takeLatest(fromActions.LOGIN_REQUEST, logIn);
   yield takeLatest(fromActions.LOGOUT_REQUEST, logOut);
   yield takeLatest(fromActions.TOKEN_LOGIN, tokenLogin);
+  yield takeLatest(fromActions.SELECT_USER, selectUser);
+}
+
+function* selectUser(action: fromActions.selectUser) {
+  yield put(logosActions.getLogosRequest());
 }
 
 function* tokenLogin(action: fromActions.tokenLogin) {
@@ -21,6 +27,7 @@ function* tokenLogin(action: fromActions.tokenLogin) {
     yield put(fromTokenActions.tokenActions.setToState(token));
     yield put(fromTokenActions.tokenActions.setToResponse(token));
     yield put(fromActions.userActions.loginSuccess(user));
+    yield put(logosActions.getLogosRequest());
   } catch (error) {
     yield call(errorHandler, error);
     yield put(fromTokenActions.tokenActions.clearToken());

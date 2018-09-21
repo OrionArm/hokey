@@ -15,7 +15,7 @@ function* watcherToken() {
 
 function setToState(action: fromActions.setToState) {
   const token = action.payload;
-  customStorage.setToken(token);
+  customStorage.setAndRememberItem('token', token);
 }
 
 function setToResponse(action: fromActions.setToResponse) {

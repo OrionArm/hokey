@@ -2,10 +2,12 @@ import * as fromActions from './actions';
 
 export interface UserState {
   profile: IUser | null;
+  selectedUserId: number | 'me';
 }
 
 export const initialState: UserState = {
   profile: null,
+  selectedUserId: 'me',
 };
 
 export const reducer = (
@@ -14,8 +16,10 @@ export const reducer = (
   switch (action.type) {
     case fromActions.LOGIN_SUCCESS: {
       const profile = action.payload;
-
-      return ({ profile });
+      return { ...state, profile };
+    }
+    case fromActions.SELECT_USER: {
+      return { ...state, selectedUserId: action.payload.id };
     }
     default:
       return state;

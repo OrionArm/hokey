@@ -8,12 +8,19 @@ import {
   DialogContentText,
 } from '@material-ui/core';
 
-type Props = { open: boolean; close(): void; confirm(): void };
-const ConfirmDeleteModal: SFC<Props> = ({ open, close, confirm }) => {
+type Props = {
+  open: boolean;
+  modalName: string,
+  item: any;
+  close(modalName: string): void;
+  confirm(item: any): void;
+};
+const DeleteLogoModal: SFC<Props> = ({ open, modalName, item, close, confirm }) => {
+  const onClose = () => close(modalName);
   return (
     <Dialog
       open={open}
-      onClose={close}
+      onClose={onClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -33,7 +40,7 @@ const ConfirmDeleteModal: SFC<Props> = ({ open, close, confirm }) => {
         >
           Ok
         </Button>
-        <Button onClick={close} variant="contained" color="primary">
+        <Button onClick={onClose} variant="contained" color="primary">
           Cancel
         </Button>
       </DialogActions>
@@ -41,4 +48,4 @@ const ConfirmDeleteModal: SFC<Props> = ({ open, close, confirm }) => {
   );
 };
 
-export default ConfirmDeleteModal;
+export default DeleteLogoModal;

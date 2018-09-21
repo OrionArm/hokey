@@ -112,19 +112,6 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
         >
           <FontAwesomeIcon icon={faDownload} />
         </IconButton>
-        <form method="post" action="https://hockey-stream.cronix.ms/" target="_blank">
-          <input
-            type="hidden"
-            name="urls[0]"
-            value="https://hockeyshare-animation.s3.amazonaws.com/video-2416143-1537227021.mp4"
-          />
-          <input
-            type="hidden"
-            name="urls[1]"
-            value="https://hockeyshare-animation.s3.amazonaws.com/video-2428090-1537225801.mp4"
-          />
-          <button type="submit">Yoba</button>
-        </form>
       </div>
     );
   }

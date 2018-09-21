@@ -49,9 +49,13 @@ const styles = (theme: any) =>
     },
 
     HoverGroupButton: {
-      display: 'inline-flex',
+      display: 'flex',
       flexDirection: 'column',
       marginLeft: 'auto',
+      justifyContent: 'flex-start',
+      position: 'absolute',
+      bottom: '10px',
+      right: '10px',
     },
 
     media: {
@@ -101,28 +105,28 @@ const styles = (theme: any) =>
 type Props = {
   classes?: any;
   item: LogoModel;
-  pickDefaultLogo?: (logoId: string) => void;
-  editLogo?: (logoId: string) => void;
-  deleteLogo?: (logoId: string) => void;
+  pickDefaultLogo?: (item: LogoModel) => void;
+  editLogo?: (item: LogoModel) => void;
+  deleteLogo?: (item: LogoModel) => void;
 
   regenerateWithNewLogo?: (logoId: string) => void;
 };
 const LogoItem: React.SFC<Props> = ({
-  classes,
-  item,
-  pickDefaultLogo,
-  editLogo,
-  deleteLogo,
-  regenerateWithNewLogo,
-}) => {
-  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(item.id) : null;
-  const onEditLogo = editLogo ? () => editLogo(item.id) : null;
-  const onDeleteLogo = deleteLogo ? () => deleteLogo(item.id) : null;
+                                      classes,
+                                      item,
+                                      pickDefaultLogo,
+                                      editLogo,
+                                      deleteLogo,
+                                      regenerateWithNewLogo,
+                                    }) => {
+  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(item) : null;
+  const onEditLogo   = editLogo ? () => editLogo(item) : null;
+  const onDeleteLogo = deleteLogo ? () => deleteLogo(item) : null;
 
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(item.id)
     : null;
-  const radioLabel = regenerateWithNewLogo
+  const radioLabel              = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 

@@ -10,6 +10,7 @@ function* watcher() {
   yield takeLatest(fromActions.GET_LOGOS_REQUEST, getLogos);
   yield takeEvery(fromActions.ADD_LOGO_REQUEST, addLogo);
   yield takeEvery(fromActions.DELETE_LOGOS_REQUEST, deleteLogos);
+  yield takeEvery(fromActions.EDIT_LOGO_REQUEST, editLogo);
   yield takeLatest(fromActions.CHANGE_DEFAULT_LOGOS_REQUEST, changeDefaultLogo);
 }
 
@@ -27,9 +28,9 @@ function* getLogos(action: fromActions.getLogosRequest) {
 
 function* addLogo(action: fromActions.addLogosRequest) {
   const userId: string = yield select(getUserId);
-  const image          = action.payload.image;
+  const { image, name }       = action.payload;
   try {
-    const response = yield call(logosAPI.addLogo, { image, userId });
+    const response = yield call(logosAPI.addLogo, { image, userId, name });
 
     console.log('setLogosSaga response.data', response.data);
     yield put(fromActions.logosActions.getLogosRequest());
@@ -49,6 +50,21 @@ function* deleteLogos(action: fromActions.deleteLogosRequest) {
     // ToDo(@Roman): Change behavior, need remove from store instead of send new request
     yield put(fromActions.logosActions.getLogosRequest());
     // yield put(fromActions.logosActions.deleteLogosSuccess(logosIds));
+    // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
+  } catch (error) {
+    yield call(errorHandler, error);
+    // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));
+  }
+}
+
+function* editLogo(action: fromActions.editLogoRequest) {
+  const userId: string = yield select(getUserId);
+  const name           = action.payload.name;
+  const logoId         = action.payload.logoId;
+  try {
+    yield call(logosAPI.editLogo, { name, userId, logoId });
+    yield put(fromActions.logosActions.getLogosRequest());
+    yield put(fromActions.logosActions.editLogoSuccess());
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
