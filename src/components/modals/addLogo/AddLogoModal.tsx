@@ -146,7 +146,7 @@ class AddLogoModal extends Component<Props, State> {
     );
   }
 
-  onClose       = (): void => {
+  onClose = (): void => {
     this.setState({ file: undefined, preview: undefined, logoName: '' });
     hideAllModal();
   }
