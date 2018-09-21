@@ -2,6 +2,7 @@
 import { AxiosPromise } from 'axios';
 import request from '../utils/request';
 import downloadRequest from '../utils/download-request';
+import { DrillDetailed } from './model';
 
 function getDrillsByCategoryId({ id, categoryType }: any): AxiosPromise<any> {
   const toEntity = (x: any) => ({
@@ -40,7 +41,7 @@ function downloadVideo(id: string): any {
   });
 }
 
-function getDrill(id: string): AxiosPromise<any> {
+function getDrill(id: string): AxiosPromise<DrillDetailed> {
   const toEntity = (x: any) => ({
     id: x.drillid,
     preview: x.s3url_1,

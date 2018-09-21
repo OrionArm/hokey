@@ -18,6 +18,7 @@ let middleware        = [sagaMiddleware, routeMiddleware];
 if (process.env.NODE_ENV !== 'production') {
   const logger = createLogger({
     diff: true,
+    collapsed: true,
   });
   middleware       = [...middleware, logger];
 }
