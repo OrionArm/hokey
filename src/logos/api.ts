@@ -1,5 +1,5 @@
 import { AxiosPromise } from 'axios';
-import request from '../utils/request';
+import request, { xWwwFormUrlencoded } from '../utils/request';
 import { LogoModel } from 'src/logos/model';
 
 const logosAPI = {
@@ -43,8 +43,13 @@ function addLogo(payload: ISetLogosRequest): AxiosPromise<any> {
 }
 
 function editLogo(payload: { userId: string, logoId: string, name: string }): AxiosPromise<any> {
-  const body = { name: payload.name };
-  return request.patch(`/users/${payload.userId}/watermarks/${payload.logoId}`, body);
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+  const config  = { headers };
+  const properties = { name: payload.name };
+  const body = xWwwFormUrlencoded(properties);
+  return request.patch(`/users/${payload.userId}/watermarks/${payload.logoId}`, body, config);
 }
 
 export default logosAPI;

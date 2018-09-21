@@ -8,4 +8,14 @@ const request: AxiosInstance = axios.create({
   },
 });
 
+export function xWwwFormUrlencoded(properties: object): string {
+  const formBody: string[]  = [];
+  for (const property in properties) {
+    const encodedKey   = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(properties[property]);
+    formBody.push(`${encodedKey}=${encodedValue}`);
+  }
+  return formBody.join('&');
+}
+
 export default request;
