@@ -5,6 +5,7 @@ import { Router } from 'react-router';
 
 import store, { history } from './store';
 import theme from './theme';
+import './styles/index.css';
 
 export const Root: React.SFC<any> = ({ children }) => (
   <Provider store={store}>

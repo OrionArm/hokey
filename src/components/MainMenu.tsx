@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 import {
   MenuList,
   MenuItem,
-  withStyles,
-  createStyles,
 } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileImage, faHockeyPuck  } from '@fortawesome/free-solid-svg-icons';
 
 export interface IMainMenuProps {
   classes?: any;
@@ -15,57 +15,31 @@ export interface IMainMenuState {
   value: number;
   classes?: any;
 }
-const styles = (theme: any) => {
-  console.log(theme);
 
-  return createStyles({
-    list: {
-      display: 'flex',
-      backgroundColor: '#fff',
-      padding: 0,
-    },
-    menuItem: {},
-
-    linkItem: {
-      color: theme.palette.primary.contrastText,
-
-      padding: '12px 16px',
-      '&:hover, &:active, &:focus': {
-        textDecoration: 'none',
-        outline: 'none',
-        color: theme.palette.primary.main,
-      },
-    },
-    LinkSelected: {
-      color: theme.palette.primary.main,
-      textDecoration: 'none',
-      '&:hover, &:active': {
-        color: theme.palette.primary.dark,
-      },
-    },
-  });
-};
 class MainMenu extends Component<IMainMenuProps, IMainMenuState> {
   public render() {
-    const { classes } = this.props;
     return (
-      <MenuList className={classes.list}>
-        <MenuItem className={classes.menuItem}>
+      <MenuList className={'main-menu menu-list'}>
+        <MenuItem className={'main-menu__item'}>
           <NavLink
-            className={classes.linkItem}
+            className={'main-menu__link menu-btn'}
             to="/drills"
-            activeClassName={classes.LinkSelected}
+            activeClassName={'main-menu__link--active'}
           >
-            My Drills
+            <FontAwesomeIcon icon={faHockeyPuck} className={'menu-btn__icon'} />
+            {/*<i className="fas fa-hockey-sticks" />*/}
+            <span className={'menu-btn__text'}>My Drills</span>
           </NavLink>
         </MenuItem>
-        <MenuItem className={classes.menuItem}>
+        <MenuItem className={'main-menu__item'}>
           <NavLink
-            className={classes.linkItem}
+            className={'main-menu__link menu-btn'}
             to="/logos"
-            activeClassName={classes.LinkSelected}
+            activeClassName={'main-menu__link--active'}
           >
-            My Logos
+            {/*<i className={'fa'} />*/}
+            <FontAwesomeIcon icon={faFileImage} className={'menu-btn__icon'} />
+            <span className={'menu-btn__text'}>My Logos</span>
           </NavLink>
         </MenuItem>
       </MenuList>
@@ -73,4 +47,4 @@ class MainMenu extends Component<IMainMenuProps, IMainMenuState> {
   }
 }
 
-export default withStyles(styles)(MainMenu);
+export default MainMenu;

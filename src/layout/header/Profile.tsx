@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { RootState } from '../../store/rootReducers';
@@ -37,16 +37,19 @@ const styles = (theme: any) => ({
 });
 class Profile extends React.Component<Props, any> {
   public render() {
-    const { userName, classes } = this.props;
+    const { userName } = this.props;
 
     return (
-      <div className={classes.wrapperProfile}>
-        <Typography variant="subheading" style={{ paddingRight: 8 }}>
+      <div className={'app-toolbar__info'}>
+        <h3 className={'app-toolbar__username'}>
           {userName}
-        </Typography>
-        <Link to="/login" className={classes.textLogout}>
-          <Typography variant="body1">logout</Typography>
-        </Link>
+        </h3>
+        <div className={'app-toolbar__action'}>
+          (<Link to="/login" className={'app-toolbar__link'}>
+          log out
+        </Link>)
+        </div>
+
       </div>
     );
   }

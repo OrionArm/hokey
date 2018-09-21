@@ -1,0 +1,91 @@
+.app-toolbar {
+    position: relative;
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4F5467;
+}
+.app-toolbar .app-toolbar__title {
+    height: 100%;
+    flex: 1;
+    position: relative;
+    font-size: 20px;
+}
+.app-toolbar .app-toolbar__logo {
+    height: 100%;
+    max-width: 250px;
+    background: url(../assets/hockeyshare-logo.png) no-repeat;
+    background-size: contain;
+}
+.app-toolbar .app-toolbar__info {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+.app-toolbar .app-toolbar__username {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin: 0 5px;
+    color: #a7a9b3;
+}
+.app-toolbar .app-toolbar__action,
+.app-toolbar .app-toolbar__link {
+    font-size: 10px;
+    line-height: 21px;
+    color: #a7a9b3;
+    text-transform: capitalize;
+}
+.app-toolbar .app-toolbar__link {
+    text-decoration: #a7a9b3 underline;
+}
+
+.menu-list.main-menu {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 14px;
+    background-color: #fff;
+    height: 61px;
+}
+.menu-list.main-menu .main-menu__item {
+    color: #787f91;
+    position: relative;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.menu-list.main-menu .main-menu__item:hover,
+.menu-list.main-menu .main-menu__link.main-menu__link--active {
+    color: #fa947a;
+}
+.menu-list.main-menu .main-menu__link {
+    color: inherit;
+    text-decoration: none;
+    text-transform: capitalize;
+    height: 100%;
+    padding: 16px;
+}
+
+.menu-btn {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.menu-btn .menu-btn__icon {
+    margin-right: 10px;
+}
+.menu-btn .menu-btn__text {
+    color: inherit;
+}
