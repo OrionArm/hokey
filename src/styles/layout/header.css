@@ -16,7 +16,7 @@
 .app-toolbar .app-toolbar__logo {
     height: 100%;
     max-width: 250px;
-    background: url(../assets/hockeyshare-logo.png) no-repeat;
+    background: url(../assets/hockeyshare-logo.png) no-repeat center center;
     background-size: contain;
 }
 .app-toolbar .app-toolbar__info {

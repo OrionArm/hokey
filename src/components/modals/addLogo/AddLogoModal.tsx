@@ -14,8 +14,9 @@ import { ModalNames } from 'src/modal-juggler/interface';
 import { hideAllModal } from 'src/modal-juggler/modalTriggers';
 import { RootState } from 'src/store/rootReducers';
 import { logosActions } from 'src/logos/actions';
-import InCenter from 'src/UI/InCenter';
 import FileLoadButton from 'src/UI/FileLoadButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 const styles = (theme: any) => ({
   button: {
@@ -43,6 +44,7 @@ const initialState: State = {
   preview: null,
 };
 
+// TODO: handle closing modal by escape click
 class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
@@ -61,12 +63,15 @@ class AddLogoModal extends Component<Props, State> {
           aria-labelledby="responsive-dialog-title"
           className={'modal-dialog'}
         >
-          <DialogTitle id="form-dialog-title">{'Upload logo'}</DialogTitle>
-          <DialogContent>
-            <Paper elevation={4}>
-              <Typography variant="subheading" gutterBottom align="center">
-                Use only *.png files 610*360px max size
-              </Typography>
+          <DialogTitle
+            className={'modal-dialog__title'}
+            id="form-dialog-title"
+          >
+            {'Upload logo'}
+          </DialogTitle>
+          <DialogContent className={'modal-dialog__body'}>
+            <Paper elevation={4} className={'img-uploader'}>
+
               {
                 fileValid === fileError.incorrectExtension
                   ? <Typography variant="subheading" gutterBottom align="center" color={'error'}>
@@ -74,17 +79,26 @@ class AddLogoModal extends Component<Props, State> {
                   </Typography>
                   : null
               }
-              <InCenter>
-                {
-                  file && preview
-                    ?
-                    <img src={preview} height={200}/>
-                    :
-                    <div style={{ marginBottom: 10, marginTop: 10 }}>
-                      <FileLoadButton onClick={this.onUploadFiles}/>
+              {
+                file && preview
+                  ?
+                  <>
+                    <img className={'img-uploader__preview'} src={preview} height={200}/>
+                    {/*TODO: clear img input by click*/}
+                    <div className={'img-uploader__remove'}>
+                      <FontAwesomeIcon icon={faTimes} className={'img-uploader__icon'} />
                     </div>
-                }
-              </InCenter>
+                  </>
+                  :
+                  <div className={'img-uploader__hint uploader-hint'}>
+                    {/*<span className={'uploader-hint__picture'}  />*/}
+                    <FontAwesomeIcon icon={faCloudUploadAlt} className={'uploader-hint__picture'} />
+                    <span className={'uploader-hint__text'}>
+                      Use only *.png files 610*360px max size
+                    </span>
+                    <FileLoadButton onClick={this.onUploadFiles}/>
+                  </div>
+              }
             </Paper>
             <FormControl
               className={classes.spacing}
@@ -95,6 +109,7 @@ class AddLogoModal extends Component<Props, State> {
                   root: classes.cssLabel,
                   focused: classes.cssFocused,
                 }}
+                className={'img-uploader__label'}
                 htmlFor="LogoName-input"
               >
                 Enter logo name
@@ -103,25 +118,26 @@ class AddLogoModal extends Component<Props, State> {
                 classes={{
                   underline: classes.cssUnderline,
                 }}
+                className={'img-uploader__name-input'}
                 value={this.state.logoName}
                 id="LogoName-input"
                 onChange={this.onChangeName}
               />
             </FormControl>
           </DialogContent>
-          <DialogActions>
+          <DialogActions className={'modal-dialog__footer'}>
             <Button
               variant="contained"
               color="primary"
               component="span"
-              className={classes.button}
+              className={'modal-btn'}
               onClick={this.onSubmit}
               disabled={!this.state.file}
             >
-              Add this logo
+              Upload
             </Button>
 
-            <Button onClick={this.onClose}>
+            <Button className={'modal-btn'} onClick={this.onClose}>
               Close
             </Button>
           </DialogActions>

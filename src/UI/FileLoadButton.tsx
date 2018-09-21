@@ -29,7 +29,7 @@ const FileLoadButton: React.SFC<IFileLoadButton> = ({ classes, onClick }) => {
           variant="contained"
           color="secondary"
           component="span"
-          className={classes.button}
+          className={'uploader-hint__button'}
         >
           Upload
         </Button>
