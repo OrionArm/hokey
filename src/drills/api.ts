@@ -4,6 +4,7 @@ import request from '../utils/request';
 import downloadRequest from '../utils/download-request';
 import { DrillDetailed, DrillCategoryType } from './model';
 import { SearchType } from 'src/layout/drillsPage/CategoriesBar';
+const qs = require('qs');
 
 const toDrillEntity = (x: any) => ({
   id: x.drillid,
@@ -68,8 +69,16 @@ function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<Dril
   });
 }
 
-function regenerate(id: string, userId: number | 'me'): AxiosPromise<any> {
-  return request.post(`/users/${userId}/drills/${id}/regenerate`);
+function regenerate(drill_ids: string[], userId: number | 'me'): AxiosPromise<any> {
+  return request.post(
+    `/users/${userId}/drills/regenerate`,
+    qs.stringify({ drill_ids }),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    },
+  );
 }
 
 function regenerateWithNewLogo(
