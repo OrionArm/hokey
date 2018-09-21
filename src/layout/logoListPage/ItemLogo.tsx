@@ -103,9 +103,9 @@ const styles = (theme: any) =>
 type Props = {
   classes?: any;
   item: LogoModel;
-  pickDefaultLogo?: (logoId: string) => void;
-  editLogo?: (logoId: string) => void;
-  deleteLogo?: (logoId: string) => void;
+  pickDefaultLogo?: (item: LogoModel) => void;
+  editLogo?: (item: LogoModel) => void;
+  deleteLogo?: (item: LogoModel) => void;
 
   regenerateWithNewLogo?: (logoId: string) => void;
 };
@@ -117,9 +117,9 @@ const LogoItem: React.SFC<Props> = ({
   deleteLogo,
   regenerateWithNewLogo,
 }) => {
-  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(item.id) : null;
-  const onEditLogo = editLogo ? () => editLogo(item.id) : null;
-  const onDeleteLogo = deleteLogo ? () => deleteLogo(item.id) : null;
+  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(item) : null;
+  const onEditLogo = editLogo ? () => editLogo(item) : null;
+  const onDeleteLogo = deleteLogo ? () => deleteLogo(item) : null;
 
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(item.id)

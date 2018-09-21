@@ -11,7 +11,8 @@ import { logosActions } from 'src/logos/actions';
 import { show } from 'src/modal-juggler/reducer';
 import { ModalNames } from 'src/modal-juggler/interface';
 import ContentLoader from 'react-content-loader';
-import ConfirmDeleteModal from 'src/components/modals/confirmDelete';
+import { DeleteLogoModal, AddLogoModal, EditLogoModal } from 'src/layout/logoListPage/modals';
+import { LogoModel } from 'src/logos/model';
 
 const styles = (theme: any) =>
   createStyles({
@@ -45,12 +46,18 @@ const styles = (theme: any) =>
       backgroundColor: '#f1f1f1',
     },
   });
+type modalStateNames = 'deleteModal' | 'addModal' | 'editModal';
+type modalState = Record<modalStateNames, boolean>;
+const modalState: modalState = {
+  deleteModal: false,
+  addModal: false,
+  editModal: false,
+};
+const selectedLogo: any      = null;  // fix  change any to LogoModel
+const initialState           = { modalState, selectedLogo };
 
-type State = Readonly<typeof initialState>;
+type State = Readonly<typeof modalState & typeof selectedLogo>;
 type Props = { classes?: any } & injectDispatchProps & injectStateProps;
-type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type injectStateProps = ReturnType<typeof mapStateToProps>;
-const initialState = { open: false, logoIdForDeleting: '' };
 
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
@@ -63,10 +70,26 @@ class LogoListPage extends Component<Props, State> {
     const { logos, loading } = this.props;
     return (
       <>
-        <ConfirmDeleteModal
-          open={this.state.open}
+        <DeleteLogoModal
+          modalName={'deleteModal'}
+          open={this.state.modalState.deleteModal}
+          item={this.state.selectedLogo}
           close={this.closePopup}
           confirm={this.confirmDelete}
+        />
+        <AddLogoModal
+          modalName={'addModal'}
+          open={this.state.modalState.addModal}
+          item={this.state.selectedLogo}
+          close={this.closePopup}
+          confirm={this.confirmAdd}
+        />
+        <EditLogoModal
+          modalName={'editModal'}
+          open={this.state.modalState.editModal}
+          item={this.state.selectedLogo}
+          close={this.closePopup}
+          confirm={this.confirmEdit}
         />
         <HeaderLogo addLogo={this.handleAddLogo}/>
         <Grid
@@ -112,35 +135,51 @@ class LogoListPage extends Component<Props, State> {
     );
   }
 
-  openEditPopup = (logoId: string) => {
-    const name = 'ZZZ';
-    this.handleEditLogo({ logoId, name });
-  }
-
-  handleEditLogo = (payload: { logoId: string, name: string }) => {
-    const { logoId, name } = payload;
-    this.props.logosAction.editLogoRequest({ logoId, name });
+  openEditPopup = (logo: LogoModel) => {
+    this.setState({
+      ...this.state,
+      selectedLogo: logo,
+      modalState: { ...this.state.modalState, editModal: true },
+    });
   }
 
   handleAddLogo = () => {
     this.props.showModal();
   }
 
+  confirmEdit = (payload: { logo: LogoModel, newName: string }) => {
+    const logoId = this.state.selectedLogo.id;
+    this.props.logosAction.editLogoRequest({ logoId, name: payload.newName });
+    this.closePopup('editModal');
+  }
+
+  confirmAdd = () => {
+
+  }
+
   confirmDelete = () => {
-    this.props.logosAction.deleteLogosRequest({ logosIds: [this.state.logoIdForDeleting] });
-    this.setState({ ...this.state, open: false });
+    this.props.logosAction.deleteLogosRequest({ logosIds: [this.state.selectedLogo.id] });
+    this.closePopup('deleteModal');
   }
 
-  closePopup = () => {
-    this.setState({ ...this.state, open: false });
+  closePopup = (modalname: string) => {
+    this.setState({
+      ...this.state,
+      modalState: { ...this.state.modalState, [modalname]: false },
+      selectedLogo: null,
+    });
   }
 
-  handleDeleteLogo = (logoId: string) => {
-    this.setState({ ...this.state, logoIdForDeleting: logoId, open: true });
+  handleDeleteLogo = (logo: LogoModel) => {
+    this.setState({
+      ...this.state,
+      selectedLogo: logo,
+      modalState: { ...this.state.modalState, deleteModal: true },
+    });
   }
 
-  setDefaultLogo = (logoId: string) => {
-    this.props.logosAction.changeDefaultLogoRequest({ logoId });
+  setDefaultLogo = (logo: LogoModel) => {
+    this.props.logosAction.changeDefaultLogoRequest({ logoId: logo.id });
   }
 
 }
@@ -154,6 +193,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   logosAction: bindActionCreators(logosActions, dispatch),
   showModal: () => dispatch(show(ModalNames.addLogo)),
 });
+type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type injectStateProps = ReturnType<typeof mapStateToProps>;
 
 export default withStyles(styles)(
   connect(
