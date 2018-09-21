@@ -60,6 +60,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
         this.props.selectedUserId,
       ).then(x => console.log(x));
     }
+    // drillsAPI.regenerateWithNewLogo(
+    //   this.props.checkedIds,
+    //   this.props.selectedUserId,
+    // )
   }
 
   downloadSelectedVideos = () => {
@@ -73,6 +77,13 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
       .then(responses => responses.map(({ data }) => data))
       .then((drills: DrillDetailed[]) => drills.map(({ animation }) => animation))
       .then(downloadVideos);
+  }
+
+  downloadSelectedPdfs = () => {
+    if (this.props.checkedIds.length === 0) {
+      return;
+    }
+    drillsAPI.downloadMultiplePdfs(this.props.selectedUserId, this.props.checkedIds);
   }
 
   render() {
@@ -115,8 +126,12 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           classes={{
             root: classes.rootIconBtn,
           }}
+          onClick={this.downloadSelectedPdfs}
         >
-          <FontAwesomeIcon icon={faDownload} />
+          <FontAwesomeIcon
+            icon={faDownload}
+            title="Download Selected PDFS"
+          />
         </IconButton>
       </div>
     );

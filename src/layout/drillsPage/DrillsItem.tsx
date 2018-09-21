@@ -40,7 +40,7 @@ const styles = createStyles({
 class DrillsItem extends Component<DrillsProps, State> {
   downloadPdf = (event: React.MouseEvent) => {
     event.stopPropagation();
-    drillsApi.downloadPdf(this.props.drill.id);
+    drillsApi.downloadPdf(this.props.drill.id, this.props.selectedUserId);
   }
   downloadVideo = (event: React.MouseEvent) => {
     event.stopPropagation();
