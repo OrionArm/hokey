@@ -69,7 +69,7 @@ function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<Dril
   });
 }
 
-function regenerate(drill_ids: string[], userId: number | 'me'): AxiosPromise<any> {
+function regenerate(drill_ids: string[], userId: number | string | 'me'): AxiosPromise<any> {
   return request.post(
     `/users/${userId}/drills/regenerate`,
     qs.stringify({ drill_ids }),

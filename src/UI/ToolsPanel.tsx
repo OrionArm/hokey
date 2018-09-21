@@ -17,6 +17,7 @@ import { DrillDetailed } from 'src/drills/model';
 
 type ToolsPanelProps = WithStyles<typeof styles> & {
   checkedIds: string[];
+  selectedUserId: string;
 };
 
 const styles = (theme: Theme) =>
@@ -52,21 +53,26 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
     selected: '1',
   };
 
-  handleChange = (event: any) =>
-    this.setState({
-      [event.target.name]: event.target.value,
-    })
+  handleChange = (event: any) => {
+    if (event.target.value === '1') {
+      drillsAPI.regenerate(
+        this.props.checkedIds,
+        this.props.selectedUserId,
+      ).then(x => console.log(x));
+    }
+  }
 
   downloadSelectedVideos = () => {
     if (this.props.checkedIds.length === 0) {
       return;
     }
     Promise.all([
-      ...this.props.checkedIds.map(drillsAPI.getDrill),
+      ...this.props.checkedIds.map((id: string) =>
+        drillsAPI.getDrill(id, this.props.selectedUserId)),
     ])
-    .then(responses => responses.map(({ data }) => data))
-    .then((drills: DrillDetailed[]) => drills.map(({ animation }) => animation))
-    .then(downloadVideos);
+      .then(responses => responses.map(({ data }) => data))
+      .then((drills: DrillDetailed[]) => drills.map(({ animation }) => animation))
+      .then(downloadVideos);
   }
 
   render() {
@@ -90,7 +96,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             }}
           >
             <MenuItem value="1">Generate</MenuItem>
-            <MenuItem value="2">Generate with nw logo</MenuItem>
+            <MenuItem value="2">Generate with new logo</MenuItem>
           </Select>
         </Button>
 
