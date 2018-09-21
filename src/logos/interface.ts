@@ -41,6 +41,7 @@ interface IDeleteLogosRequest {
 interface ISetLogosRequest {
   image: File;
   userId: string;
+  name: string;
 }
 
 interface IRefreshLogosRequest {

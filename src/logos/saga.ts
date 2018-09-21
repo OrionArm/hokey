@@ -28,9 +28,9 @@ function* getLogos(action: fromActions.getLogosRequest) {
 
 function* addLogo(action: fromActions.addLogosRequest) {
   const userId: string = yield select(getUserId);
-  const image          = action.payload.image;
+  const { image, name }       = action.payload;
   try {
-    const response = yield call(logosAPI.addLogo, { image, userId });
+    const response = yield call(logosAPI.addLogo, { image, userId, name });
 
     console.log('setLogosSaga response.data', response.data);
     yield put(fromActions.logosActions.getLogosRequest());

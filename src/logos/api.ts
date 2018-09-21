@@ -39,6 +39,7 @@ function addLogo(payload: ISetLogosRequest): AxiosPromise<any> {
   const config   = { headers };
   const formData = new FormData();
   formData.append('image', payload.image);
+  formData.append('name', payload.name);
   return request.post(`/users/${payload.userId}/watermarks`, formData, config);
 }
 

@@ -34,7 +34,7 @@ const deleteLogosSuccess = () => createAction(DELETE_LOGOS_SUCCESS);
 
 export const ADD_LOGO_REQUEST = '[logos] ADD_LOGO_REQUEST';
 export type addLogosRequest = ReturnType<typeof addLogosRequest>;
-const addLogosRequest = (payload: { image: File }) => {
+const addLogosRequest = (payload: { image: File, name: string }) => {
   return createAction(ADD_LOGO_REQUEST, payload);
 };
 
