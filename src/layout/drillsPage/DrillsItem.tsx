@@ -25,7 +25,7 @@ interface DrillsProps {
   drill: Drill;
   checked: boolean;
   onCheck: () => void;
-  selectDrill: (id: string) => void;
+  selectDrill: (id: string, userId: string) => void;
   isSelected: boolean;
   selectedUserId: number | 'me';
 }
@@ -51,7 +51,7 @@ class DrillsItem extends Component<DrillsProps, State> {
     drillsApi.regenerate(this.props.drill.id, this.props.selectedUserId).then(x => console.log(x));
   }
   selectDrill = (event: React.MouseEvent) => {
-    this.props.selectDrill(this.props.drill.id);
+    this.props.selectDrill(this.props.drill.id, this.props.drill.userId);
   }
 
   public render() {

@@ -7,7 +7,7 @@ import {
   withStyles,
   createStyles,
 } from '@material-ui/core';
-import AsyncSelect from 'react-select/lib/Async';
+import AsyncSelect from 'react-select/lib/AsyncCreatable';
 
 import { CategoriesList } from './CategoriesList';
 import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
@@ -17,6 +17,7 @@ import { RootState } from '../../store/rootReducers';
 import {
   getDrillsByCategoryIdRequest,
   getDrillsCategoriesRequest,
+  searchDrillsByIdRequest,
 } from '../../drills/actions';
 import {
   getGrouppedCategoriesSelector,
@@ -31,6 +32,7 @@ export interface ICategoriesProps {
   classes?: any;
   categories: DrillCategoriesGroupped;
   actions: {
+    searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
     getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
     getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
     selectUser: typeof userActions.selectUser;
@@ -101,10 +103,16 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     this.props.actions.getDrillsByCategoryIdRequest(id, category)
 
   selectUser = (option: { value: number, label: string } | null) => {
+    if (this.state.searchType !== SearchType.User) {
+      return;
+    }
     this.props.actions.selectUser(option ? option.value : 'me');
     this.props.actions.getDrillsCategoriesRequest();
   }
   loadOptions = (query: string) => {
+    if (this.state.searchType === SearchType.Drill) {
+      return Promise.resolve([]);
+    }
     return new Promise((resolve, reject) => {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(() => {
@@ -114,10 +122,23 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
       },                         300);
     });
   }
-  onSearchTypesearch = (event: any) => {
+  onSearchTypesChange = (event: any) => {
     this.setState({
       searchType: event.target.value,
     });
+  }
+  searchDrill = (id: string) => {
+    if (this.state.searchType !== SearchType.Drill || !id) {
+      return;
+    }
+    this.props.actions.searchDrillsByIdRequest(id);
+  }
+
+  get searchPlaceholder() {
+    if (this.state.searchType === SearchType.Drill) {
+      return 'Search by ID...';
+    }
+    return 'Search by email or name...';
   }
 
   render() {
@@ -129,14 +150,16 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             <div style={{ width: '80%' }}>
               <AsyncSelect
                 loadOptions={this.loadOptions}
-                placeholder="Search..."
+                placeholder={this.searchPlaceholder}
                 isClearable={true}
                 onChange={this.selectUser}
+                onCreateOption={this.searchDrill}
+                formatCreateLabel={value => `Search ${value}`}
               />
             </div>
             <Select
               value={this.state.searchType}
-              onChange={this.onSearchTypesearch}
+              onChange={this.onSearchTypesChange}
               name="searchType"
               disableUnderline
               autoWidth
@@ -158,53 +181,56 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             </Select>
           </div>
         }
-        <Button
-          fullWidth
-          classes={{
-            root: classes.rootBtn,
-          }}
-        >
-          <Select
-            value={this.state.categoryType}
-            onChange={this.onCategoryTypeChange}
-            name="categoryType"
-            disableUnderline
-            autoWidth
-            style={{
-              width: '100%',
-              fontSize: '0.875rem',
-            }}
-            classes={{
-              select: classes.select,
-              root: classes.root,
-            }}
-          >
-            <MenuItem value={DrillCategoryType.Public}>
-              Public Categories
+        {this.state.searchType !== SearchType.Drill &&
+          <>
+            <Button
+              fullWidth
+              classes={{
+                root: classes.rootBtn,
+              }}
+            >
+              <Select
+                value={this.state.categoryType}
+                onChange={this.onCategoryTypeChange}
+                name="categoryType"
+                disableUnderline
+                autoWidth
+                style={{
+                  width: '100%',
+                  fontSize: '0.875rem',
+                }}
+                classes={{
+                  select: classes.select,
+                  root: classes.root,
+                }}
+              >
+                <MenuItem value={DrillCategoryType.Public}>
+                  Public Categories
             </MenuItem>
-            <MenuItem value={DrillCategoryType.Custom}>
-              Custom Categories
+                <MenuItem value={DrillCategoryType.Custom}>
+                  Custom Categories
             </MenuItem>
-          </Select>
-        </Button>
-        {this.props.loading ? (
-          <ContentLoader
-            height={200}
-            width={373}
-            speed={2}
-            primaryColor="#f3f3f3"
-            secondaryColor="#ecebeb"
-          >
-            <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38" />
-            <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38" />
-            <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
-          </ContentLoader>
-        ) : (
-            <CategoriesList
-              categories={this.props.categories[this.state.categoryType]}
-              onSelectCategory={this.getDrills}
-            />
-          )}
+              </Select>
+            </Button>
+            {this.props.loading ? (
+              <ContentLoader
+                height={200}
+                width={373}
+                speed={2}
+                primaryColor="#f3f3f3"
+                secondaryColor="#ecebeb"
+              >
+                <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38" />
+                <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38" />
+                <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
+              </ContentLoader>
+            ) : (
+                <CategoriesList
+                  categories={this.props.categories[this.state.categoryType]}
+                  onSelectCategory={this.getDrills}
+                />
+              )}
+          </>}
       </Paper>
     );
   }
@@ -218,6 +244,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(
     {
+      searchDrillsByIdRequest,
       getDrillsByCategoryIdRequest,
       getDrillsCategoriesRequest,
       selectUser: userActions.selectUser,

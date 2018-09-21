@@ -5,6 +5,13 @@ import downloadRequest from '../utils/download-request';
 import { DrillDetailed, DrillCategoryType } from './model';
 import { SearchType } from 'src/layout/drillsPage/CategoriesBar';
 
+const toDrillEntity = (x: any) => ({
+  id: x.drillid,
+  name: x.drillname,
+  has_animation: x.has_animation === '1',
+  userId: x.user_id || x.userid,
+});
+
 function getDrillsByCategoryId(
   payload: {
     id: string,
@@ -14,13 +21,9 @@ function getDrillsByCategoryId(
 
 function getDrillsByCategoryId(payload: any) {
   const { id, categoryType, userId } = payload;
-  const toEntity = (x: any) => ({
-    id: x.drillid,
-    name: x.drillname,
-    has_animation: x.has_animation === '1',
-  });
+
   return request.get(`/users/${userId}/drill-categories/${categoryType}/${id}/drills`).then(res => {
-    res.data = res.data.map(toEntity);
+    res.data = res.data.map(toDrillEntity);
     return res;
   });
 }
@@ -50,7 +53,7 @@ function downloadVideo(id: string, userId: number | 'me'): any {
   });
 }
 
-function getDrill(id: string, userId: number | 'me'): AxiosPromise<DrillDetailed> {
+function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<DrillDetailed> {
   const toEntity = (x: any) => ({
     id: x.drillid,
     preview: x.s3url_1,
@@ -87,12 +90,20 @@ function searchUsers(
 ): AxiosPromise<any[]> {
   return request.get('/users', { params: { value, type } }).then(response => {
     const users = response.data.map((user: any) => ({
-      value: +user.userid,
+      value: user.userid,
       label: user.username,
     }));
     response.data = users;
     return response;
   });
+}
+
+function searchDrills(value: string) {
+  return request.get('/drills', { params: { value } })
+    .then(res => {
+      res.data = toDrillEntity(res.data);
+      return res;
+    });
 }
 
 const drillsAPI = {
@@ -104,5 +115,6 @@ const drillsAPI = {
   regenerate,
   regenerateWithNewLogo,
   searchUsers,
+  searchDrills,
 };
 export default drillsAPI;
