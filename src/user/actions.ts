@@ -17,11 +17,16 @@ export const TOKEN_LOGIN = '[user] TOKEN_LOGIN';
 const tokenLogin         = (payload: { token: string }) => createAction(TOKEN_LOGIN, payload);
 export type tokenLogin = ReturnType<typeof tokenLogin>;
 
+export const SELECT_USER = '[user] SELECT_USER';
+const selectUser = (id: number | 'me') => createAction(SELECT_USER, { id });
+export type selectUser = ReturnType<typeof selectUser>;
+
 export const userActions = {
   loginRequest,
   loginSuccess,
   logoutRequest,
   tokenLogin,
+  selectUser,
 };
 export type userActions = ActionsUnion<typeof userActions>;
 

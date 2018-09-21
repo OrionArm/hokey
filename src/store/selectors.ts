@@ -5,6 +5,9 @@ const getState = (state: RootState) => state;
 const getModalJuggler = createSelector(getState, state => state.modalJuggler);
 export const getUserId = createSelector(
   getState,
-  state => state.user.profile ? state.user.profile.userid : null,
+  state => {
+    return state.user.selectedUserId;
+    // return state.user.profile ? state.user.profile.userid : null;
+  },
 );
 export const getModals = createSelector(getModalJuggler, modalJuggler => modalJuggler.modals);

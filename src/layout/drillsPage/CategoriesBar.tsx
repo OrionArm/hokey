@@ -7,6 +7,8 @@ import {
   withStyles,
   createStyles,
 } from '@material-ui/core';
+import AsyncSelect from 'react-select/lib/Async';
+
 import { CategoriesList } from './CategoriesList';
 import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
 import { compose, Dispatch, bindActionCreators } from 'redux';
@@ -22,6 +24,8 @@ import {
 } from '../../drills/selectors';
 import ContentLoader from 'react-content-loader';
 import { isUserAnAdminSelector } from 'src/user/selectors';
+import drillsApi from 'src/drills/api';
+import userActions from 'src/user/actions';
 
 export interface ICategoriesProps {
   classes?: any;
@@ -29,13 +33,20 @@ export interface ICategoriesProps {
   actions: {
     getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
     getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
+    selectUser: typeof userActions.selectUser;
   };
   loading: boolean;
   isAdmin: boolean;
 }
 
+export enum SearchType {
+  User = 'user',
+  Drill = 'drill',
+}
+
 export interface ICategoriesState {
   categoryType: string;
+  searchType: SearchType;
 }
 
 const styles = createStyles({
@@ -60,8 +71,11 @@ const styles = createStyles({
 });
 
 class CategoriesBar extends Component<ICategoriesProps, any> {
+  debounce: any = null;
+
   state = {
     categoryType: DrillCategoryType.Public,
+    searchType: SearchType.User,
   };
 
   componentDidMount() {
@@ -86,12 +100,63 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
   getDrills = (id: string, category = this.state.categoryType) =>
     this.props.actions.getDrillsByCategoryIdRequest(id, category)
 
+  selectUser = (option: { value: number, label: string } | null) => {
+    this.props.actions.selectUser(option ? option.value : 'me');
+    this.props.actions.getDrillsCategoriesRequest();
+  }
+  loadOptions = (query: string) => {
+    return new Promise((resolve, reject) => {
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        drillsApi.searchUsers(query, this.state.searchType)
+          .then(response => resolve(response.data))
+          .catch(err => reject(err));
+      },                         300);
+    });
+  }
+  onSearchTypesearch = (event: any) => {
+    this.setState({
+      searchType: event.target.value,
+    });
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <Paper>
         {this.props.isAdmin &&
-          <div>user select stub</div>
+          <div style={{ display: 'flex' }}>
+            <div style={{ width: '80%' }}>
+              <AsyncSelect
+                loadOptions={this.loadOptions}
+                placeholder="Search..."
+                isClearable={true}
+                onChange={this.selectUser}
+              />
+            </div>
+            <Select
+              value={this.state.searchType}
+              onChange={this.onSearchTypesearch}
+              name="searchType"
+              disableUnderline
+              autoWidth
+              style={{
+                width: '20%',
+                fontSize: '0.875rem',
+              }}
+              classes={{
+                select: classes.select,
+                root: classes.root,
+              }}
+            >
+              <MenuItem value={SearchType.User}>
+                User
+              </MenuItem>
+              <MenuItem value={SearchType.Drill}>
+                Drill
+              </MenuItem>
+            </Select>
+          </div>
         }
         <Button
           fullWidth
@@ -155,6 +220,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     {
       getDrillsByCategoryIdRequest,
       getDrillsCategoriesRequest,
+      selectUser: userActions.selectUser,
       // tslint:disable-next-line:align
     },
     dispatch,

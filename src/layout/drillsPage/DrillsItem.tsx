@@ -14,9 +14,12 @@ import {
   faDownload,
   faFilm,
 } from '@fortawesome/free-solid-svg-icons';
-import { compose } from 'redux';
+import { compose, Dispatch } from 'redux';
 import drillsApi from 'src/drills/api';
 import { Drill } from 'src/drills/model';
+import { RootState } from 'src/store/rootReducers';
+import { getUserId } from 'src/store/selectors';
+import { connect } from 'react-redux';
 
 interface DrillsProps {
   drill: Drill;
@@ -24,6 +27,7 @@ interface DrillsProps {
   onCheck: () => void;
   selectDrill: (id: string) => void;
   isSelected: boolean;
+  selectedUserId: number | 'me';
 }
 interface State {
 
@@ -40,11 +44,11 @@ class DrillsItem extends Component<DrillsProps, State> {
   }
   downloadVideo = (event: React.MouseEvent) => {
     event.stopPropagation();
-    drillsApi.downloadVideo(this.props.drill.id);
+    drillsApi.downloadVideo(this.props.drill.id, this.props.selectedUserId);
   }
   regenerate = (event: React.MouseEvent) => {
     event.stopPropagation();
-    drillsApi.regenerate(this.props.drill.id).then(x => console.log(x));
+    drillsApi.regenerate(this.props.drill.id, this.props.selectedUserId).then(x => console.log(x));
   }
   selectDrill = (event: React.MouseEvent) => {
     this.props.selectDrill(this.props.drill.id);
@@ -96,14 +100,13 @@ class DrillsItem extends Component<DrillsProps, State> {
   }
 }
 
-// const mapStateToProps = (state: RootState) => ({
-//   drills: getDrillsSelector(state),
-// });
-// const mapDispatchToProps = (dispatch: Dispatch) => ({
-//   actions: bindActionCreators({}, dispatch),
-// });
+const mapStateToProps = (state: RootState) => ({
+  selectedUserId: getUserId(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+});
 
 export default compose(
   withStyles(styles),
-  // connect(mapStateToProps, mapDispatchToProps),
-)(DrillsItem);
+  connect(mapStateToProps, mapDispatchToProps),
+)(DrillsItem) as any;
