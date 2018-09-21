@@ -140,6 +140,12 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     }
     return 'Search by email or name...';
   }
+  validateSearchInput = (value: string) => {
+    if (this.state.searchType === SearchType.Drill) {
+      return Boolean(value.match(/^\d+$/));
+    }
+    return true;
+  }
 
   render() {
     const { classes } = this.props;
@@ -154,6 +160,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
                 isClearable={true}
                 onChange={this.selectUser}
                 onCreateOption={this.searchDrill}
+                isValidNewOption={this.validateSearchInput}
                 formatCreateLabel={value => `Search ${value}`}
               />
             </div>

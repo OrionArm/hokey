@@ -40,7 +40,7 @@ const styles = createStyles({
 class DrillsItem extends Component<DrillsProps, State> {
   downloadPdf = (event: React.MouseEvent) => {
     event.stopPropagation();
-    drillsApi.downloadPdf(this.props.drill.id);
+    drillsApi.downloadPdf(this.props.drill.id, this.props.selectedUserId);
   }
   downloadVideo = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -48,7 +48,10 @@ class DrillsItem extends Component<DrillsProps, State> {
   }
   regenerate = (event: React.MouseEvent) => {
     event.stopPropagation();
-    drillsApi.regenerate(this.props.drill.id, this.props.selectedUserId).then(x => console.log(x));
+    drillsApi.regenerate(
+      [this.props.drill.id],
+      this.props.selectedUserId,
+    ).then(x => console.log(x));
   }
   selectDrill = (event: React.MouseEvent) => {
     this.props.selectDrill(this.props.drill.id, this.props.drill.userId);

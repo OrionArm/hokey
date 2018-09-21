@@ -18,6 +18,7 @@ import { getDrillsSelector, getSelectedDrillSelector } from '../../drills/select
 import { Drill, DrillDetailed } from 'src/drills/model';
 import DrillsItem from './DrillsItem';
 import { getDrillRequest } from 'src/drills/actions';
+import { getUserId } from 'src/store/selectors';
 
 interface DrillsProps {
   classes: any;
@@ -26,6 +27,7 @@ interface DrillsProps {
     selectDrill: typeof getDrillRequest,
   };
   selectedDrill: DrillDetailed | null;
+  selectedUserId: string;
 }
 interface State {
   checkedIds: { [id: string]: boolean };
@@ -126,7 +128,10 @@ class DrillsBar extends Component<DrillsProps, State> {
               />
             </Button>
           </div>
-          <ToolsPanel checkedIds={this.checkedIdsAsArray} />
+          <ToolsPanel
+            checkedIds={this.checkedIdsAsArray}
+            selectedUserId={this.props.selectedUserId}
+          />
         </header>
         <List>
           {this.props.drills.map((value: Drill) => (
@@ -148,6 +153,7 @@ class DrillsBar extends Component<DrillsProps, State> {
 const mapStateToProps = (state: RootState) => ({
   drills: getDrillsSelector(state),
   selectedDrill: getSelectedDrillSelector(state),
+  selectedUserId: getUserId(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({

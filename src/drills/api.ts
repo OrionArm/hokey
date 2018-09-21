@@ -1,9 +1,11 @@
 
 import { AxiosPromise } from 'axios';
 import request from '../utils/request';
-import downloadRequest from '../utils/download-request';
 import { DrillDetailed, DrillCategoryType } from './model';
 import { SearchType } from 'src/layout/drillsPage/CategoriesBar';
+import FileSaver from 'file-saver';
+
+const qs = require('qs');
 
 const toDrillEntity = (x: any) => ({
   id: x.drillid,
@@ -41,15 +43,32 @@ function getCategories(userId: number | 'me'): AxiosPromise<any> {
   });
 }
 
-function downloadPdf(id: string): any {
-  return downloadRequest(`https://www.hockeyshare.com/drills/pdf/?id=${id}`);
+function downloadPdf(id: string, userId: number | string | 'me'): any {
+  return request.post(`/users/${userId}/drills/${id}/export/pdf`).then(response => {
+    window.open(response.data, '_blank');
+  });
+}
+
+function downloadMultiplePdfs(userId: string, drill_ids: string[]) {
+  return request.post(
+    `/users/${userId}/drills/download/pdfs`,
+    undefined,
+    {
+      params: { drill_ids },
+      responseType: 'blob',
+    })
+    .then(response => {
+      FileSaver.saveAs(
+        new Blob([response.data]),
+        'pdfs.zip',
+      );
+    });
 }
 
 function downloadVideo(id: string, userId: number | 'me'): any {
   return request.get(`/users/${userId}/drills/${id}/animation`).then(response => {
     const url = response.data.s3video;
     window.open(url, '_blank');
-    // return downloadRequest(url);
   });
 }
 
@@ -60,7 +79,7 @@ function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<Dril
     name: x.drillname,
     has_animation: x.has_animation === '1',
     animation: x.animation ? x.animation.s3video : '',
-    logo_url: x.logo_url ? x.logo_url.watermark_url : '',
+    logo_url: x.logo_url,
   });
   return request.get(`/users/${userId}/drills/${id}`).then(res => {
     res.data = toEntity(res.data);
@@ -68,19 +87,27 @@ function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<Dril
   });
 }
 
-function regenerate(id: string, userId: number | 'me'): AxiosPromise<any> {
-  return request.post(`/users/${userId}/drills/${id}/regenerate`);
+function regenerate(drill_ids: string[], userId: number | string | 'me'): AxiosPromise<any> {
+  return request.post(
+    `/users/${userId}/drills/regenerate`,
+    qs.stringify({ drill_ids }),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    },
+  );
 }
 
 function regenerateWithNewLogo(
-  id: string,
+  id: string | string[],
   logoId: string,
   userId: number | 'me',
 ): AxiosPromise<any> {
   return request.post(
     `/users/${userId}/watermarks/${logoId}/splice`,
     {},
-    { params: { drill_ids: [id] } },
+    { params: { drill_ids: Array.isArray(id) ? id : [id] } },
   );
 }
 
@@ -116,5 +143,6 @@ const drillsAPI = {
   regenerateWithNewLogo,
   searchUsers,
   searchDrills,
+  downloadMultiplePdfs,
 };
 export default drillsAPI;
