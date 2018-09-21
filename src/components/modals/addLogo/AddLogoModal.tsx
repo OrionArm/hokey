@@ -59,6 +59,7 @@ class AddLogoModal extends Component<Props, State> {
           open={true}
           maxWidth={'sm'}
           aria-labelledby="responsive-dialog-title"
+          className={'modal-dialog'}
         >
           <DialogTitle id="form-dialog-title">{'Upload logo'}</DialogTitle>
           <DialogContent>

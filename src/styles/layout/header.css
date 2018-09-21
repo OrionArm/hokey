@@ -26,10 +26,11 @@
     justify-content: center;
     align-items: center;
     font-family: 'Poppins', sans-serif;
+    font-weight: 300;
 }
 .app-toolbar .app-toolbar__username {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 21px;
     margin: 0 5px;
     color: #a7a9b3;
@@ -52,11 +53,14 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
     padding: 0 14px;
     background-color: #fff;
     height: 61px;
 }
 .menu-list.main-menu .main-menu__item {
+    font-family: 'Poppins', sans-serif;
     color: #787f91;
     position: relative;
     height: 100%;
