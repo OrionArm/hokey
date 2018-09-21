@@ -47,7 +47,6 @@ class AvailableLogos extends Component<Props, State> {
       .then(x => console.log(x));
   }
   componentDidMount() {
-    this.props.actions.getLogosRequest();
   }
 
   public render() {

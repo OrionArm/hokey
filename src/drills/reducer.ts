@@ -57,6 +57,8 @@ const selectedDrill = (state = null, action: drillActions): DrillDetailed | null
   switch (action.type) {
     case GET_DRILL_SUCCESS:
       return action.payload.drill;
+    case GET_DRILLS_SUCCESS:
+      return null;
     default:
       return state;
   }
