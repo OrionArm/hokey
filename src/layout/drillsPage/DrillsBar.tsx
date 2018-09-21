@@ -49,6 +49,11 @@ class DrillsBar extends Component<DrillsProps, State> {
     // drills: [],
   };
 
+  get checkedIdsAsArray() {
+    return Object.keys(this.state.checkedIds)
+      .filter(id => this.state.checkedIds[id]);
+  }
+
   handleToggle = (id: string) => () => {
     const checkedIds = { ...this.state.checkedIds, [id]: !this.state.checkedIds[id] };
     this.setState({ checkedIds });
@@ -121,7 +126,7 @@ class DrillsBar extends Component<DrillsProps, State> {
               />
             </Button>
           </div>
-          <ToolsPanel />
+          <ToolsPanel checkedIds={this.checkedIdsAsArray} />
         </header>
         <List>
           {this.props.drills.map((value: Drill) => (

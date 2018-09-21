@@ -11,8 +11,13 @@ import {
   Theme,
   WithStyles,
 } from '@material-ui/core';
+import { downloadVideos } from 'src/utils/download-videos';
+import drillsAPI from 'src/drills/api';
+import { DrillDetailed } from 'src/drills/model';
 
-type ToolsPanelProps = WithStyles<typeof styles>;
+type ToolsPanelProps = WithStyles<typeof styles> & {
+  checkedIds: string[];
+};
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -52,6 +57,18 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
       [event.target.name]: event.target.value,
     })
 
+  downloadSelectedVideos = () => {
+    if (this.props.checkedIds.length === 0) {
+      return;
+    }
+    Promise.all([
+      ...this.props.checkedIds.map(drillsAPI.getDrill),
+    ])
+    .then(responses => responses.map(({ data }) => data))
+    .then((drills: DrillDetailed[]) => drills.map(({ animation }) => animation))
+    .then(downloadVideos);
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -81,8 +98,12 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           classes={{
             root: classes.rootIconBtn,
           }}
+          onClick={this.downloadSelectedVideos}
         >
-          <FontAwesomeIcon icon={faFilm} />
+          <FontAwesomeIcon
+            icon={faFilm}
+            title="Download Selected Video"
+          />
         </IconButton>
         <IconButton
           classes={{
@@ -91,6 +112,19 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
         >
           <FontAwesomeIcon icon={faDownload} />
         </IconButton>
+        <form method="post" action="https://hockey-stream.cronix.ms/" target="_blank">
+          <input
+            type="hidden"
+            name="urls[0]"
+            value="https://hockeyshare-animation.s3.amazonaws.com/video-2416143-1537227021.mp4"
+          />
+          <input
+            type="hidden"
+            name="urls[1]"
+            value="https://hockeyshare-animation.s3.amazonaws.com/video-2428090-1537225801.mp4"
+          />
+          <button type="submit">Yoba</button>
+        </form>
       </div>
     );
   }
