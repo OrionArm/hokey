@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Grid, createStyles } from '@material-ui/core';
+import { createStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import { RootState } from 'src/store/rootReducers';
@@ -69,45 +69,38 @@ class LogoListPage extends Component<Props, State> {
           confirm={this.confirmDelete}
         />
         <HeaderLogo addLogo={this.handleAddLogo}/>
-        <Grid
-          item
-          container
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
-            gridGap: 24,
-            alignItems: 'stretch',
-          }}
-        >
-          {
-            loading ? (
-              <ContentLoader
-                height={200}
-                width={373}
-                speed={2}
-                primaryColor="#f3f3f3"
-                secondaryColor="#ecebeb"
-              >
-                <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
-              </ContentLoader>
-            ) : logos.map((item, index) => {
-              return (
-                <Grid item key={index}>
-                  <ItemLogo
-                    item={item}
-                    pickDefaultLogo={this.setDefaultLogo}
-                    editLogo={this.handleEditLogo}
-                    deleteLogo={this.handleDeleteLogo}
-                  />
-                </Grid>
-              );
-            })}
-        </Grid>
+        <div className={'container-fluid'}>
+          <div className={'row'}>
+            {
+              loading ? (
+                <ContentLoader
+                  height={200}
+                  width={373}
+                  speed={2}
+                  primaryColor="#f3f3f3"
+                  secondaryColor="#ecebeb"
+                >
+                  <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
+                  <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
+                  <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
+                  <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
+                  <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
+                  <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
+                </ContentLoader>
+              ) : logos.map((item, index) => {
+                return (
+                  <div className={'col-md-3 col-sm-4 my-logo-item'} key={index}>
+                    <ItemLogo
+                      item={item}
+                      pickDefaultLogo={this.setDefaultLogo}
+                      editLogo={this.handleEditLogo}
+                      deleteLogo={this.handleDeleteLogo}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+        </div>
       </>
     );
   }

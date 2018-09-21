@@ -1,5 +1,6 @@
 .modal-dialog {
     font-family: 'Poppins', sans-serif;
+    z-index: 1000000;
 }
 .modal-dialog .modal-dialog__title,
 .modal-dialog .modal-dialog__title h2 {

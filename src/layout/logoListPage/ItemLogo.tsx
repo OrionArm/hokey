@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Typography,
   createStyles,
   FormControlLabel,
   Radio,
@@ -9,7 +8,6 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import { LogoModel } from 'src/logos/model';
 
 const styles = (theme: any) =>
@@ -129,14 +127,11 @@ const LogoItem: React.SFC<Props> = ({
     : 'Set as Default';
 
   return (
-    <Card className={classes.card}>
-      <CardMedia
-        component="img"
-        className={classes.media}
-        title="log"
-        image={item.url}
-      />
-      <div className={classes.logosHoverBlock}>
+    <Card className={'my-logo-item__card'}>
+      <div className="my-logo-item__img-wrap">
+        <img className={'my-logo-item__img'} src={item.url} alt="#"/>
+      </div>
+      <div className={'my-logo-item__overlay'}>
         <FormControlLabel
           value={radioLabel}
           classes={{
@@ -167,12 +162,15 @@ const LogoItem: React.SFC<Props> = ({
           )}
         </div>
       </div>
-      <CardContent>
-        <Typography align="center" variant="headline" component="h2">
-          {clearName(item.name)}
-        </Typography>
+      <CardContent className={'my-logo-item__footer'}>
+        <h2 className={'my-logo-item__name'}>{clearName(item.name)}</h2>
       </CardContent>
-      <div className={classes.mark}>default</div>
+      <div
+        className={item.isMain ?
+          'my-logo-item__mark my-logo-item__mark--show' : 'my-logo-item__mark'}
+      >
+        default
+      </div>
     </Card>
   );
 };
