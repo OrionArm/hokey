@@ -35,22 +35,16 @@ function deleteLogos(payload: IDeleteLogosRequest): AxiosPromise<any> {
 }
 
 function addLogo(payload: ISetLogosRequest): AxiosPromise<any> {
-  const headers = { 'Content-Type': 'multipart/form-data' };
-  const config  = { headers };
+  const headers  = { 'Content-Type': 'multipart/form-data' };
+  const config   = { headers };
   const formData = new FormData();
   formData.append('image', payload.image);
   return request.post(`/users/${payload.userId}/watermarks`, formData, config);
 }
 
-function editLogo(payload: IRefreshLogosRequest): AxiosPromise<any> {
-  const headers = { 'Content-Type': 'image/png' };
-  // name="image[]"; filename="file.png"
-  const config  = { headers };
-  return request.patch(
-    `/users/${payload.userId}/watermarks/${payload.logoId}`,
-    payload.images,
-    config,
-  );
+function editLogo(payload: { userId: string, logoId: string, name: string }): AxiosPromise<any> {
+  const body = { name: payload.name };
+  return request.patch(`/users/${payload.userId}/watermarks/${payload.logoId}`, body);
 }
 
 export default logosAPI;

@@ -42,6 +42,16 @@ export const ADD_LOGO_SUCCESS = '[logos] ADD_LOGO_SUCCESS';
 export type addLogosSuccess = ReturnType<typeof addLogosSuccess>;
 const addLogosSuccess = () => createAction(ADD_LOGO_SUCCESS);
 
+export const EDIT_LOGO_REQUEST = '[logos] EDIT_LOGO_REQUEST';
+export type editLogoRequest = ReturnType<typeof editLogoRequest>;
+const editLogoRequest = (payload: { name: string, logoId: string }) => {
+  return createAction(EDIT_LOGO_REQUEST, payload);
+};
+
+export const EDIT_LOGO_SUCCESS = '[logos] EDIT_LOGO_SUCCESS';
+export type editLogoSuccess = ReturnType<typeof editLogoSuccess>;
+const editLogoSuccess = () => createAction(EDIT_LOGO_SUCCESS);
+
 export const logosActions = {
   getLogosRequest,
   getLogosSuccess,
@@ -51,6 +61,8 @@ export const logosActions = {
   deleteLogosSuccess,
   addLogosRequest,
   addLogosSuccess,
+  editLogoRequest,
+  editLogoSuccess,
 };
 
 export type logosActions = ActionsUnion<typeof logosActions>;

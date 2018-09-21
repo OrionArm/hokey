@@ -101,7 +101,7 @@ class LogoListPage extends Component<Props, State> {
                   <ItemLogo
                     item={item}
                     pickDefaultLogo={this.setDefaultLogo}
-                    editLogo={this.handleEditLogo}
+                    editLogo={this.openEditPopup}
                     deleteLogo={this.handleDeleteLogo}
                   />
                 </Grid>
@@ -112,9 +112,14 @@ class LogoListPage extends Component<Props, State> {
     );
   }
 
-  handleEditLogo = (logoId: string) => {
-    // Now we don't need call this api! We'ill be use redirect
-    // this.props.logosAction.setLogosRequest(logoId)
+  openEditPopup = (logoId: string) => {
+    const name = 'ZZZ';
+    this.handleEditLogo({ logoId, name });
+  }
+
+  handleEditLogo = (payload: { logoId: string, name: string }) => {
+    const { logoId, name } = payload;
+    this.props.logosAction.editLogoRequest({ logoId, name });
   }
 
   handleAddLogo = () => {
