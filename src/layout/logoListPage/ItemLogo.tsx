@@ -51,9 +51,13 @@ const styles = (theme: any) =>
     },
 
     HoverGroupButton: {
-      display: 'inline-flex',
+      display: 'flex',
       flexDirection: 'column',
       marginLeft: 'auto',
+      justifyContent: 'flex-start',
+      position: 'absolute',
+      bottom: '10px',
+      right: '10px',
     },
 
     media: {
@@ -110,26 +114,50 @@ type Props = {
   regenerateWithNewLogo?: (logoId: string) => void;
 };
 const LogoItem: React.SFC<Props> = ({
-  classes,
-  item,
-  pickDefaultLogo,
-  editLogo,
-  deleteLogo,
-  regenerateWithNewLogo,
-}) => {
-  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(item) : null;
-  const onEditLogo = editLogo ? () => editLogo(item) : null;
+                                      classes,
+                                      item,
+                                      pickDefaultLogo,
+                                      editLogo,
+                                      deleteLogo,
+                                      regenerateWithNewLogo,
+                                    }) => {
+  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(item) : null;
+  const onEditLogo   = editLogo ? () => editLogo(item) : null;
   const onDeleteLogo = deleteLogo ? () => deleteLogo(item) : null;
 
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(item.id)
     : null;
-  const radioLabel = regenerateWithNewLogo
+  const radioLabel              = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 
+  const SetDefault = () => (
+    <FormControlLabel
+      value={radioLabel}
+      classes={{
+        label: classes.labelRadio,
+      }}
+      checked={regenerateWithNewLogo ? false : item.isMain}
+      control={
+        <Radio
+          classes={{
+            root: classes.root,
+            checked: classes.checked,
+          }}
+          onChange={(onRegenerateWithNewLogo || setDefault) as any}
+        />
+      }
+      label={radioLabel}
+    />
+  );
   return (
     <Card className={classes.card}>
+      {
+        item && item.isMain
+          ? <div className={classes.mark}>default</div>
+          : null
+      }
       <CardMedia
         component="img"
         className={classes.media}
@@ -137,23 +165,11 @@ const LogoItem: React.SFC<Props> = ({
         image={item.url}
       />
       <div className={classes.logosHoverBlock}>
-        <FormControlLabel
-          value={radioLabel}
-          classes={{
-            label: classes.labelRadio,
-          }}
-          checked={regenerateWithNewLogo ? false : item.isMain}
-          control={
-            <Radio
-              classes={{
-                root: classes.root,
-                checked: classes.checked,
-              }}
-              onChange={(onRegenerateWithNewLogo || setDefault) as any}
-            />
-          }
-          label={radioLabel}
-        />
+        {
+          item && item.isMain
+            ? null
+            : <SetDefault />
+        }
         <div className={classes.HoverGroupButton}>
           {onEditLogo && (
             <Button color="secondary" onClick={onEditLogo}>
@@ -172,7 +188,6 @@ const LogoItem: React.SFC<Props> = ({
           {clearName(item.name)}
         </Typography>
       </CardContent>
-      <div className={classes.mark}>default</div>
     </Card>
   );
 };
