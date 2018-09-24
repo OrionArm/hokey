@@ -1,11 +1,11 @@
 import { push } from 'react-router-redux';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
-import userAPI from 'src/components/user/store/api';
+import userAPI from 'src/store/user/store/api';
 import * as fromActions from './actions';
 import * as fromTokenActions from '../token/actions';
 import { errorHandler } from 'src/utils/errorHandler';
-import { logosActions } from 'src/components/logos/store/actions';
+import { logosActions } from 'src/store/logos/actions';
 
 function* watcher() {
   yield takeLatest(fromActions.LOGIN_REQUEST, logIn);

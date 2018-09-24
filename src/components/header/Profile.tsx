@@ -2,8 +2,8 @@ import * as React from 'react';
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { RootState } from '../../store/rootReducers';
 import { Link } from 'react-router-dom';
+import { RootState } from 'src/store/rootReducers';
 
 export interface Props {
   classes?: any;

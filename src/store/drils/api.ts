@@ -1,6 +1,6 @@
 
 import { AxiosPromise } from 'axios';
-import request from '../../../utils/request';
+import request from '../../utils/request';
 import { DrillDetailed, DrillCategoryType } from './model';
 import { SearchType } from 'src/components/drills/CategoriesBar';
 import FileSaver from 'file-saver';

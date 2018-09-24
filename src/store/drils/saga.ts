@@ -1,13 +1,13 @@
 
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 
-import api from 'src/components/drills/store/api';
+import api from 'src/store/drils/api';
 import {
   Drill,
   DrillDetailed,
   DrillCategoriesGroupped,
   DrillCategoryType,
-} from 'src/components/drills/store/model';
+} from 'src/store/drils/model';
 import * as actions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import { getUserId } from 'src/store/selectors';

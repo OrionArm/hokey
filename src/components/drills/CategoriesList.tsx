@@ -8,7 +8,7 @@ import {
   createStyles,
   Badge,
 } from '@material-ui/core';
-import { DrillCategory } from './store/model';
+import { DrillCategory } from 'src/store/drils/model';
 
 interface Props {
   classes?: any;

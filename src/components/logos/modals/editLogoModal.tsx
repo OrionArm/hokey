@@ -7,7 +7,7 @@ import {
   DialogContent,
   Paper, FormControl, InputLabel, Input, withStyles,
 } from '@material-ui/core';
-import { LogoModel } from 'src/components/logos/store/model';
+import { LogoModel } from 'src/store/logos/model';
 
 type Props = {
   open: boolean;

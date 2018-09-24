@@ -17,8 +17,8 @@ faDownload,
 faFilm,
 } from '@fortawesome/free-solid-svg-icons';
 
-import drillsApi from 'src/components/drills/store/api';
-import { Drill } from 'src/components/drills/store/model';
+import drillsApi from 'src/store/drils/api';
+import { Drill } from 'src/store/drils/model';
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
 

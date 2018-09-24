@@ -1,6 +1,6 @@
 import { DrillCategoriesGroupped, Drill, DrillDetailed, DrillCategoryType } from './model';
-import { createAction } from '../../../utils/typedAction/createAction';
-import { ActionsUnion } from '../../../utils/typedAction/action';
+import { createAction } from '../../utils/typedAction/createAction';
+import { ActionsUnion } from '../../utils/typedAction/action';
 
 export const GET_DRILLS_REQUEST = '[drills] GET_DRILLS_REQUEST';
 export const GET_DRILLS_SUCCESS = '[drills] GET_DRILLS_SUCCESS';

@@ -9,12 +9,11 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import userActions from 'src/components/user/store/actions';
+import userActions from 'src/store/user/store/actions';
 import { Dispatch } from 'redux';
 
 type State = Readonly<typeof initialState>;
 type Props = { classes?: any } & injectProps;
-type injectProps = ReturnType<typeof mapDispatchToProps>;
 const initialState = { username: '', password: '' };
 
 class SignInPage extends Component<Props, State> {
@@ -99,11 +98,6 @@ class SignInPage extends Component<Props, State> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  loginRequest: (userData: ILoginRequest) =>
-    dispatch(userActions.loginRequest(userData)),
-});
-
 const styles = (theme: any) => {
   return {
     formStyle: {
@@ -127,6 +121,12 @@ const styles = (theme: any) => {
     },
   };
 };
+
+type injectProps = ReturnType<typeof mapDispatchToProps>;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  loginRequest: (userData: ILoginRequest) =>
+    dispatch(userActions.loginRequest(userData)),
+});
 
 export default withStyles(styles)(
   connect(

@@ -8,26 +8,25 @@ import {
   createStyles,
 } from '@material-ui/core';
 import AsyncSelect from 'react-select/lib/AsyncCreatable';
-
-import { CategoriesList } from './CategoriesList';
 import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ContentLoader from 'react-content-loader';
 
+import { CategoriesList } from './CategoriesList';
 import { RootState } from 'src/store/rootReducers';
-import { isUserAnAdminSelector } from 'src/components/user/store/selectors';
-import drillsApi from 'src/components/drills/store/api';
-import userActions from 'src/components/user/store/actions';
-import { DrillCategoryType, DrillCategoriesGroupped } from './store/model';
-import {
-  getGrouppedCategoriesSelector,
-  getCategoriesRequestStatusSelector,
-} from './store/selectors';
+import { isUserAnAdminSelector } from 'src/store/user/store/selectors';
+import drillsApi from 'src/store/drils/api';
+import userActions from 'src/store/user/store/actions';
+import { DrillCategoriesGroupped, DrillCategoryType } from 'src/store/drils/model';
 import {
   getDrillsByCategoryIdRequest,
   getDrillsCategoriesRequest,
   searchDrillsByIdRequest,
-} from './store/actions';
+} from 'src/store/drils/actions';
+import {
+  getCategoriesRequestStatusSelector,
+  getGrouppedCategoriesSelector,
+} from 'src/store/drils/selectors';
 
 export interface ICategoriesProps {
   classes?: any;

@@ -1,5 +1,5 @@
-import { RootState } from '../../../store/rootReducers';
-import { DrillDetailed } from 'src/components/drills/store/model';
+import { RootState } from '../rootReducers';
+import { DrillDetailed } from 'src/store/drils/model';
 
 // TODO: add reselect
 export const getGrouppedCategoriesSelector = (state: RootState) => {

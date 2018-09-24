@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import { AppBar, Toolbar } from '@material-ui/core';
 
 import Profile from './Profile';
-import Logo from 'src/UI/Logo';
+import { Logo } from 'src/UI';
 import MainManu from '../mainMenu/MainMenu';
-interface HeaderProps {}
+
+type Props = {};
 
 // ToDo(): connect to store, add user to button
-class Header extends Component<HeaderProps, any> {
+class Header extends Component<Props, any> {
   public render() {
     return (
       <AppBar position="static">
         <Toolbar className={'app-toolbar'}>
-          <Logo />
-          <Profile />
+          <Logo/>
+          <Profile/>
         </Toolbar>
-        <MainManu />
+        <MainManu/>
       </AppBar>
     );
   }

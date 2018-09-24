@@ -1,5 +1,5 @@
 import * as fromActions from './actions';
-import { LogoModel } from 'src/components/logos/store/model';
+import { LogoModel } from 'src/store/logos/model';
 
 export const initialState = {
   logos: [new LogoModel()],

@@ -10,10 +10,11 @@ import {
 import SwipeableViews from 'react-swipeable-views';
 import { compose, bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+
 import { RootState } from 'src/store/rootReducers';
 import { getSelectedDrillPreviewSelector, getSelectedDrillLogoSelector,
-  getSelectedDrillAnimationSelector } from 'src/components/drills/store/selectors';
-import { isLogosAvailableSelector } from 'src/components/user/store/selectors';
+  getSelectedDrillAnimationSelector } from 'src/store/drils/selectors';
+import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
 
 export interface DetailsProps {
   classes?: any;

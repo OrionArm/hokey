@@ -1,6 +1,6 @@
 import { AxiosPromise } from 'axios';
-import request, { xWwwFormUrlencoded } from '../../../utils/request';
-import { LogoModel } from 'src/components/logos/store/model';
+import request, { xWwwFormUrlencoded } from '../../utils/request';
+import { LogoModel } from 'src/store/logos/model';
 
 const logosAPI = {
   getLogos,

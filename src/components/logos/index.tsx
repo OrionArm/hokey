@@ -7,9 +7,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { RootState } from 'src/store/rootReducers';
 import ItemLogo from 'src/components/logos/ItemLogo';
 import HeaderLogo from 'src/components/logos/headerLogo';
-import { logosActions } from 'src/components/logos/store/actions';
+import { logosActions } from 'src/store/logos/actions';
 import ContentLoader from 'react-content-loader';
-import { LogoModel } from 'src/components/logos/store/model';
+import { LogoModel } from 'src/store/logos/model';
 import { DeleteLogoModal, EditLogoModal, AddLogoModal }from 'src/components/logos/modals';
 
 type modalStateNames = 'deleteModal' | 'addModal' | 'editModal';

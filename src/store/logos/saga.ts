@@ -2,8 +2,8 @@ import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import * as fromActions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
-import logosAPI from 'src/components/logos/store/api';
-import { LogoModel } from 'src/components/logos/store/model';
+import logosAPI from 'src/store/logos/api';
+import { LogoModel } from 'src/store/logos/model';
 import { getUserId } from 'src/store/selectors';
 
 function* watcher() {

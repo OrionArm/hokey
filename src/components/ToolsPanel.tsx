@@ -11,9 +11,10 @@ import {
   Theme,
   WithStyles,
 } from '@material-ui/core';
+
 import { downloadVideos } from 'src/utils/download-videos';
-import drillsAPI from 'src/components/drills/store/api';
-import { DrillDetailed } from 'src/components/drills/store/model';
+import drillsAPI from 'src/store/drils/api';
+import { DrillDetailed } from 'src/store/drils/model';
 
 type ToolsPanelProps = WithStyles<typeof styles> & {
   checkedIds: string[];

@@ -17,5 +17,3 @@ export const Loading: SFC<Props> = props => {
     </div>
   );
 };
-
-export default Loading;

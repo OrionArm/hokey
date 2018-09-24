@@ -4,9 +4,9 @@ import { Redirect, Route } from 'react-router';
 import { Dispatch } from 'redux';
 
 import { RootState } from 'src/store/rootReducers';
-import * as fromUserActions from 'src/components/user/store/actions';
+import * as fromUserActions from 'src/store/user/store/actions';
 import { customStorage } from 'src/utils/customStorage';
-import PreloadPage from 'src/pages/preloadPage/index';
+import PreloadPage from 'src/pages/preloadPage';
 
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateToProps = ReturnType<typeof mapStateToProps>;

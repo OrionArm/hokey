@@ -13,5 +13,3 @@ export const Main: SFC<any> = ({ children }) => {
     </Grid>
   );
 };
-
-export default Main;

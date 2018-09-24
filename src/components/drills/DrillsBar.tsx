@@ -8,16 +8,15 @@ import {
   withStyles,
   createStyles,
 } from '@material-ui/core';
-
 import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import ToolsPanel from '../../UI/ToolsPanel';
+import ToolsPanel from '../ToolsPanel';
 import { RootState } from '../../store/rootReducers';
-import { getDrillsSelector, getSelectedDrillSelector } from './store/selectors';
-import { Drill, DrillDetailed } from 'src/components/drills/store/model';
+import { getDrillsSelector, getSelectedDrillSelector } from '../../store/drils/selectors';
+import { Drill, DrillDetailed } from 'src/store/drils/model';
 import DrillsItem from './DrillsItem';
-import { getDrillRequest } from 'src/components/drills/store/actions';
+import { getDrillRequest } from 'src/store/drils/actions';
 import { getUserId } from 'src/store/selectors';
 
 interface DrillsProps {

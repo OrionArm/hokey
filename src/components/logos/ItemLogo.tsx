@@ -8,7 +8,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { LogoModel } from 'src/components/logos/store/model';
+import { LogoModel } from 'src/store/logos/model';
 
 const styles = (theme: any) =>
   createStyles({

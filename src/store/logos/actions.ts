@@ -1,6 +1,6 @@
 import { createAction } from 'src/utils/typedAction/createAction';
 import { ActionsUnion } from 'src/utils/typedAction/action';
-import { LogoModel } from 'src/components/logos/store/model';
+import { LogoModel } from 'src/store/logos/model';
 
 export const GET_LOGOS_REQUEST = '[logos] GET_LOGOS_REQUEST';
 export type getLogosRequest = ReturnType<typeof getLogosRequest>;

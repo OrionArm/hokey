@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { routerReducer, RouterState } from 'react-router-redux';
-import * as userReducer from 'src/components/user/store/reducer';
-import * as tokenReducer from 'src/components/user/token/reducer';
-import * as watermarksReducer from 'src/components/logos/store/reducer';
-import * as drillsReducer from 'src/components/drills/store/reducer';
+import * as userReducer from 'src/store/user/store/reducer';
+import * as tokenReducer from 'src/store/user/token/reducer';
+import * as watermarksReducer from 'src/store/logos/reducer';
+import * as drillsReducer from 'src/store/drils/reducer';
 
 export interface RootState {
   readonly routing: RouterState;

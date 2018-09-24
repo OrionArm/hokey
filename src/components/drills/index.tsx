@@ -9,7 +9,7 @@ import { RootState } from 'src/store/rootReducers';
 import {
   hasUserProAccessSelector,
   isUserAnAdminSelector,
-} from 'src/components/user/store/selectors';
+} from 'src/store/user/store/selectors';
 
 interface Props {
   showLogos: boolean;

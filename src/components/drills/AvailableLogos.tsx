@@ -5,17 +5,16 @@ import {
   createStyles,
   Grid,
 } from '@material-ui/core';
-
 import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { RootState } from '../../store/rootReducers';
-import { DrillDetailed } from 'src/components/drills/store/model';
-import { logosActions } from 'src/components/logos/store/actions';
+import { DrillDetailed } from 'src/store/drils/model';
+import { logosActions } from 'src/store/logos/actions';
 import ItemLogo from '../logos/ItemLogo';
-import drillsApi from 'src/components/drills/store/api';
-import { getSelectedDrillSelector } from 'src/components/drills/store/selectors';
+import drillsApi from 'src/store/drils/api';
+import { getSelectedDrillSelector } from 'src/store/drils/selectors';
 import { getUserId } from 'src/store/selectors';
+import { RootState } from 'src/store/rootReducers';
 
 interface DrillsProps {
   classes: any;

@@ -3,16 +3,16 @@ import DrillsPage from 'src/components/drills/index';
 import LogoListPage from 'src/components/logos/index';
 import { Route, Switch } from 'react-router';
 import { Header } from '../../components/header/index';
-import Main from 'src/UI/main';
+import { Main } from 'src/UI';
 
 const ProtectedContent: SFC<any> = () => {
   return (
     <>
-      <Header />
+      <Header/>
       <Main>
         <Switch>
-          <Route path="/logos" component={LogoListPage} />
-          <Route exect path="/drills" component={DrillsPage} />
+          <Route path="/logos" component={LogoListPage}/>
+          <Route exect path="/drills" component={DrillsPage}/>
         </Switch>
       </Main>
     </>
