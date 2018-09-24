@@ -45,6 +45,7 @@ function* checkGenerationStatus() {
     const newStatus = Object.keys(currentStatus)
       .filter(drillId => generationIds.includes(currentStatus[drillId]))
       .reduce((a, drillId) => ({ ...a, [drillId]: currentStatus[drillId] }), {});
+    localStorage.setItem('generation_status', JSON.stringify(newStatus));
     yield put(actions.updateGenerationStatus(newStatus));
   } catch (error) {
     yield call(errorHandler, error);
@@ -59,6 +60,7 @@ function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
     const response = yield call(request as any, action.payload);
     const status: { [drillId: string]: string } = action.payload.drill_ids
       .reduce((a, id, i) => ({ ...a, [id]: response.data[i] }), {});
+    localStorage.setItem('generation_status', JSON.stringify(status));
     yield put(actions.regenerateDrillsSuccess(status));
   } catch (error) {
     yield put(actions.regenerateDrillsFail(error));

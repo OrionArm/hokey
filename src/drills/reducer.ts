@@ -72,17 +72,28 @@ const selectedDrill = (state = null, action: drillActions): DrillDetailed | null
   }
 };
 
-export const generationStatus =
-  (state = {}, action: drillActions): DrillsState['generationStatus'] => {
-    switch (action.type) {
-      case REGENERATE_DRILLS_SUCCESS:
-        return { ...state, ...action.payload.status };
-      case UPDATE_GENERATION_STATUS:
-        return action.payload.status;
-      default:
-        return state;
-    }
-  };
+const getGenerationStatusInitialState = () => {
+  try {
+    const status = localStorage.getItem('generation_status');
+    return status ? JSON.parse(status) : {};
+  } catch (e) {
+    return {};
+  }
+};
+
+export const generationStatus = (
+  state = getGenerationStatusInitialState(),
+  action: drillActions,
+): DrillsState['generationStatus'] => {
+  switch (action.type) {
+    case REGENERATE_DRILLS_SUCCESS:
+      return { ...state, ...action.payload.status };
+    case UPDATE_GENERATION_STATUS:
+      return action.payload.status;
+    default:
+      return state;
+  }
+};
 
 export const reducer = combineReducers<DrillsState, drillActions>({
   categories,
