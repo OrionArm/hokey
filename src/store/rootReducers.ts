@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { routerReducer, RouterState } from 'react-router-redux';
-import * as userReducer from 'src/user/reducer';
-import * as tokenReducer from 'src/user/token/reducer';
-import * as watermarksReducer from 'src/logos/reducer';
-import * as drillsReducer from 'src/drills/reducer';
+import * as userReducer from 'src/components/user/store/reducer';
+import * as tokenReducer from 'src/components/user/token/reducer';
+import * as watermarksReducer from 'src/components/logos/store/reducer';
+import * as drillsReducer from 'src/components/drills/store/reducer';
 import modalJugglerReducer from 'src/modal-juggler/reducer';
 import { IModalJugglerState } from 'src/modal-juggler/interface';
 
