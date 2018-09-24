@@ -14,10 +14,12 @@ import {
 import { downloadVideos } from 'src/utils/download-videos';
 import drillsAPI from 'src/drills/api';
 import { DrillDetailed } from 'src/drills/model';
+import { regenerateDrillsRequest } from 'src/drills/actions';
 
 type ToolsPanelProps = WithStyles<typeof styles> & {
   checkedIds: string[];
   selectedUserId: string;
+  regenerateDrillsRequest: typeof regenerateDrillsRequest;
 };
 
 const styles = (theme: Theme) =>
@@ -55,10 +57,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
 
   handleChange = (event: any) => {
     if (event.target.value === '1') {
-      drillsAPI.regenerate(
+      this.props.regenerateDrillsRequest(
         this.props.checkedIds,
         this.props.selectedUserId,
-      ).then(x => console.log(x));
+      );
     }
     // drillsAPI.regenerateWithNewLogo(
     //   this.props.checkedIds,

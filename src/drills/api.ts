@@ -87,7 +87,9 @@ function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<Dril
   });
 }
 
-function regenerate(drill_ids: string[], userId: number | string | 'me'): AxiosPromise<any> {
+function regenerate({ drill_ids, userId }: {
+  drill_ids: string[], userId: number | string | 'me',
+}): AxiosPromise<any> {
   return request.post(
     `/users/${userId}/drills/regenerate`,
     qs.stringify({ drill_ids }),
@@ -99,11 +101,11 @@ function regenerate(drill_ids: string[], userId: number | string | 'me'): AxiosP
   );
 }
 
-function regenerateWithNewLogo(
+function regenerateWithNewLogo({ id, logoId, userId }: {
   id: string | string[],
   logoId: string,
   userId: number | 'me',
-): AxiosPromise<any> {
+}): AxiosPromise<any> {
   return request.post(
     `/users/${userId}/watermarks/${logoId}/splice`,
     {},
@@ -133,6 +135,17 @@ function searchDrills(value: string) {
     });
 }
 
+function checkGenerationStatus(userId: string, generation_ids: string): AxiosPromise<string[]> {
+  return request.get(
+    `/users/${userId}/watermarks/generation/status`,
+    { params: { generation_ids } },
+    ).then(response => {
+      response.data = Object.keys(response.data)
+        .filter(id => response.data[id] !== 'done');
+      return response;
+    });
+}
+
 const drillsAPI = {
   getDrillsByCategoryId,
   getCategories,
@@ -144,5 +157,6 @@ const drillsAPI = {
   searchUsers,
   searchDrills,
   downloadMultiplePdfs,
+  checkGenerationStatus,
 };
 export default drillsAPI;

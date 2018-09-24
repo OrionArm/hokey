@@ -39,3 +39,7 @@ export const getSelectedDrillLogoSelector = (state: RootState): string => {
   const drill = getSelectedDrillSelector(state);
   return drill ? drill.logo_url : '';
 };
+
+export const getGenerationStatusSelector = (state: RootState) => {
+  return state.drills.generationStatus;
+};

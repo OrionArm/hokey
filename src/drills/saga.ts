@@ -1,11 +1,23 @@
 
-import { call, put, takeLatest, select } from 'redux-saga/effects';
-
+import { call, put, takeLatest, select, takeEvery } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 import api from 'src/drills/api';
 import { Drill, DrillDetailed, DrillCategoriesGroupped, DrillCategoryType } from 'src/drills/model';
 import * as actions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import { getUserId } from 'src/store/selectors';
+import { getGenerationStatusSelector } from './selectors';
+
+function timer() {
+  return eventChannel(emitter => {
+    const iv = setInterval(() => {
+      emitter({});
+    },                     5000);
+    return () => {
+      clearInterval(iv);
+    };
+  });
+}
 
 function* watcher() {
   yield [
@@ -13,7 +25,45 @@ function* watcher() {
     takeLatest(actions.GET_CATEGORIES_REQUEST, getCategoriesSaga),
     takeLatest(actions.GET_DRILL_REQUEST, getDrillSaga),
     takeLatest(actions.SEARCH_DRILLS_REQUEST, searchDrillsListSaga),
+    takeLatest(actions.REGENERATE_DRILLS_REQUEST, regenerateDrillsSaga),
+    takeEvery(yield call(timer), checkGenerationStatus),
   ];
+}
+
+function* checkGenerationStatus() {
+  const currentStatus = yield select(getGenerationStatusSelector);
+  const pendingGenerationIds = Object.values(currentStatus);
+  if (pendingGenerationIds.length === 0) {
+    return;
+  }
+  const userId = yield select(getUserId);
+  try {
+    const response = yield call(
+      api.checkGenerationStatus as any, userId, pendingGenerationIds,
+    );
+    const generationIds = response.data;
+    const newStatus = Object.keys(currentStatus)
+      .filter(drillId => generationIds.includes(currentStatus[drillId]))
+      .reduce((a, drillId) => ({ ...a, [drillId]: currentStatus[drillId] }), {});
+    yield put(actions.updateGenerationStatus(newStatus));
+  } catch (error) {
+    yield call(errorHandler, error);
+  }
+}
+
+function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
+  try {
+    const request = action.payload.logoId
+      ? api.regenerateWithNewLogo
+      : api.regenerate;
+    const response = yield call(request as any, action.payload);
+    const status: { [drillId: string]: string } = action.payload.drill_ids
+      .reduce((a, id, i) => ({ ...a, [id]: response.data[i] }), {});
+    yield put(actions.regenerateDrillsSuccess(status));
+  } catch (error) {
+    yield put(actions.regenerateDrillsFail(error));
+    yield call(errorHandler, error);
+  }
 }
 
 function* searchDrillsListSaga(action: actions.searchDrillsByIdRequest) {
@@ -64,7 +114,7 @@ function* getDrillSaga(action: actions.getDrillRequest) {
     const response = yield call(api.getDrill, action.payload.id, action.payload.userId);
     const drill: DrillDetailed = response.data;
     yield put(actions.getDrillSuccess(drill));
-  }  catch (error) {
+  } catch (error) {
     yield call(errorHandler, error);
   }
 }

@@ -17,7 +17,7 @@ import { RootState } from '../../store/rootReducers';
 import { getDrillsSelector, getSelectedDrillSelector } from '../../drills/selectors';
 import { Drill, DrillDetailed } from 'src/drills/model';
 import DrillsItem from './DrillsItem';
-import { getDrillRequest } from 'src/drills/actions';
+import { getDrillRequest, regenerateDrillsRequest } from 'src/drills/actions';
 import { getUserId } from 'src/store/selectors';
 
 interface DrillsProps {
@@ -25,6 +25,7 @@ interface DrillsProps {
   drills: Drill[];
   actions: {
     selectDrill: typeof getDrillRequest,
+    regenerateDrillsRequest: typeof regenerateDrillsRequest,
   };
   selectedDrill: DrillDetailed | null;
   selectedUserId: string;
@@ -131,6 +132,7 @@ class DrillsBar extends Component<DrillsProps, State> {
           <ToolsPanel
             checkedIds={this.checkedIdsAsArray}
             selectedUserId={this.props.selectedUserId}
+            regenerateDrillsRequest={this.props.actions.regenerateDrillsRequest}
           />
         </header>
         <List>
@@ -157,6 +159,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({
+    regenerateDrillsRequest,
     selectDrill: getDrillRequest,
   },                          dispatch),
 });

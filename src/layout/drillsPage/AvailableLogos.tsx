@@ -13,9 +13,9 @@ import { RootState } from '../../store/rootReducers';
 import { DrillDetailed } from 'src/drills/model';
 import { logosActions } from 'src/logos/actions';
 import ItemLogo from '../logoListPage/ItemLogo';
-import drillsApi from 'src/drills/api';
 import { getSelectedDrillSelector } from 'src/drills/selectors';
 import { getUserId } from 'src/store/selectors';
+import { regenerateDrillsRequest } from 'src/drills/actions';
 
 interface DrillsProps {
   classes: any;
@@ -39,12 +39,15 @@ const styles = createStyles({
 });
 
 class AvailableLogos extends Component<Props, State> {
-  regenerateWithNewLogo = (id: string) => {
+  regenerateWithNewLogo = (logoId: string) => {
     if (!this.props.selectedDrill) {
       return;
     }
-    drillsApi.regenerateWithNewLogo(this.props.selectedDrill.id, id, this.props.selectedUserId)
-      .then(x => console.log(x));
+    this.props.actions.regenerateDrillsRequest(
+      [this.props.selectedDrill.id],
+      this.props.selectedUserId,
+      logoId,
+    );
   }
   componentDidMount() {
   }
@@ -99,7 +102,10 @@ const mapStateToProps = (state: RootState) => ({
   selectedUserId: getUserId(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(logosActions, dispatch),
+  actions: bindActionCreators({
+    ...logosActions,
+    regenerateDrillsRequest,
+  },                          dispatch),
 });
 
 export default compose(
