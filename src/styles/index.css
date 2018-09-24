@@ -1,7 +1,2 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400');
-@import '~bootstrap/dist/css/bootstrap-reboot.css';
-@import '~bootstrap/dist/css/bootstrap-grid.css';
-@import '~bootstrap/dist/css/bootstrap.css';
-
 @import './layout/index.css';
 @import './pages/index.css';
