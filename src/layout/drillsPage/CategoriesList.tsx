@@ -6,12 +6,13 @@ import {
   ListItemSecondaryAction,
   withStyles,
   createStyles,
+  WithStyles,
   Badge,
+  Theme,
 } from '@material-ui/core';
 import { DrillCategory } from '../../drills/model';
 
-interface Props {
-  classes?: any;
+interface Props extends WithStyles<typeof styles> {
   categories: DrillCategory[];
   onSelectCategory: (id: string) => void;
 }
@@ -20,7 +21,7 @@ interface State {
   selectedId: string | null;
 }
 
-const styles = (theme: any) =>
+const styles = (theme: Theme) =>
   createStyles({
     selectedItem: {
       '&:hover $badge': {

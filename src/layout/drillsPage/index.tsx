@@ -6,7 +6,10 @@ import { Grid, Typography } from '@material-ui/core';
 import AvailableLogos from './AvailableLogos';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/rootReducers';
-import { hasUserProAccessSelector, isUserAnAdminSelector } from 'src/user/selectors';
+import {
+  hasUserProAccessSelector,
+  isUserAnAdminSelector,
+} from 'src/user/selectors';
 
 interface Props {
   showLogos: boolean;
@@ -27,15 +30,18 @@ class DrillsPage extends React.Component<Props, State> {
         <Grid item sm={12} style={{ marginBottom: 16 }}>
           <Typography variant="headline">My Drills</Typography>
         </Grid>
-        <Grid container wrap="nowrap" spacing={16} justify="space-between">
-          <Grid item sm={3}>
+        <Grid container wrap="nowrap" spacing={8} justify="space-between">
+          <Grid item md={4}>
             <CategoriesBar />
           </Grid>
-          <Grid item sm={6}>
+          <Grid item md={5}>
             <DrillsBar />
           </Grid>
-          <Grid item sm={3}>
-            <DetailsBar selectedTab={this.state.selectedTab} onTabChange={this.onTabChange} />
+          <Grid item md={3}>
+            <DetailsBar
+              selectedTab={this.state.selectedTab}
+              onTabChange={this.onTabChange}
+            />
             {this.state.selectedTab === 2 && <AvailableLogos />}
           </Grid>
         </Grid>
