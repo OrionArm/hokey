@@ -10,23 +10,24 @@ import {
 import AsyncSelect from 'react-select/lib/AsyncCreatable';
 
 import { CategoriesList } from './CategoriesList';
-import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
 import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { RootState } from '../../store/rootReducers';
+import ContentLoader from 'react-content-loader';
+
+import { RootState } from 'src/store/rootReducers';
+import { isUserAnAdminSelector } from 'src/user/selectors';
+import drillsApi from 'src/drills/api';
+import userActions from 'src/user/actions';
+import { DrillCategoryType, DrillCategoriesGroupped } from '../../drills/model';
+import {
+  getGrouppedCategoriesSelector,
+  getCategoriesRequestStatusSelector,
+} from '../../drills/selectors';
 import {
   getDrillsByCategoryIdRequest,
   getDrillsCategoriesRequest,
   searchDrillsByIdRequest,
 } from '../../drills/actions';
-import {
-  getGrouppedCategoriesSelector,
-  getCategoriesRequestStatusSelector,
-} from '../../drills/selectors';
-import ContentLoader from 'react-content-loader';
-import { isUserAnAdminSelector } from 'src/user/selectors';
-import drillsApi from 'src/drills/api';
-import userActions from 'src/user/actions';
 
 export interface ICategoriesProps {
   classes?: any;
@@ -151,7 +152,8 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
     const { classes } = this.props;
     return (
       <Paper>
-        {this.props.isAdmin &&
+        {
+          this.props.isAdmin &&
           <div style={{ display: 'flex' }}>
             <div style={{ width: '80%' }}>
               <AsyncSelect

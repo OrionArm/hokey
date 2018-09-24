@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
-import {
-  Checkbox,
-  IconButton,
-  ListItem,
-  ListItemText,
-  Divider,
-  withStyles,
-  createStyles,
-} from '@material-ui/core';
+import { connect } from 'react-redux';
+import { compose, Dispatch } from 'redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faSyncAlt,
-  faDownload,
-  faFilm,
+Checkbox,
+IconButton,
+ListItem,
+ListItemText,
+Divider,
+withStyles,
+createStyles,
+} from '@material-ui/core';
+import {
+faSyncAlt,
+faDownload,
+faFilm,
 } from '@fortawesome/free-solid-svg-icons';
-import { compose, Dispatch } from 'redux';
+
 import drillsApi from 'src/drills/api';
 import { Drill } from 'src/drills/model';
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
-import { connect } from 'react-redux';
 
 interface DrillsProps {
   drill: Drill;
@@ -76,7 +77,6 @@ class DrillsItem extends Component<DrillsProps, State> {
             onChange={this.props.onCheck}
           />
           <ListItemText primary={this.props.drill.name} />
-
           <IconButton
             aria-label="Regenerate"
             title="Regenerate"

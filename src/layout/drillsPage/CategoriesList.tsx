@@ -48,33 +48,34 @@ class ListComponent extends Component<Props, State> {
     const { classes } = this.props;
     return (
       <List component="ul">
-        {this.props.categories.map((category, i) => {
-          return (
-            <ListItem
-              component="li"
-              classes={{
-                root: classes.selectedItem,
-              }}
-              key={category.id}
-              button
-              // tslint:disable-next-line:max-line-length
-              selected={
-                this.state.selectedId === category.id ||
-                (this.state.selectedId === null && i === 0)
-              }
-              onClick={this.onSelect(category)}
-            >
-              <ListItemText primary={category.name} />
-              <Badge
-                badgeContent={category.count}
-                color="default"
-                classes={{ badge: classes.badge }}
+        {
+          this.props.categories.map((category, i) => {
+            return (
+              <ListItem
+                component="li"
+                classes={{
+                  root: classes.selectedItem,
+                }}
+                key={category.id}
+                button
+                // tslint:disable-next-line:max-line-length
+                selected={
+                  this.state.selectedId === category.id ||
+                  (this.state.selectedId === null && i === 0)
+                }
+                onClick={this.onSelect(category)}
               >
-                <ListItemSecondaryAction />
-              </Badge>
-            </ListItem>
-          );
-        })}
+                <ListItemText primary={category.name}/>
+                <Badge
+                  badgeContent={category.count}
+                  color="default"
+                  classes={{ badge: classes.badge }}
+                >
+                  <ListItemSecondaryAction/>
+                </Badge>
+              </ListItem>
+            );
+          })}
       </List>
     );
   }
