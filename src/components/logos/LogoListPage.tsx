@@ -41,8 +41,8 @@ class LogoListPage extends Component<Props, State> {
       <>
         <DeleteLogoModal
           modalName="deleteModal"
-          open={this.state.modalState.deleteModal}
           item={this.state.selectedLogo}
+          open={this.state.modalState.deleteModal}
           close={this.closePopup}
           confirm={this.confirmDelete}
         />
@@ -55,8 +55,8 @@ class LogoListPage extends Component<Props, State> {
         />
         <EditLogoModal
           modalName="editModal"
-          open={this.state.modalState.editModal}
           item={this.state.selectedLogo}
+          open={this.state.modalState.editModal}
           close={this.closePopup}
           confirm={this.confirmEdit}
         />

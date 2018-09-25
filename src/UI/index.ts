@@ -3,5 +3,6 @@ import InCenter from './InCenter';
 import FileLoadButton from './FileLoadButton';
 import { Loading } from './Loading';
 import { Logo } from './Logo';
+import { GenericModal } from './GenericModal';
 
-export { Main, InCenter, FileLoadButton, Loading, Logo };
+export { Main, InCenter, FileLoadButton, Loading, Logo, GenericModal };

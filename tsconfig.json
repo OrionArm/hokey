@@ -19,7 +19,8 @@
     "noUnusedLocals": true,
     "noEmitOnError": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "pretty": true
   },
   "exclude": [
     "node_modules",
