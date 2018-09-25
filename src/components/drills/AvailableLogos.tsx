@@ -17,8 +17,7 @@ interface DrillsProps {
 type Props = DrillsProps &
   ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps>;
-interface State {
-}
+interface State {}
 
 const styles = createStyles({
   rootBtn: {
@@ -42,8 +41,7 @@ class AvailableLogos extends Component<Props, State> {
       logoId,
     );
   }
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   public render() {
     return (
@@ -73,11 +71,11 @@ class AvailableLogos extends Component<Props, State> {
             alignItems: 'stretch',
           }}
         >
-          {this.props.logos.map((item, index) => {
+          {this.props.logos.map(logo => {
             return (
-              <Grid item key={index}>
+              <Grid item key={logo.id}>
                 <ItemLogo
-                  item={item}
+                  logo={logo}
                   regenerateWithNewLogo={this.regenerateWithNewLogo}
                 />
               </Grid>
@@ -95,13 +93,19 @@ const mapStateToProps = (state: RootState) => ({
   selectedUserId: getUserId(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({
-    ...logosActions,
-    regenerateDrillsRequest,
-  },                          dispatch),
+  actions: bindActionCreators(
+    {
+      ...logosActions,
+      regenerateDrillsRequest,
+    },
+    dispatch,
+  ),
 });
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(AvailableLogos);

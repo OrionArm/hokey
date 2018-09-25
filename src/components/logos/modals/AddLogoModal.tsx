@@ -5,7 +5,12 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
-  Paper, FormControl, InputLabel, Input, withStyles, Typography,
+  Paper,
+  FormControl,
+  InputLabel,
+  Input,
+  withStyles,
+  Typography,
 } from '@material-ui/core';
 import { LogoModel } from 'src/store/logos/model';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,25 +18,25 @@ import { faCloudUploadAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import FileLoadButton from 'src/UI/FileLoadButton';
 enum fileError {
-  notChecked         = 0,
+  notChecked = 0,
   incorrectExtension = 1,
-  correctExtension   = 2,
+  correctExtension = 2,
 }
 
 type Props = {
   open: boolean;
-  modalName: string,
+  modalName: string;
   item: any;
   close(modalName: string): void;
   confirm(item: any): void;
   classes?: any;
 };
 type State = Readonly<{
-  file?: File | null,
-  fileValid: fileError,
-  logoName: string,
-  preview: any,
-  logo: LogoModel | null,
+  file?: File | null;
+  fileValid: fileError;
+  logoName: string;
+  preview: any;
+  logo: LogoModel | null;
 }>;
 
 const initialState: State = {
@@ -46,7 +51,7 @@ class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
   render() {
-    const { open, classes }            = this.props;
+    const { open, classes } = this.props;
     const { preview, file, fileValid } = this.state;
     return (
       <Dialog
@@ -55,47 +60,51 @@ class AddLogoModal extends Component<Props, State> {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle
-          className={'modal-dialog__title'}
-          id="form-dialog-title"
-        >
+        <DialogTitle className={'modal-dialog__title'} id="form-dialog-title">
           {'Upload logo'}
         </DialogTitle>
         <DialogContent className={'modal-dialog__body'}>
           <Paper elevation={4} className={'img-uploader'}>
-
-            {
-              fileValid === fileError.incorrectExtension
-                ? <Typography variant="subheading" gutterBottom align="center" color={'error'}>
-                  You can load only PNG file
-                </Typography>
-                : null
-            }
-            {
-              file && preview
-                ?
-                <>
-                  <img className={'img-uploader__preview'} src={preview} height={200}/>
-                  {/*TODO: clear img input by click*/}
-                  <div className={'img-uploader__remove'}>
-                    <FontAwesomeIcon icon={faTimes} className={'img-uploader__icon'}/>
-                  </div>
-                </>
-                :
-                <div className={'img-uploader__hint uploader-hint'}>
-                  {/*<span className={'uploader-hint__picture'}  />*/}
-                  <FontAwesomeIcon icon={faCloudUploadAlt} className={'uploader-hint__picture'}/>
-                  <span className={'uploader-hint__text'}>
-                      Use only *.png files 610*360px max size
-                    </span>
-                  <FileLoadButton onClick={this.onUploadFiles}/>
+            {fileValid === fileError.incorrectExtension ? (
+              <Typography
+                variant="subheading"
+                gutterBottom
+                align="center"
+                color={'error'}
+              >
+                You can load only PNG file
+              </Typography>
+            ) : null}
+            {file && preview ? (
+              <>
+                <img
+                  className={'img-uploader__preview'}
+                  src={preview}
+                  height={200}
+                />
+                {/*TODO: clear img input by click*/}
+                <div className={'img-uploader__remove'}>
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    className={'img-uploader__icon'}
+                  />
                 </div>
-            }
+              </>
+            ) : (
+              <div className={'img-uploader__hint uploader-hint'}>
+                {/*<span className={'uploader-hint__picture'}  />*/}
+                <FontAwesomeIcon
+                  icon={faCloudUploadAlt}
+                  className={'uploader-hint__picture'}
+                />
+                <span className={'uploader-hint__text'}>
+                  Use only *.png files 610*360px max size
+                </span>
+                <FileLoadButton onClick={this.onUploadFiles} />
+              </div>
+            )}
           </Paper>
-          <FormControl
-            className={classes.spacing}
-            fullWidth
-          >
+          <FormControl className={classes.spacing} fullWidth>
             <InputLabel
               FormLabelClasses={{
                 root: classes.cssLabel,
@@ -142,7 +151,7 @@ class AddLogoModal extends Component<Props, State> {
     this.setState({ logoName: name });
   }
 
-  onClose       = (): void => {
+  onClose = (): void => {
     this.setState({ file: undefined, preview: undefined, logoName: '' });
     this.props.close(this.props.modalName);
   }
@@ -150,12 +159,14 @@ class AddLogoModal extends Component<Props, State> {
   onUploadFiles = (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.currentTarget.files && e.currentTarget.files[0];
     if (file) {
-      const preview            = URL.createObjectURL(file);
-      const logoName           = file.name;
+      const preview = URL.createObjectURL(file);
+      const logoName = file.name;
       const validateExtensions = logoName.endsWith('.png');
       if (validateExtensions) {
         this.setState({
-          file, preview, logoName,
+          file,
+          preview,
+          logoName,
           fileValid: fileError.correctExtension,
         });
       } else {
@@ -164,7 +175,7 @@ class AddLogoModal extends Component<Props, State> {
     }
   }
 
-  onSubmit      = (): void => {
+  onSubmit = (): void => {
     const { file, logoName } = this.state;
 
     if (file) {

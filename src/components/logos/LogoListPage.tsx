@@ -5,8 +5,12 @@ import ContentLoader from 'react-content-loader';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import LogoHeader from 'src/components/logos/LogoHeader';
-import ItemLogo from 'src/components/logos/LogoItem';
-import { AddLogoModal, DeleteLogoModal, EditLogoModal } from 'src/components/logos/modals';
+import LogoItem from './LogoItem';
+import {
+  AddLogoModal,
+  DeleteLogoModal,
+  EditLogoModal,
+} from 'src/components/logos/modals';
 import { logosActions } from 'src/store/logos/actions';
 import { LogoModel } from 'src/store/logos/model';
 import { RootState } from 'src/store/rootReducers';
@@ -18,8 +22,8 @@ const modalState: modalState = {
   addModal: false,
   editModal: false,
 };
-const selectedLogo: any      = null;  // fix  change any to LogoModel
-const initialState           = { modalState, selectedLogo };
+const selectedLogo: any = null; // fix  change any to LogoModel
+const initialState = { modalState, selectedLogo };
 
 type State = Readonly<typeof modalState & typeof selectedLogo>;
 type Props = { classes?: any } & injectDispatchProps & injectStateProps;
@@ -56,38 +60,44 @@ class LogoListPage extends Component<Props, State> {
           close={this.closePopup}
           confirm={this.confirmEdit}
         />
-        <LogoHeader addLogo={this.openAddPopup}/>
-        <div className={'container-fluid'}>
-          <div className={'row'}>
-            {
-              loading ? (
-                <ContentLoader
-                  height={200}
-                  width={373}
-                  speed={2}
-                  primaryColor="#f3f3f3"
-                  secondaryColor="#ecebeb"
-                >
-                  <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
-                  <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
-                  <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
-                  <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
-                  <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
-                  <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
-                </ContentLoader>
-              ) : logos.map((item, index) => {
-                return (
-                  <div className={'col-md-3 col-sm-4 my-logo-item'} key={index}>
-                    <ItemLogo
-                      item={item}
-                      pickDefaultLogo={this.setDefaultLogo}
-                      editLogo={this.openEditPopup}
-                      deleteLogo={this.handleDeleteLogo}
-                    />
-                  </div>
-                );
-              })}
-          </div>
+        <LogoHeader addLogo={this.openAddPopup} />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
+            gridGap: 24,
+            width: '100%',
+            alignItems: 'stretch',
+          }}
+        >
+          {loading ? (
+            <ContentLoader
+              height={200}
+              width={373}
+              speed={2}
+              primaryColor="#f3f3f3"
+              secondaryColor="#ecebeb"
+            >
+              <rect x="0" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="70" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="140" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="210" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="280" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="350" y="8" rx="0" ry="0" width="55" height="60" />
+            </ContentLoader>
+          ) : (
+            logos.map(logo => {
+              return (
+                <LogoItem
+                  key={logo.id}
+                  logo={logo}
+                  pickDefaultLogo={this.setDefaultLogo}
+                  editLogo={this.openEditPopup}
+                  deleteLogo={this.handleDeleteLogo}
+                />
+              );
+            })
+          )}
         </div>
       </>
     );
@@ -108,7 +118,7 @@ class LogoListPage extends Component<Props, State> {
     });
   }
 
-  confirmEdit = (payload: { logo: LogoModel, newName: string }) => {
+  confirmEdit = (payload: { logo: LogoModel; newName: string }) => {
     const logoId = this.state.selectedLogo.id;
     this.props.logosAction.editLogoRequest({ logoId, name: payload.newName });
     this.closePopup('editModal');
@@ -119,7 +129,9 @@ class LogoListPage extends Component<Props, State> {
   }
 
   confirmDelete = () => {
-    this.props.logosAction.deleteLogosRequest({ logosIds: [this.state.selectedLogo.id] });
+    this.props.logosAction.deleteLogosRequest({
+      logosIds: [this.state.selectedLogo.id],
+    });
     this.closePopup('deleteModal');
   }
 
@@ -142,7 +154,6 @@ class LogoListPage extends Component<Props, State> {
   setDefaultLogo = (logo: LogoModel) => {
     this.props.logosAction.changeDefaultLogoRequest({ logoId: logo.id });
   }
-
 }
 
 const styles = (theme: any) =>
@@ -188,9 +199,10 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   logosAction: bindActionCreators(logosActions, dispatch),
-  addLogo: (payload: { image: File, name: string }) => dispatch(
-    logosActions.addLogosRequest({ image: payload.image, name: payload.name }),
-  ),
+  addLogo: (payload: { image: File; name: string }) =>
+    dispatch(
+      logosActions.addLogosRequest({ image: payload.image, name: payload.name }),
+    ),
 });
 
 export default withStyles(styles)(

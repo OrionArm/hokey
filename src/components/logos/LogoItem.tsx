@@ -4,46 +4,50 @@ import {
   FormControlLabel,
   Radio,
   Button,
+  CardMedia,
+  Typography,
+  withStyles,
+  Card,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import { LogoModel } from 'src/store/logos/model';
+import Mark from 'src/UI/Mark';
 
 const styles = (theme: any) =>
   createStyles({
-    root: {
+    rootRadio: {
       color: theme.palette.common.white,
-      '&$checked': {
+      '&$checkedRadio': {
         color: theme.palette.common.white,
       },
     },
-    checked: {},
+    checkedRadio: {},
 
     labelRadio: {
       color: theme.palette.common.white,
     },
 
     card: {
-      height: 280,
+      minHeight: 280,
       position: 'relative',
-      width: 225,
+      display: 'flex',
+      flexDirection: 'column',
 
-      '&:hover $logosHoverBlock': {
+      '&:hover $logoHovering': {
         top: 0,
       },
     },
 
-    logosHoverBlock: {
+    logoHovering: {
       transition: '0.7s',
       display: 'flex',
       width: '100%',
-      height: 200,
+      height: '100%',
       backgroundColor: 'rgba(78, 78, 78, 0.5)',
       position: 'absolute',
+      zIndex: 2,
       top: -500,
       left: 0,
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing.unit * 2,
       flexDirection: 'column',
       justifyContent: 'space-between',
     },
@@ -52,129 +56,101 @@ const styles = (theme: any) =>
       display: 'flex',
       flexDirection: 'column',
       marginLeft: 'auto',
-      justifyContent: 'flex-start',
       position: 'absolute',
       bottom: '10px',
       right: '10px',
     },
-
-    media: {
-      width: '100%',
-      height: 200,
-      backgroundColor: '#f1f1f1',
-    },
-    mark: {
-      position: 'absolute',
-      top: 20,
-      right: 0,
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.common.white,
-      fontSize: 'inherit',
+    wrapperImg: {
+      flexGrow: 1,
+      position: 'relative',
       display: 'flex',
-      justifyContent: 'center',
       alignItems: 'center',
-      width: 80,
-      paddingRight: 15,
-      height: 30,
-      zIndex: 2,
-      '&:after': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: -15,
-        transform: 'skew(45deg)',
-        width: 30,
-        height: 15,
-        backgroundColor: theme.palette.primary.main,
-        zIndex: -1,
-      },
-      '&:before': {
-        content: '""',
-        position: 'absolute',
-        top: 15,
-        left: -15,
-        transform: 'skew(-45deg)',
-        width: 30,
-        height: 14.5,
-        backgroundColor: theme.palette.primary.main,
-        zIndex: -1,
-      },
+    },
+    media: {
+      backgroundColor: theme.palette.common.white,
     },
   });
 
 type Props = {
   classes?: any;
-  item: LogoModel;
-  pickDefaultLogo?: (item: LogoModel) => void;
-  editLogo?: (item: LogoModel) => void;
-  deleteLogo?: (item: LogoModel) => void;
+  logo: LogoModel;
+  pickDefaultLogo?: (logo: LogoModel) => void;
+  editLogo?: (logo: LogoModel) => void;
+  deleteLogo?: (logo: LogoModel) => void;
 
   regenerateWithNewLogo?: (logoId: string) => void;
 };
 const LogoItem: React.SFC<Props> = ({
-                                      classes,
-                                      item,
-                                      pickDefaultLogo,
-                                      editLogo,
-                                      deleteLogo,
-                                      regenerateWithNewLogo,
-                                    }) => {
-  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(item) : null;
-  const onEditLogo   = editLogo ? () => editLogo(item) : null;
-  const onDeleteLogo = deleteLogo ? () => deleteLogo(item) : null;
+  classes,
+  logo,
+  pickDefaultLogo,
+  editLogo,
+  deleteLogo,
+  regenerateWithNewLogo,
+}) => {
+  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
+  const onEditLogo = editLogo ? () => editLogo(logo) : null;
+  const onDeleteLogo = deleteLogo ? () => deleteLogo(logo) : null;
 
   const onRegenerateWithNewLogo = regenerateWithNewLogo
-    ? () => regenerateWithNewLogo(item.id)
+    ? () => regenerateWithNewLogo(logo.id)
     : null;
-  const radioLabel              = regenerateWithNewLogo
+  const radioLabel = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 
   return (
-    <Card className={'my-logo-item__card'}>
-      <div className="my-logo-item__img-wrap">
-        <img className={'my-logo-item__img'} src={item.url} alt="#"/>
-      </div>
-      <div className={'my-logo-item__overlay'}>
-        <FormControlLabel
-          value={radioLabel}
-          classes={{
-            label: classes.labelRadio,
-          }}
-          checked={regenerateWithNewLogo ? false : item.isMain}
-          control={
-            <Radio
-              classes={{
-                root: classes.root,
-                checked: classes.checked,
-              }}
-              onChange={(onRegenerateWithNewLogo || setDefault) as any}
-            />
-          }
-          label={radioLabel}
+    <Card className={classes.card}>
+      <div className={classes.wrapperImg}>
+        <CardMedia
+          component="img"
+          className={classes.media}
+          title={logo.name}
+          image={logo.url}
         />
-        <div className={classes.HoverGroupButton}>
-          {onEditLogo && (
-            <Button color="secondary" onClick={onEditLogo}>
-              Edit
-            </Button>
-          )}
-          {onDeleteLogo && (
-            <Button color="primary" onClick={onDeleteLogo}>
-              Delete
-            </Button>
-          )}
+        <div className={classes.logoHovering}>
+          <FormControlLabel
+            value={radioLabel}
+            classes={{
+              label: classes.labelRadio,
+            }}
+            checked={regenerateWithNewLogo ? false : logo.isMain}
+            control={
+              <Radio
+                classes={{
+                  root: classes.rootRadio,
+                  checked: classes.checkedRadio,
+                }}
+                onChange={(onRegenerateWithNewLogo || setDefault) as any}
+              />
+            }
+            label={radioLabel}
+          />
+          <div className={classes.HoverGroupButton}>
+            {onEditLogo && (
+              <Button color="secondary" onClick={onEditLogo}>
+                Edit
+              </Button>
+            )}
+            {onDeleteLogo && (
+              <Button color="primary" onClick={onDeleteLogo}>
+                Delete
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-      <CardContent className={'my-logo-item__footer'}>
-        <h2 className={'my-logo-item__name'}>{clearName(item.name)}</h2>
-      </CardContent>
-      <div
-        className={item.isMain ?
-          'my-logo-item__mark my-logo-item__mark--show' : 'my-logo-item__mark'}
+
+      <Typography
+        style={{ padding: 8 }}
+        align="center"
+        variant="headline"
+        component="h4"
       >
-        default
-      </div>
+        {clearName(logo.name)}
+      </Typography>
+
+      {logo.isMain && <Mark textContent="default" />}
     </Card>
   );
 };
