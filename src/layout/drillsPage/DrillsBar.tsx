@@ -14,7 +14,10 @@ import { connect } from 'react-redux';
 
 import ToolsPanel from '../../UI/ToolsPanel';
 import { RootState } from '../../store/rootReducers';
-import { getDrillsSelector, getSelectedDrillSelector } from '../../drills/selectors';
+import {
+  getDrillsSelector,
+  getSelectedDrillSelector,
+} from '../../drills/selectors';
 import { Drill, DrillDetailed } from 'src/drills/model';
 import DrillsItem from './DrillsItem';
 import { getDrillRequest } from 'src/drills/actions';
@@ -24,7 +27,7 @@ interface DrillsProps {
   classes: any;
   drills: Drill[];
   actions: {
-    selectDrill: typeof getDrillRequest,
+    selectDrill: typeof getDrillRequest;
   };
   selectedDrill: DrillDetailed | null;
   selectedUserId: string;
@@ -52,29 +55,41 @@ class DrillsBar extends Component<DrillsProps, State> {
   };
 
   get checkedIdsAsArray() {
-    return Object.keys(this.state.checkedIds)
-      .filter(id => this.state.checkedIds[id]);
+    return Object.keys(this.state.checkedIds).filter(
+      id => this.state.checkedIds[id],
+    );
   }
 
   handleToggle = (id: string) => () => {
-    const checkedIds = { ...this.state.checkedIds, [id]: !this.state.checkedIds[id] };
+    const checkedIds = {
+      ...this.state.checkedIds,
+      [id]: !this.state.checkedIds[id],
+    };
     this.setState({ checkedIds });
   }
 
   toggleAll = (event: any, checked: boolean) => {
-    const checkedIds = this.props.drills.reduce((a, drill) => ({ ...a, [drill.id]: checked }), {});
+    const checkedIds = this.props.drills.reduce(
+      (a, drill) => ({ ...a, [drill.id]: checked }),
+      {},
+    );
     this.setState({ checkedIds });
   }
 
   toggleAnimated = (event: any, checked: boolean) => {
     const checkedIds = this.props.drills
       .filter(drill => drill.has_animation)
-      .reduce((a, drill) => ({ ...a, [drill.id]: checked }), this.state.checkedIds);
+      .reduce(
+        (a, drill) => ({ ...a, [drill.id]: checked }),
+        this.state.checkedIds,
+      );
     this.setState({ checkedIds });
   }
 
   isDrillSelected = (id: string) => {
-    return this.props.selectedDrill ? this.props.selectedDrill.id === id : false;
+    return this.props.selectedDrill
+      ? this.props.selectedDrill.id === id
+      : false;
   }
 
   public render() {
@@ -90,8 +105,8 @@ class DrillsBar extends Component<DrillsProps, State> {
         >
           <div
             style={{
-              border: '1px solid rgba(0, 0, 0, 0.12)',
-              borderRadius: 4,
+              borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+              borderBottomRightRadius: 4,
               display: 'flex',
             }}
           >
@@ -116,6 +131,11 @@ class DrillsBar extends Component<DrillsProps, State> {
             <Button
               classes={{
                 root: classes.rootBtn,
+              }}
+              style={{
+                borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+                borderRadius: 0,
+                borderBottomRightRadius: 4,
               }}
             >
               <FormControlLabel
@@ -156,12 +176,18 @@ const mapStateToProps = (state: RootState) => ({
   selectedUserId: getUserId(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({
-    selectDrill: getDrillRequest,
-  },                          dispatch),
+  actions: bindActionCreators(
+    {
+      selectDrill: getDrillRequest,
+    },
+    dispatch,
+  ),
 });
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(DrillsBar);
