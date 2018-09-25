@@ -1,19 +1,11 @@
+import { createStyles, Paper, Tab, Tabs, Typography, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
-import {
-  Paper,
-  Tabs,
-  Tab,
-  Typography,
-  withStyles,
-  createStyles,
-} from '@material-ui/core';
-import SwipeableViews from 'react-swipeable-views';
-import { compose, bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-
+import SwipeableViews from 'react-swipeable-views';
+import { bindActionCreators, compose, Dispatch } from 'redux';
+// tslint:disable-next-line:max-line-length
+import { getSelectedDrillAnimationSelector, getSelectedDrillLogoSelector, getSelectedDrillPreviewSelector } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
-import { getSelectedDrillPreviewSelector, getSelectedDrillLogoSelector,
-  getSelectedDrillAnimationSelector } from 'src/store/drils/selectors';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
 
 export interface DetailsProps {
@@ -68,14 +60,6 @@ const styles = (theme: any) =>
   });
 
 class DetailsBar extends Component<DetailsProps, any> {
-  handleChange = (event: any, value: any) => {
-    this.setState({ value });
-  }
-
-  handleChangeIndex = (index: number) => {
-    this.setState({ value: index });
-  }
-
   public render() {
     const { classes, theme } = this.props;
     return (

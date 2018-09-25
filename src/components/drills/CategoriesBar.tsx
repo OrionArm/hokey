@@ -179,11 +179,6 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
       this.getDrills(firstDrill.id, categoryType);
     }
   }
-
-  onSelectUser = (event: any) => {
-    // const userId = event.target.value;
-  }
-
   getDrills = (id: string, category = this.state.categoryType) =>
     this.props.actions.getDrillsByCategoryIdRequest(id, category)
 

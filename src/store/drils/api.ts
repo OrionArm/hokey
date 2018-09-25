@@ -1,9 +1,9 @@
 
 import { AxiosPromise } from 'axios';
-import request from '../../utils/request';
-import { DrillDetailed, DrillCategoryType } from './model';
-import { SearchType } from 'src/components/drills/CategoriesBar';
 import FileSaver from 'file-saver';
+import { SearchType } from 'src/components/drills/CategoriesBar';
+import request from '../../utils/request';
+import { DrillCategoryType, DrillDetailed } from './model';
 
 const qs = require('qs');
 
@@ -70,6 +70,22 @@ function downloadVideo(id: string, userId: number | 'me'): any {
     const url = response.data.s3video;
     window.open(url, '_blank');
   });
+}
+
+function downloadMultipleVideos(
+  drill_ids: string[],
+  userId: number | string | 'me',
+) {
+  return request.post(
+    `/users/${userId}/drills/download/videos`,
+    undefined,
+    {
+      params      : { drill_ids },
+      responseType: 'blob',
+    })
+    .then(response => {
+      FileSaver.saveAs(new Blob([response.data]), 'animations.zip');
+    });
 }
 
 function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<DrillDetailed> {
@@ -139,24 +155,25 @@ function checkGenerationStatus(userId: string, generation_ids: string): AxiosPro
   return request.get(
     `/users/${userId}/watermarks/generation/status`,
     { params: { generation_ids } },
-    ).then(response => {
-      response.data = Object.keys(response.data)
-        .filter(id => response.data[id] !== 'done');
-      return response;
-    });
+  ).then(response => {
+    response.data = Object.keys(response.data)
+      .filter(id => response.data[id] !== 'done');
+    return response;
+  });
 }
 
 const drillsAPI = {
-  getDrillsByCategoryId,
-  getCategories,
+  checkGenerationStatus,
+  downloadMultiplePdfs,
+  downloadMultipleVideos,
   downloadPdf,
   downloadVideo,
+  getCategories,
   getDrill,
+  getDrillsByCategoryId,
   regenerate,
   regenerateWithNewLogo,
-  searchUsers,
   searchDrills,
-  downloadMultiplePdfs,
-  checkGenerationStatus,
+  searchUsers,
 };
 export default drillsAPI;

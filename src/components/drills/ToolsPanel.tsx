@@ -5,8 +5,6 @@ import { Button, createStyles, IconButton, MenuItem, Select, Theme, withStyles, 
 import React, { Component } from 'react';
 import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import drillsAPI from 'src/store/drils/api';
-import { DrillDetailed } from 'src/store/drils/model';
-import { downloadVideos } from 'src/utils/download-videos';
 
 type ToolsPanelProps = WithStyles<typeof styles> & {
   checkedIds: string[];
@@ -54,6 +52,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
         this.props.selectedUserId,
       );
     }
+    // TODO: implement 'choose logo' modal
     // drillsAPI.regenerateWithNewLogo(
     //   this.props.checkedIds,
     //   this.props.selectedUserId,
@@ -64,13 +63,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
     if (this.props.checkedIds.length === 0) {
       return;
     }
-    Promise.all([
-      ...this.props.checkedIds.map((id: string) =>
-        drillsAPI.getDrill(id, this.props.selectedUserId)),
-    ])
-      .then(responses => responses.map(({ data }) => data))
-      .then((drills: DrillDetailed[]) => drills.map(({ animation }) => animation))
-      .then(downloadVideos);
+    drillsAPI.downloadMultipleVideos(
+      this.props.checkedIds,
+      this.props.selectedUserId,
+    );
   }
 
   downloadSelectedPdfs = () => {
