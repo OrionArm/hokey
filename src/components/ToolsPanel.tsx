@@ -1,24 +1,17 @@
-import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
-import {
-  Button,
-  MenuItem,
-  Select,
-  withStyles,
-  createStyles,
-  IconButton,
-  Theme,
-  WithStyles,
-} from '@material-ui/core';
-
-import { downloadVideos } from 'src/utils/download-videos';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// tslint:disable-next-line:max-line-length
+import { Button, createStyles, IconButton, MenuItem, Select, Theme, withStyles, WithStyles } from '@material-ui/core';
+import React, { Component } from 'react';
+import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import drillsAPI from 'src/store/drils/api';
 import { DrillDetailed } from 'src/store/drils/model';
+import { downloadVideos } from 'src/utils/download-videos';
 
 type ToolsPanelProps = WithStyles<typeof styles> & {
   checkedIds: string[];
   selectedUserId: string;
+  regenerateDrillsRequest: typeof regenerateDrillsRequest;
 };
 
 const styles = (theme: Theme) =>
@@ -56,10 +49,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
 
   handleChange = (event: any) => {
     if (event.target.value === '1') {
-      drillsAPI.regenerate(
+      this.props.regenerateDrillsRequest(
         this.props.checkedIds,
         this.props.selectedUserId,
-      ).then(x => console.log(x));
+      );
     }
     // drillsAPI.regenerateWithNewLogo(
     //   this.props.checkedIds,

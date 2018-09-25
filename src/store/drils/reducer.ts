@@ -5,6 +5,7 @@ import {
   GET_DRILLS_SUCCESS, GET_CATEGORIES_SUCCESS, GET_CATEGORIES_REQUEST,
   GET_CATEGORIES_FAIL, GET_DRILLS_REQUEST, GET_DRILLS_FAIL,
   SEARCH_DRILLS_REQUEST, SEARCH_DRILLS_SUCCESS, SEARCH_DRILLS_FAIL,
+  REGENERATE_DRILLS_SUCCESS, UPDATE_GENERATION_STATUS,
 } from './actions';
 
 export interface DrillsState {
@@ -17,6 +18,9 @@ export interface DrillsState {
     data: Drill[];
   };
   selectedDrill: DrillDetailed | null;
+  generationStatus: {
+    [drillId: string]: string;
+  };
 }
 
 const initialState = {
@@ -68,8 +72,32 @@ const selectedDrill = (state = null, action: drillActions): DrillDetailed | null
   }
 };
 
+const getGenerationStatusInitialState = () => {
+  try {
+    const status = localStorage.getItem('generation_status');
+    return status ? JSON.parse(status) : {};
+  } catch (e) {
+    return {};
+  }
+};
+
+export const generationStatus = (
+  state = getGenerationStatusInitialState(),
+  action: drillActions,
+): DrillsState['generationStatus'] => {
+  switch (action.type) {
+    case REGENERATE_DRILLS_SUCCESS:
+      return { ...state, ...action.payload.status };
+    case UPDATE_GENERATION_STATUS:
+      return action.payload.status;
+    default:
+      return state;
+  }
+};
+
 export const reducer = combineReducers<DrillsState, drillActions>({
   categories,
   drills,
   selectedDrill,
+  generationStatus,
 });

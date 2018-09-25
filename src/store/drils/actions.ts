@@ -41,6 +41,22 @@ export const searchDrillsByIdSuccess = (drills: Drill[]) =>
   createAction(SEARCH_DRILLS_SUCCESS, { drills });
 export const searchDrillsByIdFail = (error: any) => createAction(SEARCH_DRILLS_FAIL, { error });
 
+export const REGENERATE_DRILLS_REQUEST = '[drills] REGENERATE_DRILLS_REQUEST';
+export const REGENERATE_DRILLS_SUCCESS = '[drills] REGENERATE_DRILLS_SUCCESS';
+export const REGENERATE_DRILLS_FAIL = '[drills] REGENERATE_DRILLS_FAIL';
+export const regenerateDrillsRequest =
+  (drill_ids: string[], userId: number | string | 'me', logoId?: string) =>
+    createAction(REGENERATE_DRILLS_REQUEST, { drill_ids, userId, logoId });
+export type regenerateDrillsRequest = ReturnType<typeof regenerateDrillsRequest>;
+export const regenerateDrillsSuccess =
+  (status: { [drillId: string]: string }) => createAction(REGENERATE_DRILLS_SUCCESS, { status });
+export const regenerateDrillsFail =
+  (error: any) => createAction(REGENERATE_DRILLS_FAIL, { error });
+
+export const UPDATE_GENERATION_STATUS = '[drills] UPDATE_GENERATION_STATUS';
+export const updateGenerationStatus =
+  (status: { [drillId: string]: string }) => createAction(UPDATE_GENERATION_STATUS, { status });
+
 export const drillActions = {
   getDrillsByCategoryIdRequest,
   getDrillsByCategoryIdSuccess,
@@ -55,6 +71,12 @@ export const drillActions = {
   searchDrillsByIdRequest,
   searchDrillsByIdSuccess,
   searchDrillsByIdFail,
+
+  regenerateDrillsRequest,
+  regenerateDrillsSuccess,
+  regenerateDrillsFail,
+
+  updateGenerationStatus,
 };
 
 export type drillActions = ActionsUnion<typeof drillActions>;

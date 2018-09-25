@@ -1,29 +1,22 @@
+// tslint:disable-next-line:max-line-length
+import { Button, Checkbox, createStyles, FormControlLabel, List, Paper, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
-import {
-  Paper,
-  Checkbox,
-  FormControlLabel,
-  List,
-  Button,
-  withStyles,
-  createStyles,
-} from '@material-ui/core';
-import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import ToolsPanel from '../ToolsPanel';
-import { RootState } from '../../store/rootReducers';
-import { getDrillsSelector, getSelectedDrillSelector } from '../../store/drils/selectors';
+import { bindActionCreators, compose, Dispatch } from 'redux';
+import { getDrillRequest, regenerateDrillsRequest } from 'src/store/drils/actions';
 import { Drill, DrillDetailed } from 'src/store/drils/model';
-import DrillsItem from './DrillsItem';
-import { getDrillRequest } from 'src/store/drils/actions';
 import { getUserId } from 'src/store/selectors';
+import { getDrillsSelector, getSelectedDrillSelector } from '../../store/drils/selectors';
+import { RootState } from '../../store/rootReducers';
+import ToolsPanel from '../ToolsPanel';
+import DrillsItem from './DrillsItem';
 
 interface DrillsProps {
   classes: any;
   drills: Drill[];
   actions: {
     selectDrill: typeof getDrillRequest,
+    regenerateDrillsRequest: typeof regenerateDrillsRequest,
   };
   selectedDrill: DrillDetailed | null;
   selectedUserId: string;
@@ -130,6 +123,7 @@ class DrillsBar extends Component<DrillsProps, State> {
           <ToolsPanel
             checkedIds={this.checkedIdsAsArray}
             selectedUserId={this.props.selectedUserId}
+            regenerateDrillsRequest={this.props.actions.regenerateDrillsRequest}
           />
         </header>
         <List>
@@ -156,6 +150,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({
+    regenerateDrillsRequest,
     selectDrill: getDrillRequest,
   },                          dispatch),
 });

@@ -1,20 +1,14 @@
+import { createStyles, Grid, Paper, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
-import {
-  Paper,
-  withStyles,
-  createStyles,
-  Grid,
-} from '@material-ui/core';
-import { compose, Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import { bindActionCreators, compose, Dispatch } from 'redux';
+import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import { DrillDetailed } from 'src/store/drils/model';
-import { logosActions } from 'src/store/logos/actions';
-import ItemLogo from '../logos/ItemLogo';
-import drillsApi from 'src/store/drils/api';
 import { getSelectedDrillSelector } from 'src/store/drils/selectors';
-import { getUserId } from 'src/store/selectors';
+import { logosActions } from 'src/store/logos/actions';
 import { RootState } from 'src/store/rootReducers';
+import { getUserId } from 'src/store/selectors';
+import ItemLogo from '../logos/ItemLogo';
 
 interface DrillsProps {
   classes: any;
@@ -38,12 +32,15 @@ const styles = createStyles({
 });
 
 class AvailableLogos extends Component<Props, State> {
-  regenerateWithNewLogo = (id: string) => {
+  regenerateWithNewLogo = (logoId: string) => {
     if (!this.props.selectedDrill) {
       return;
     }
-    drillsApi.regenerateWithNewLogo(this.props.selectedDrill.id, id, this.props.selectedUserId)
-      .then(x => console.log(x));
+    this.props.actions.regenerateDrillsRequest(
+      [this.props.selectedDrill.id],
+      this.props.selectedUserId,
+      logoId,
+    );
   }
   componentDidMount() {
   }
@@ -98,7 +95,10 @@ const mapStateToProps = (state: RootState) => ({
   selectedUserId: getUserId(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(logosActions, dispatch),
+  actions: bindActionCreators({
+    ...logosActions,
+    regenerateDrillsRequest,
+  },                          dispatch),
 });
 
 export default compose(
