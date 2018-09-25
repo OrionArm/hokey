@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { createStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-
-import { RootState } from 'src/store/rootReducers';
-import ItemLogo from 'src/components/logos/ItemLogo';
-import HeaderLogo from 'src/components/logos/headerLogo';
-import { logosActions } from 'src/store/logos/actions';
+import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import LogoHeader from 'src/components/logos/LogoHeader';
+import ItemLogo from 'src/components/logos/LogoItem';
+import { AddLogoModal, DeleteLogoModal, EditLogoModal } from 'src/components/logos/modals';
+import { logosActions } from 'src/store/logos/actions';
 import { LogoModel } from 'src/store/logos/model';
-import { DeleteLogoModal, EditLogoModal, AddLogoModal }from 'src/components/logos/modals';
+import { RootState } from 'src/store/rootReducers';
 
 type modalStateNames = 'deleteModal' | 'addModal' | 'editModal';
 type modalState = Record<modalStateNames, boolean>;
@@ -57,7 +56,7 @@ class LogoListPage extends Component<Props, State> {
           close={this.closePopup}
           confirm={this.confirmEdit}
         />
-        <HeaderLogo addLogo={this.openAddPopup}/>
+        <LogoHeader addLogo={this.openAddPopup}/>
         <div className={'container-fluid'}>
           <div className={'row'}>
             {

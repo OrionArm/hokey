@@ -1,8 +1,8 @@
+import { Button, Grid, Typography } from '@material-ui/core';
 import React from 'react';
-import { Typography, Button, Grid } from '@material-ui/core';
 
 type Props = { addLogo(): void };
-const HeaderLogo: React.SFC<Props> = ({ addLogo }) => {
+const LogoHeader: React.SFC<Props> = ({ addLogo }) => {
   const onClick = () => addLogo();
   return (
       <Grid
@@ -24,4 +24,4 @@ const HeaderLogo: React.SFC<Props> = ({ addLogo }) => {
   );
 };
 
-export default HeaderLogo;
+export default LogoHeader;

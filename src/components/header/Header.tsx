@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
 import { AppBar, Toolbar } from '@material-ui/core';
-
-import Profile from './Profile';
+import React, { Component } from 'react';
 import { Logo } from 'src/UI';
-import MainManu from '../mainMenu/MainMenu';
+import MainManu from '../mainMenu';
+import Profile from './Profile';
 
 type Props = {};
 

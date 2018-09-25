@@ -1,5 +1,5 @@
-import AddLogoModal from './addLogoModal';
-import DeleteLogoModal from './deleteLogoModal';
-import EditLogoModal from './editLogoModal';
+import AddLogoModal from './AddLogoModal';
+import DeleteLogoModal from './DeleteLogoModal';
+import EditLogoModal from './EditLogoModal';
 
 export { AddLogoModal, DeleteLogoModal, EditLogoModal };

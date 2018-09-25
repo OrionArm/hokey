@@ -8,7 +8,7 @@ import { getSelectedDrillSelector } from 'src/store/drils/selectors';
 import { logosActions } from 'src/store/logos/actions';
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
-import ItemLogo from '../logos/ItemLogo';
+import ItemLogo from '../logos/LogoItem';
 
 interface DrillsProps {
   classes: any;

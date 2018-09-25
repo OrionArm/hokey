@@ -1,16 +1,9 @@
+// tslint:disable-next-line:max-line-length
+import { Button, FormControl, Grid, Input, InputLabel, Typography, withStyles } from '@material-ui/core';
 import React, { ChangeEvent, Component } from 'react';
-import {
-  Grid,
-  Typography,
-  Button,
-  Input,
-  withStyles,
-  FormControl,
-  InputLabel,
-} from '@material-ui/core';
 import { connect } from 'react-redux';
-import userActions from 'src/store/user/store/actions';
 import { Dispatch } from 'redux';
+import userActions from 'src/store/user/store/actions';
 
 type State = Readonly<typeof initialState>;
 type Props = { classes?: any } & injectProps;

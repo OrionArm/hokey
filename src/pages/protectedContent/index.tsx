@@ -1,9 +1,9 @@
 import React, { SFC } from 'react';
-import DrillsPage from 'src/components/drills/index';
-import LogoListPage from 'src/components/logos/index';
 import { Route, Switch } from 'react-router';
-import { Header } from '../../components/header/index';
+import DrillsPage from 'src/components/drills/DrillsPage';
+import LogoListPage from 'src/components/logos/LogoListPage';
 import { Main } from 'src/UI';
+import { Header } from '../../components/header/index';
 
 const ProtectedContent: SFC<any> = () => {
   return (

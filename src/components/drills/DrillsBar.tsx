@@ -8,8 +8,8 @@ import { Drill, DrillDetailed } from 'src/store/drils/model';
 import { getUserId } from 'src/store/selectors';
 import { getDrillsSelector, getSelectedDrillSelector } from '../../store/drils/selectors';
 import { RootState } from '../../store/rootReducers';
-import ToolsPanel from '../ToolsPanel';
 import DrillsItem from './DrillsItem';
+import ToolsPanel from './ToolsPanel';
 
 interface DrillsProps {
   classes: any;

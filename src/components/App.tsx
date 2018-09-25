@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Route, Switch, Redirect } from 'react-router';
+import React, { Component } from 'react';
+import { Redirect, Route, Switch } from 'react-router';
 import PrivateRoute from 'src/pages/privateRoute';
 import ProtectedContent from 'src/pages/protectedContent';
-import SignInPage from 'src/pages/signInPage/SignInPage';
+import SignInPage from 'src/pages/signInPage';
 
 class App extends Component {
   render() {
