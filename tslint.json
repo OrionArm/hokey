@@ -15,6 +15,7 @@
     "jsx-boolean-value": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
-    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }]
+    "no-plusplus": [2, {"allowForLoopAfterthoughts": true}],
+    "function-name": false
   }
 }
