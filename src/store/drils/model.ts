@@ -1,4 +1,3 @@
-
 export interface Drill {
   id: string;
   name: string;
@@ -27,3 +26,9 @@ export interface DrillCategoriesGroupped {
   [DrillCategoryType.Custom]: DrillCategory[];
   [DrillCategoryType.Public]: DrillCategory[];
 }
+
+export type RegenereteDrill = {
+  drill_ids: string[],
+  userId: number | string | 'me',
+  logoId?: string,
+};

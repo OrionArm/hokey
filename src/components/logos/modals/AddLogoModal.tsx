@@ -1,22 +1,15 @@
 import React, { ChangeEvent, Component } from 'react';
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  DialogContent,
-  Paper,
-  FormControl,
-  InputLabel,
-  Input,
-  withStyles,
-  Typography,
+  Button, Paper, FormControl,
+  InputLabel, Input, withStyles, Typography,
 } from '@material-ui/core';
-import { LogoModel } from 'src/store/logos/model';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import { LogoModel } from 'src/store/logos/model';
 import FileLoadButton from 'src/UI/FileLoadButton';
+import { GenericModal } from 'src/UI';
+
 enum fileError {
   notChecked = 0,
   incorrectExtension = 1,
@@ -51,98 +44,87 @@ class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
   render() {
-    const { open, classes } = this.props;
+    const { open, classes, modalName } = this.props;
     const { preview, file, fileValid } = this.state;
-    return (
-      <Dialog
-        open={open}
-        onClose={this.onClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+    const Buttons = () => <>
+      <Button
+        variant="contained"
+        color="primary"
+        component="span"
+        className="modal-btn"
+        onClick={this.onSubmit}
+        disabled={!this.state.file}
       >
-        <DialogTitle className={'modal-dialog__title'} id="form-dialog-title">
-          {'Upload logo'}
-        </DialogTitle>
-        <DialogContent className={'modal-dialog__body'}>
-          <Paper elevation={4} className={'img-uploader'}>
-            {fileValid === fileError.incorrectExtension ? (
-              <Typography
-                variant="subheading"
-                gutterBottom
-                align="center"
-                color={'error'}
-              >
-                You can load only PNG file
-              </Typography>
-            ) : null}
-            {file && preview ? (
-              <>
-                <img
-                  className={'img-uploader__preview'}
-                  src={preview}
-                  height={200}
-                />
-                {/*TODO: clear img input by click*/}
-                <div className={'img-uploader__remove'}>
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    className={'img-uploader__icon'}
-                  />
-                </div>
-              </>
-            ) : (
-              <div className={'img-uploader__hint uploader-hint'}>
-                {/*<span className={'uploader-hint__picture'}  />*/}
-                <FontAwesomeIcon
-                  icon={faCloudUploadAlt}
-                  className={'uploader-hint__picture'}
-                />
-                <span className={'uploader-hint__text'}>
-                  Use only *.png files 610*360px max size
-                </span>
-                <FileLoadButton onClick={this.onUploadFiles} />
+        Upload
+      </Button>
+      <Button className="modal-btn" onClick={this.onClose}>
+        Close
+      </Button>
+    </>;
+    const Content = () => <>
+      <Paper elevation={4} className={'img-uploader'}>
+        {
+          fileValid === fileError.incorrectExtension
+            ? <Typography variant="subheading" gutterBottom align="center" color={'error'}>
+              You can load only PNG file
+            </Typography>
+            : null
+        }
+        {
+          file && preview
+            ?
+            <>
+              <img className={'img-uploader__preview'} src={preview} height={200}/>
+              {/*TODO: clear img input by click*/}
+              <div className={'img-uploader__remove'}>
+                <FontAwesomeIcon icon={faTimes} className={'img-uploader__icon'}/>
               </div>
-            )}
-          </Paper>
-          <FormControl className={classes.spacing} fullWidth>
-            <InputLabel
-              FormLabelClasses={{
-                root: classes.cssLabel,
-                focused: classes.cssFocused,
-              }}
-              className={'img-uploader__label'}
-              htmlFor="LogoName-input"
-            >
-              Enter logo name
-            </InputLabel>
-            <Input
-              classes={{
-                underline: classes.cssUnderline,
-              }}
-              className={'img-uploader__name-input'}
-              value={this.state.logoName}
-              id="LogoName-input"
-              onChange={this.onChangeName}
-            />
-          </FormControl>
-        </DialogContent>
-        <DialogActions className={'modal-dialog__footer'}>
-          <Button
-            variant="contained"
-            color="primary"
-            component="span"
-            className={'modal-btn'}
-            onClick={this.onSubmit}
-            disabled={!this.state.file}
-          >
-            Upload
-          </Button>
-
-          <Button className={'modal-btn'} onClick={this.onClose}>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+            </>
+            :
+            <div className={'img-uploader__hint uploader-hint'}>
+              <FontAwesomeIcon icon={faCloudUploadAlt} className={'uploader-hint__picture'}/>
+              <span className={'uploader-hint__text'}>
+                      Use only *.png files 610*360px max size
+                    </span>
+              <FileLoadButton onClick={this.onUploadFiles}/>
+            </div>
+        }
+      </Paper>
+      <FormControl
+        className={classes.spacing}
+        fullWidth
+      >
+        <InputLabel
+          FormLabelClasses={{
+            root: classes.cssLabel,
+            focused: classes.cssFocused,
+          }}
+          className={'img-uploader__label'}
+          htmlFor="LogoName-input"
+        >
+          Enter logo name
+        </InputLabel>
+        <Input
+          classes={{
+            underline: classes.cssUnderline,
+          }}
+          className={'img-uploader__name-input'}
+          value={this.state.logoName}
+          id="LogoName-input"
+          onChange={this.onChangeName}
+        />
+      </FormControl>
+    </>;
+    return (
+      <GenericModal
+        modalName={modalName}
+        open={open}
+        close={this.onClose}
+        title="Upload logo"
+        buttons={Buttons}
+      >
+        <Content/>
+      </GenericModal>
     );
   }
 

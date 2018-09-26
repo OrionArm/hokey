@@ -1,6 +1,6 @@
 import React, { CSSProperties, SFC } from 'react';
 import { CircularProgress, Fade } from '@material-ui/core';
-import InCenter from 'src/UI/InCenter';
+import InCenter from './InCenter';
 
 type Props = {
   style?: CSSProperties;

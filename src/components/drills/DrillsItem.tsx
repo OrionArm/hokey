@@ -46,10 +46,6 @@ const styles = (theme: Theme) => {
   console.log(theme);
   return createStyles({
     iconBtn: {
-      marginRight: 8,
-      '&:last-child': {
-        marginRight: 0,
-      },
       '&:disabled': {
         backgroundColor: '#eeeeee',
       },
@@ -72,10 +68,10 @@ class DrillsItem extends Component<DrillsProps, State> {
   }
   regenerate = (event: React.MouseEvent) => {
     event.stopPropagation();
-    this.props.actions.regenerateDrillsRequest(
-      [this.props.drill.id],
-      this.props.selectedUserId,
-    );
+    this.props.actions.regenerateDrillsRequest({
+      userId: this.props.selectedUserId,
+      drill_ids: [this.props.drill.id],
+    });
   }
   selectDrill = (event: React.MouseEvent) => {
     this.props.selectDrill(this.props.drill.id, this.props.drill.userId);
@@ -101,46 +97,60 @@ class DrillsItem extends Component<DrillsProps, State> {
             onChange={this.props.onCheck}
           />
           <ListItemText primary={this.props.drill.name} />
-          <Tooltip title="Regenerate" placement="top">
-            <IconButton
-              className={classes.iconBtn}
-              aria-label="Regenerate"
-              disabled={!this.props.drill.has_animation}
-              onClick={this.regenerate}
-            >
-              <FontAwesomeIcon icon={faSyncAlt} />
-            </IconButton>
-          </Tooltip>
-
-          {this.props.isRegenerating ? (
-            <LinearProgress
-              style={{ width: '90px', minWidth: '90px', marginLeft: 5 }}
-              variant="query"
-              color="secondary"
-            />
-          ) : (
-            <>
-              <Tooltip title="Download Video" placement="top">
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title="Regenerate" placement="top">
+              <div style={{ marginRight: 8 }}>
                 <IconButton
-                  aria-label="Download Video"
                   className={classes.iconBtn}
+                  aria-label="Regenerate"
                   disabled={!this.props.drill.has_animation}
-                  onClick={this.downloadVideo}
+                  onClick={this.regenerate}
                 >
-                  <FontAwesomeIcon icon={faFilm} />
+                  <FontAwesomeIcon icon={faSyncAlt} />
                 </IconButton>
-              </Tooltip>
-              <Tooltip title="Download PDF" placement="top">
-                <IconButton
-                  aria-label="Download PDF"
-                  onClick={this.downloadPdf}
-                  className={classes.iconBtn}
-                >
-                  <FontAwesomeIcon icon={faDownload} />
-                </IconButton>
-              </Tooltip>
-            </>
-          )}
+              </div>
+            </Tooltip>
+
+            {this.props.isRegenerating ? (
+              <LinearProgress
+                style={{ width: 104 }}
+                variant="query"
+                color="secondary"
+              />
+            ) : (
+              <>
+                <Tooltip title="Download Video" placement="top">
+                  <div style={{ marginRight: 8 }}>
+                    <IconButton
+                      aria-label="Download Video"
+                      className={classes.iconBtn}
+                      disabled={!this.props.drill.has_animation}
+                      onClick={this.downloadVideo}
+                    >
+                      <FontAwesomeIcon icon={faFilm} />
+                    </IconButton>
+                  </div>
+                </Tooltip>
+                <Tooltip title="Download PDF" placement="top">
+                  <div>
+                    <IconButton
+                      aria-label="Download PDF"
+                      onClick={this.downloadPdf}
+                      className={classes.iconBtn}
+                    >
+                      <FontAwesomeIcon icon={faDownload} />
+                    </IconButton>
+                  </div>
+                </Tooltip>
+              </>
+            )}
+          </div>
         </ListItem>
         <Divider />
       </>
@@ -155,12 +165,7 @@ const mapStateToProps = (state: RootState, props) => ({
   ),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(
-    {
-      regenerateDrillsRequest,
-    },
-    dispatch,
-  ),
+  actions: bindActionCreators({ regenerateDrillsRequest }, dispatch),
 });
 
 export default compose(

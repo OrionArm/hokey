@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import LogoHeader from 'src/components/logos/LogoHeader';
-import LogoItem from './LogoItem';
+
 import {
   AddLogoModal,
   DeleteLogoModal,
@@ -14,6 +13,8 @@ import {
 import { logosActions } from 'src/store/logos/actions';
 import { LogoModel } from 'src/store/logos/model';
 import { RootState } from 'src/store/rootReducers';
+import LogoItem from './LogoItem';
+import LogoHeader from './LogoHeader';
 
 type modalStateNames = 'deleteModal' | 'addModal' | 'editModal';
 type modalState = Record<modalStateNames, boolean>;
@@ -22,8 +23,8 @@ const modalState: modalState = {
   addModal: false,
   editModal: false,
 };
-const selectedLogo: any = null; // fix  change any to LogoModel
-const initialState = { modalState, selectedLogo };
+const selectedLogo: any      = null; // fix  change any to LogoModel
+const initialState           = { modalState, selectedLogo };
 
 type State = Readonly<typeof modalState & typeof selectedLogo>;
 type Props = { classes?: any } & injectDispatchProps & injectStateProps;
@@ -41,8 +42,8 @@ class LogoListPage extends Component<Props, State> {
       <>
         <DeleteLogoModal
           modalName="deleteModal"
-          open={this.state.modalState.deleteModal}
           item={this.state.selectedLogo}
+          open={this.state.modalState.deleteModal}
           close={this.closePopup}
           confirm={this.confirmDelete}
         />
@@ -55,12 +56,12 @@ class LogoListPage extends Component<Props, State> {
         />
         <EditLogoModal
           modalName="editModal"
-          open={this.state.modalState.editModal}
           item={this.state.selectedLogo}
+          open={this.state.modalState.editModal}
           close={this.closePopup}
           confirm={this.confirmEdit}
         />
-        <LogoHeader addLogo={this.openAddPopup} />
+        <LogoHeader addLogo={this.openAddPopup}/>
         <div
           style={{
             display: 'grid',
@@ -78,12 +79,12 @@ class LogoListPage extends Component<Props, State> {
               primaryColor="#f3f3f3"
               secondaryColor="#ecebeb"
             >
-              <rect x="0" y="8" rx="0" ry="0" width="55" height="60" />
-              <rect x="70" y="8" rx="0" ry="0" width="55" height="60" />
-              <rect x="140" y="8" rx="0" ry="0" width="55" height="60" />
-              <rect x="210" y="8" rx="0" ry="0" width="55" height="60" />
-              <rect x="280" y="8" rx="0" ry="0" width="55" height="60" />
-              <rect x="350" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
+              <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
+              <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
+              <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
+              <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
+              <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
             </ContentLoader>
           ) : (
             logos.map(logo => {

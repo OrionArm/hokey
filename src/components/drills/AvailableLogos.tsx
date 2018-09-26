@@ -21,9 +21,11 @@ interface DrillsProps {
   classes: any;
   selectedDrill: DrillDetailed | null;
 }
+
 type Props = DrillsProps &
   ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps>;
+
 interface State {}
 
 class AvailableLogos extends Component<Props, State> {
@@ -31,12 +33,13 @@ class AvailableLogos extends Component<Props, State> {
     if (!this.props.selectedDrill) {
       return;
     }
-    this.props.actions.regenerateDrillsRequest(
-      [this.props.selectedDrill.id],
-      this.props.selectedUserId,
+    this.props.actions.regenerateDrillsRequest({
       logoId,
-    );
+      drill_ids: [this.props.selectedDrill.id],
+      userId: this.props.selectedUserId,
+    });
   }
+
   componentDidMount() {}
 
   public render() {

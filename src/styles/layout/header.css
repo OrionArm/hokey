@@ -29,7 +29,6 @@
     font-weight: 300;
 }
 .app-toolbar .app-toolbar__username {
-    font-size: 14px;
     font-weight: 300;
     line-height: 21px;
     margin: 0 5px;
@@ -37,13 +36,13 @@
 }
 .app-toolbar .app-toolbar__action,
 .app-toolbar .app-toolbar__link {
-    font-size: 10px;
-    line-height: 21px;
-    color: #a7a9b3;
-    text-transform: capitalize;
+    /*font-size: 10px;*/
+    /*line-height: 21px;*/
+    /*color: #a7a9b3;*/
+    /*text-transform: capitalize;*/
 }
 .app-toolbar .app-toolbar__link {
-    text-decoration: #a7a9b3 underline;
+    /*text-decoration: #a7a9b3 underline;*/
 }
 
 .menu-list.main-menu {
