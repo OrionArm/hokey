@@ -1,4 +1,11 @@
-import { createStyles, Grid, Paper, withStyles } from '@material-ui/core';
+import {
+  createStyles,
+  Grid,
+  withStyles,
+  Typography,
+  Paper,
+} from '@material-ui/core';
+import Slide from '@material-ui/core/Slide';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose, Dispatch } from 'redux';
@@ -19,17 +26,6 @@ type Props = DrillsProps &
   ReturnType<typeof mapStateToProps>;
 interface State {}
 
-const styles = createStyles({
-  rootBtn: {
-    textTransform: 'capitalize',
-    padding: 0,
-  },
-  rootLabel: {
-    margin: 0,
-    paddingRight: 16,
-  },
-});
-
 class AvailableLogos extends Component<Props, State> {
   regenerateWithNewLogo = (logoId: string) => {
     if (!this.props.selectedDrill) {
@@ -45,44 +41,27 @@ class AvailableLogos extends Component<Props, State> {
 
   public render() {
     return (
-      <Paper>
-        <header
-          style={{
-            justifyContent: 'space-between',
-            display: 'flex',
-            height: 50,
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-            }}
-          >
-            Available Logos
-          </div>
-        </header>
-        <Grid
-          item
-          container
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
-            gridGap: 24,
-            alignItems: 'stretch',
-          }}
-        >
-          {this.props.logos.map(logo => {
-            return (
-              <Grid item key={logo.id}>
-                <ItemLogo
-                  logo={logo}
-                  regenerateWithNewLogo={this.regenerateWithNewLogo}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Paper>
+      <Slide direction="up" in>
+        <Paper component="section" style={{ padding: 24 }}>
+          <Grid container spacing={24} direction="column">
+            <Grid item>
+              <Typography variant="title" color="primary" component="h4">
+                Available Logos
+              </Typography>
+            </Grid>
+            {this.props.logos.map(logo => {
+              return (
+                <Grid item key={logo.id}>
+                  <ItemLogo
+                    logo={logo}
+                    regenerateWithNewLogo={this.regenerateWithNewLogo}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Paper>
+      </Slide>
     );
   }
 }
@@ -101,6 +80,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch,
   ),
 });
+
+const styles = createStyles({});
 
 export default compose(
   withStyles(styles),

@@ -8,11 +8,15 @@ import {
   Typography,
   withStyles,
   Card,
+  Theme,
 } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { LogoModel } from 'src/store/logos/model';
-import Mark from 'src/UI/Mark';
+import { Mark } from 'src/UI/';
+import { WrapperLogoImg } from 'src/UI';
 
-const styles = (theme: any) =>
+const styles = (theme: Theme) =>
   createStyles({
     rootRadio: {
       color: theme.palette.common.white,
@@ -27,11 +31,10 @@ const styles = (theme: any) =>
     },
 
     card: {
-      minHeight: 280,
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',
-
+      justifyContent: 'space-between',
       '&:hover $logoHovering': {
         top: 0,
       },
@@ -60,14 +63,16 @@ const styles = (theme: any) =>
       bottom: '10px',
       right: '10px',
     },
-    wrapperImg: {
-      flexGrow: 1,
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-    },
     media: {
       backgroundColor: theme.palette.common.white,
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+    },
+    btn: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
     },
   });
 
@@ -101,7 +106,7 @@ const LogoItem: React.SFC<Props> = ({
 
   return (
     <Card className={classes.card}>
-      <div className={classes.wrapperImg}>
+      <WrapperLogoImg>
         <CardMedia
           component="img"
           className={classes.media}
@@ -128,28 +133,36 @@ const LogoItem: React.SFC<Props> = ({
           />
           <div className={classes.HoverGroupButton}>
             {onEditLogo && (
-              <Button color="secondary" onClick={onEditLogo}>
+              <Button
+                className={classes.btn}
+                color="secondary"
+                onClick={onEditLogo}
+              >
                 Edit
+                <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faEdit} />
               </Button>
             )}
             {onDeleteLogo && (
-              <Button color="primary" onClick={onDeleteLogo}>
+              <Button
+                color="primary"
+                onClick={onDeleteLogo}
+                className={classes.btn}
+              >
                 Delete
+                <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faTrash} />
               </Button>
             )}
           </div>
         </div>
-      </div>
-
+      </WrapperLogoImg>
       <Typography
-        style={{ padding: 8 }}
+        style={{ padding: 8, wordWrap: 'break-word' }}
         align="center"
         variant="headline"
         component="h4"
       >
         {clearName(logo.name)}
       </Typography>
-
       {logo.isMain && <Mark textContent="default" />}
     </Card>
   );

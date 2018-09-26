@@ -1,7 +1,17 @@
 import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // tslint:disable-next-line:max-line-length
-import { Button, createStyles, IconButton, MenuItem, Select, Theme, withStyles, WithStyles } from '@material-ui/core';
+import {
+  Button,
+  createStyles,
+  IconButton,
+  MenuItem,
+  Select,
+  Theme,
+  withStyles,
+  WithStyles,
+  Tooltip,
+} from '@material-ui/core';
 import React, { Component } from 'react';
 import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import drillsAPI from 'src/store/drils/api';
@@ -73,7 +83,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
     if (this.props.checkedIds.length === 0) {
       return;
     }
-    drillsAPI.downloadMultiplePdfs(this.props.selectedUserId, this.props.checkedIds);
+    drillsAPI.downloadMultiplePdfs(
+      this.props.selectedUserId,
+      this.props.checkedIds,
+    );
   }
 
   render() {
@@ -100,29 +113,26 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             <MenuItem value="2">Generate with new logo</MenuItem>
           </Select>
         </Button>
-
-        <IconButton
-          classes={{
-            root: classes.rootIconBtn,
-          }}
-          onClick={this.downloadSelectedVideos}
-        >
-          <FontAwesomeIcon
-            icon={faFilm}
-            title="Download Selected Video"
-          />
-        </IconButton>
-        <IconButton
-          classes={{
-            root: classes.rootIconBtn,
-          }}
-          onClick={this.downloadSelectedPdfs}
-        >
-          <FontAwesomeIcon
-            icon={faDownload}
-            title="Download Selected PDFS"
-          />
-        </IconButton>
+        <Tooltip title="Download Selected Video" placement="top">
+          <IconButton
+            classes={{
+              root: classes.rootIconBtn,
+            }}
+            onClick={this.downloadSelectedVideos}
+          >
+            <FontAwesomeIcon icon={faFilm} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Download Selected PDFS" placement="top">
+          <IconButton
+            classes={{
+              root: classes.rootIconBtn,
+            }}
+            onClick={this.downloadSelectedPdfs}
+          >
+            <FontAwesomeIcon icon={faDownload} />
+          </IconButton>
+        </Tooltip>
       </div>
     );
   }

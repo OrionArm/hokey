@@ -1,16 +1,28 @@
-import { createStyles, Paper, Tab, Tabs, Typography, withStyles } from '@material-ui/core';
+import {
+  createStyles,
+  Paper,
+  Tab,
+  Tabs,
+  withStyles,
+  Theme,
+  WithStyles,
+  Typography,
+} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
 import { bindActionCreators, compose, Dispatch } from 'redux';
 // tslint:disable-next-line:max-line-length
-import { getSelectedDrillAnimationSelector, getSelectedDrillLogoSelector, getSelectedDrillPreviewSelector } from 'src/store/drils/selectors';
+import {
+  getSelectedDrillAnimationSelector,
+  getSelectedDrillLogoSelector,
+  getSelectedDrillPreviewSelector,
+} from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
-
-export interface DetailsProps {
-  classes?: any;
-  theme: any;
+import { WrapperLogoImg } from 'src/UI/';
+export interface DetailsProps extends WithStyles<typeof styles> {
+  theme: Theme;
   preview: string;
   animation: string;
   logo: string;
@@ -19,20 +31,18 @@ export interface DetailsProps {
   onTabChange: (index: number) => void;
 }
 
-const TabContainer = (props: any) => {
-  return <Typography component="div">{props.children}</Typography>;
+const TabContainer = props => {
+  return (
+    <WrapperLogoImg style={{ padding: 24 }}>{props.children}</WrapperLogoImg>
+  );
 };
 
-const styles = (theme: any) =>
+const styles = (theme: Theme) =>
   createStyles({
     tabsRoot: {
-      border: '1px solid rgba(0, 0, 0, 0.12)',
-      borderRadius: 4,
-      marginBottom: theme.spacing.unit * 3,
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
     },
-    tabsIndicator: {
-      backgroundColor: 'transparent',
-    },
+    tabsIndicator: {},
     flexContainer: {
       justifyContent: 'space-between',
     },
@@ -44,26 +54,36 @@ const styles = (theme: any) =>
         borderRight: 'none',
       },
       '&:hover': {
-        color: theme.palette.primary.light,
+        color: theme.palette.primary.main,
       },
 
       '&$tabSelected': {
-        color: '#fff',
+        // color: '#fff',
         backgroundColor: theme.palette.primary.main,
+        '&:hover': {
+          color: theme.palette.primary.contrastText,
+        },
       },
       '&:focus': {
-        backgrounColor: theme.palette.primary.light,
-        color: '#fff',
+        // backgrounColor: theme.palette.primary.light,
+        // color: '#fff',
       },
     },
-    tabSelected: {},
+    tabSelected: {
+      transition: 'background-color 0.7s',
+    },
+    tabContent: {
+      maxWidth: '100%',
+      height: '100%',
+    },
   });
 
 class DetailsBar extends Component<DetailsProps, any> {
   public render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
+
     return (
-      <Paper>
+      <Paper style={{ marginBottom: 24 }}>
         <Tabs
           fullWidth
           value={this.props.selectedTab}
@@ -82,28 +102,41 @@ class DetailsBar extends Component<DetailsProps, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          {this.props.showLogo && <Tab
-            classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-            label="Logo"
-          />}
+          {this.props.showLogo && (
+            <Tab
+              classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+              label="Logo"
+            />
+          )}
         </Tabs>
         <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={this.props.selectedTab}
           onChangeIndex={this.props.onTabChange}
         >
-          <TabContainer dir={theme.direction}>
-            <img style={{ width: '100%' }} src={this.props.preview || undefined} />
+          <TabContainer>
+            {this.props.preview ? (
+              <img className={classes.tabContent} src={this.props.preview} />
+            ) : (
+              <Typography variant="subheading">
+                No preview this drill
+              </Typography>
+            )}
           </TabContainer>
-          <TabContainer dir={theme.direction}>
-            {this.props.animation &&
-              <video style={{ width: '100%' }} controls>
+          <TabContainer>
+            {this.props.animation ? (
+              <video className={classes.tabContent} controls>
                 <source src={this.props.animation} type="video/mp4" />
               </video>
-            }
+            ) : (
+              <Typography variant="subheading">
+                No animation this drill
+              </Typography>
+            )}
           </TabContainer>
-          <TabContainer dir={theme.direction}>
-            {this.props.logo && <img style={{ width: '100%' }} src={this.props.logo} />}
+          <TabContainer>
+            {this.props.logo && (
+              <img className={classes.tabContent} src={this.props.logo} />
+            )}
           </TabContainer>
         </SwipeableViews>
       </Paper>
@@ -121,8 +154,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({}, dispatch),
 });
 
-export default
-  compose(
-    withStyles(styles, { withTheme: true }),
-    connect(mapStateToProps, mapDispatchToProps),
-  )(DetailsBar) as any;
+export default compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(DetailsBar) as any;

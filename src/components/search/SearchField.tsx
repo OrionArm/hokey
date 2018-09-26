@@ -9,7 +9,8 @@ import {
   Theme,
   TextField,
 } from '@material-ui/core';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import userActions from 'src/store/user/store/actions';
 import drillsApi from 'src/store/drils/api';
 import {
@@ -115,6 +116,12 @@ const styles = (theme: Theme) =>
       padding: 0,
       minHeight: 50,
       borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+      '&:hover $svgSearch': {
+        color: 'hsl(0,0%,0%)',
+      },
+    },
+    svgSearch: {
+      color: 'hsl(0,0%,60%)',
     },
   });
 
@@ -163,28 +170,12 @@ function Control(props) {
   );
 }
 
-const Svg = p => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    focusable="false"
-    role="presentation"
-    {...p}
-  />
-);
-
-const DropdownIndicator = () => (
+const DropdownIndicator = props => (
   <div style={{ paddingRight: 8 }}>
-    <Svg>
-      <path
-        d="M16.436 15.085l3.94 4.01a1
-        1 0 0 1-1.425 1.402l-3.938-4.006a7.5
-        7.5 0 1 1 1.423-1.406zM10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z"
-        fill="hsl(0,0%,80%)"
-        fillRule="evenodd"
-      />
-    </Svg>
+    <FontAwesomeIcon
+      className={props.selectProps.classes.svgSearch}
+      icon={faSearch}
+    />
   </div>
 );
 

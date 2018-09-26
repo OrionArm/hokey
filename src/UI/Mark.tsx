@@ -17,6 +17,7 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.common.white,
       fontSize: 'inherit',
+      fontFamily:' Poppins,sans-serif',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',

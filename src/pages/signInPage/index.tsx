@@ -1,18 +1,33 @@
-// tslint:disable-next-line:max-line-length
-import { Button, FormControl, Grid, Input, InputLabel, Typography, withStyles } from '@material-ui/core';
+import {
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  Typography,
+  withStyles,
+  WithStyles,
+  Theme,
+} from '@material-ui/core';
 import React, { ChangeEvent, Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+
 import userActions from 'src/store/user/store/actions';
 
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  loginRequest: (userData: ILoginRequest) =>
+    dispatch(userActions.loginRequest(userData)),
+});
+
 type State = Readonly<typeof initialState>;
-type Props = { classes?: any } & injectProps;
+type Props = WithStyles<typeof styles> & injectProps;
 const initialState = { username: '', password: '' };
 
 class SignInPage extends Component<Props, State> {
   readonly state: State = initialState;
 
-  public render() {
+  render() {
     const { classes } = this.props;
     return (
       <Grid
@@ -91,7 +106,9 @@ class SignInPage extends Component<Props, State> {
   }
 }
 
-const styles = (theme: any) => {
+type injectProps = ReturnType<typeof mapDispatchToProps>;
+
+const styles = (theme: Theme) => {
   return {
     formStyle: {
       width: 400,
@@ -114,12 +131,6 @@ const styles = (theme: any) => {
     },
   };
 };
-
-type injectProps = ReturnType<typeof mapDispatchToProps>;
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  loginRequest: (userData: ILoginRequest) =>
-    dispatch(userActions.loginRequest(userData)),
-});
 
 export default withStyles(styles)(
   connect(

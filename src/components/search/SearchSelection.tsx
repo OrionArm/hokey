@@ -6,7 +6,11 @@ import {
   createStyles,
   Theme,
   Select,
+  IconButton,
+  Tooltip,
 } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faHockeyPuck } from '@fortawesome/free-solid-svg-icons';
 
 export enum SearchType {
   User = 'user',
@@ -32,8 +36,28 @@ class SearchField extends Component<ISearchFieldProps, any> {
           root: classes.root,
         }}
       >
-        <MenuItem value={SearchType.User}>User</MenuItem>
-        <MenuItem value={SearchType.Drill}>Drill</MenuItem>
+        <MenuItem className={classes.menuItem} value={SearchType.User}>
+          <Tooltip title="Users" placement="top">
+            <IconButton
+              className={classes.icon}
+              disableRipple
+              aria-label="Users"
+            >
+              <FontAwesomeIcon icon={faUser} />
+            </IconButton>
+          </Tooltip>
+        </MenuItem>
+        <MenuItem className={classes.menuItem} value={SearchType.Drill}>
+          <Tooltip title="Drills" placement="top">
+            <IconButton
+              className={classes.icon}
+              disableRipple
+              aria-label="Drills"
+            >
+              <FontAwesomeIcon icon={faHockeyPuck} />
+            </IconButton>
+          </Tooltip>
+        </MenuItem>
       </Select>
     );
   }
@@ -41,16 +65,27 @@ class SearchField extends Component<ISearchFieldProps, any> {
 
 const styles = (theme: Theme) =>
   createStyles({
+    menuItem: {
+      '&:hover $icon': {
+        color: theme.palette.primary.main,
+      },
+    },
     root: {
-      width: 80,
+      width: 70,
+    },
+    icon: {
+      transition: '0.3s',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
     },
     selectUser: {
-      paddingLeft: 8,
-      paddingTop: 0,
-      paddingBottom: 0,
-      height: 50,
+      padding: 0,
       display: 'flex',
       alignItems: 'center',
+      '&:hover $icon': {
+        color: theme.palette.primary.main,
+      },
     },
   });
 

@@ -2,7 +2,10 @@ import { Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/rootReducers';
-import { hasUserProAccessSelector, isUserAnAdminSelector } from 'src/store/user/store/selectors';
+import {
+  hasUserProAccessSelector,
+  isUserAnAdminSelector,
+} from 'src/store/user/store/selectors';
 import AvailableLogos from './AvailableLogos';
 import CategoriesBar from './CategoriesBar';
 import DetailsBar from './DetailsBar';
@@ -27,7 +30,7 @@ class DrillsPage extends React.Component<Props, State> {
         <Grid item sm={12} style={{ marginBottom: 16 }}>
           <Typography variant="headline">My Drills</Typography>
         </Grid>
-        <Grid container wrap="nowrap" spacing={8} justify="space-between">
+        <Grid container wrap="nowrap" spacing={16} justify="space-between">
           <Grid item md={4}>
             <CategoriesBar />
           </Grid>
