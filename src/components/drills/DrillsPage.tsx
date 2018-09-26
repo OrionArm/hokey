@@ -1,6 +1,7 @@
 import { Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
+import { getSelectedDrillSelector } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import {
   hasUserProAccessSelector,
@@ -11,20 +12,20 @@ import CategoriesBar from './CategoriesBar';
 import DetailsBar from './DetailsBar';
 import DrillsBar from './DrillsBar';
 
-interface Props {
-  showLogos: boolean;
-}
 interface State {
   selectedTab: number;
 }
 
+type Props = injectStateProps;
+
 class DrillsPage extends React.Component<Props, State> {
-  state = {
+  state       = {
     selectedTab: 0,
   };
   onTabChange = (selectedTab: number) => this.setState({ selectedTab });
 
   render() {
+    const { selectDrill } = this.props;
     return (
       <>
         <Grid item sm={12} style={{ marginBottom: 16 }}>
@@ -32,25 +33,32 @@ class DrillsPage extends React.Component<Props, State> {
         </Grid>
         <Grid container wrap="nowrap" spacing={16} justify="space-between">
           <Grid item md={4}>
-            <CategoriesBar />
+            <CategoriesBar/>
           </Grid>
-          <Grid item md={5}>
-            <DrillsBar />
+          <Grid item md={selectDrill ? 5 : 8}>
+            <DrillsBar/>
           </Grid>
-          <Grid item md={3}>
-            <DetailsBar
-              selectedTab={this.state.selectedTab}
-              onTabChange={this.onTabChange}
-            />
-            {this.state.selectedTab === 2 && <AvailableLogos />}
-          </Grid>
+          {
+            selectDrill
+              ? <Grid item md={3}>
+                <DetailsBar
+                  selectedTab={this.state.selectedTab}
+                  onTabChange={this.onTabChange}
+                />
+                {this.state.selectedTab === 2 && <AvailableLogos/>}
+              </Grid>
+              : null
+          }
+
         </Grid>
       </>
     );
   }
 }
 
+type injectStateProps = ReturnType<typeof mapStateToProps>;
 const mapStateToProps = (state: RootState) => ({
-  showLogsoBar: hasUserProAccessSelector(state) || isUserAnAdminSelector(state),
+  showLogoBar: hasUserProAccessSelector(state) || isUserAnAdminSelector(state),
+  selectDrill: getSelectedDrillSelector(state),
 });
 export default connect(mapStateToProps)(DrillsPage);

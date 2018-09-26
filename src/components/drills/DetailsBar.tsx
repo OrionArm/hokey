@@ -80,7 +80,9 @@ const styles = (theme: Theme) =>
 
 class DetailsBar extends Component<DetailsProps, any> {
   public render() {
-    const { classes } = this.props;
+    const { classes, theme, logo, animation } = this.props;
+    const logoKey = logo && logo.slice(logo.indexOf('.com') + 3);
+    const animationKey = animation && animation.slice(animation.indexOf('.com') + 3);
     return (
       <Paper style={{ marginBottom: 24 }}>
         <Tabs
@@ -101,7 +103,8 @@ class DetailsBar extends Component<DetailsProps, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          {this.props.showLogo && (
+          {
+            this.props.showLogo && (
             <Tab
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
               label="Logo"
@@ -111,6 +114,7 @@ class DetailsBar extends Component<DetailsProps, any> {
         <SwipeableViews
           index={this.props.selectedTab}
           onChangeIndex={this.props.onTabChange}
+          key={animationKey}
         >
           <TabContainer>
             {this.props.preview ? (
@@ -132,10 +136,8 @@ class DetailsBar extends Component<DetailsProps, any> {
               </Typography>
             )}
           </TabContainer>
-          <TabContainer>
-            {this.props.logo && (
-              <img className={classes.tabContent} src={this.props.logo} />
-            )}
+          <TabContainer dir={theme.direction} key={logoKey}>
+            {logo && <img className={classes.tabContent} src={logo}/>}
           </TabContainer>
         </SwipeableViews>
       </Paper>

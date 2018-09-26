@@ -12,7 +12,7 @@ import {
 import { getUserId } from 'src/store/selectors';
 import { errorHandler } from 'src/utils/errorHandler';
 import * as actions from './actions';
-import { getGenerationStatusSelector } from './selectors';
+import { getGenerationStatusSelector, getSelectedDrillSelector } from './selectors';
 
 function timer() {
   return eventChannel(emitter => {
@@ -37,10 +37,10 @@ function* watcher() {
 function* checkGenerationStatus() {
   const currentStatus        = yield select(getGenerationStatusSelector);
   const pendingGenerationIds = Object.values(currentStatus);
+  const userId               = yield select(getUserId);
   if (pendingGenerationIds.length === 0) {
     return;
   }
-  const userId = yield select(getUserId);
   try {
     const response      = yield call(
       api.checkGenerationStatus as any, userId, pendingGenerationIds,
@@ -50,6 +50,13 @@ function* checkGenerationStatus() {
       .filter(drillId => generationIds.includes(currentStatus[drillId]))
       .reduce((a, drillId) => ({ ...a, [drillId]: currentStatus[drillId] }), {});
     localStorage.setItem('generation_status', JSON.stringify(newStatus));
+    if (!generationIds[0]) {
+      const selectedDrill: DrillDetailed = yield select(getSelectedDrillSelector);
+      if (selectedDrill && selectedDrill.id) {
+        const id = selectedDrill.id;
+        yield put(actions.getDrillRequest(id, userId));
+      }
+    }
     yield put(actions.updateGenerationStatus(newStatus));
   } catch (error) {
     yield call(errorHandler, error);
@@ -59,8 +66,8 @@ function* checkGenerationStatus() {
 function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
   const userId = yield select(getUserId);
   try {
-    const id      = action.payload.drill_ids[0];
-    const request = action.payload.logoId
+    const id                  = action.payload.drill_ids[0];
+    const request             = action.payload.logoId
       ? api.regenerateWithNewLogo
       : api.regenerate;
     const response            = yield call(request as any, action.payload);

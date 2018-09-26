@@ -8,6 +8,8 @@ import {
   REGENERATE_DRILLS_SUCCESS, UPDATE_GENERATION_STATUS,
 } from './actions';
 
+export type drillStatusType= 'pending' | 'done' | 'none';
+
 export interface DrillsState {
   categories: {
     data: DrillCategoriesGroupped;
@@ -19,7 +21,7 @@ export interface DrillsState {
   };
   selectedDrill: DrillDetailed | null;
   generationStatus: {
-    [drillId: string]: string;
+    [drillId: string]: drillStatusType;
   };
 }
 
@@ -90,9 +92,9 @@ export const generationStatus = (
 const getGenerationStatusInitialState = () => {
   try {
     const status = localStorage.getItem('generation_status');
-    return status ? JSON.parse(status) : {};
+    return status ? JSON.parse(status) : 'none';
   } catch (e) {
-    return {};
+    return 'none';
   }
 };
 

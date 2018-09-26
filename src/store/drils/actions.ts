@@ -1,4 +1,5 @@
 import { DrillStatus } from 'src/store/drils/model';
+import { drillStatusType } from 'src/store/drils/reducer';
 import { ActionsUnion } from 'src/utils/typedAction/action';
 import { createAction } from 'src/utils/typedAction/createAction';
 import {
@@ -64,7 +65,7 @@ export const regenerateDrillsFail    = (error: any) =>
   createAction(REGENERATE_DRILLS_FAIL, { error });
 
 export const UPDATE_GENERATION_STATUS = '[drills] UPDATE_GENERATION_STATUS';
-export const updateGenerationStatus   = (status: { [drillId: string]: string }) =>
+export const updateGenerationStatus   = (status: { [drillId: string]: drillStatusType }) =>
   createAction(UPDATE_GENERATION_STATUS, { status });
 
 export const drillActions = {
