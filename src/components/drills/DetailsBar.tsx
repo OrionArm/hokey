@@ -73,7 +73,7 @@ const styles = (theme: any) =>
 
 class DetailsBar extends Component<DetailsProps, any> {
   public render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, logo } = this.props;
     return (
       <Paper>
         <Tabs
@@ -113,16 +113,15 @@ class DetailsBar extends Component<DetailsProps, any> {
             />
           </TabContainer>
           <TabContainer dir={theme.direction}>
-            {this.props.animation && (
-              <video style={{ width: '100%' }} controls>
-                <source src={this.props.animation} type="video/mp4"/>
-              </video>
-            )}
+            {
+              this.props.animation && (
+                <video style={{ width: '100%' }} controls>
+                  <source src={this.props.animation} type="video/mp4"/>
+                </video>
+              )}
           </TabContainer>
-          <TabContainer dir={theme.direction}>
-            {this.props.logo && (
-              <img style={{ width: '100%' }} src={this.props.logo}/>
-            )}
+          <TabContainer dir={theme.direction} key={logo ? logo : '1'}>
+            {logo && <img style={{ width: '100%' }} src={logo}/>}
           </TabContainer>
         </SwipeableViews>
       </Paper>

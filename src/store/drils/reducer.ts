@@ -23,7 +23,7 @@ export interface DrillsState {
   };
 }
 
-const initialState = {
+const initStateCategories = {
   loading: false,
   data: {
     [DrillCategoryType.Custom]: [],
@@ -31,14 +31,15 @@ const initialState = {
   },
 };
 
-const categories = (state = initialState, action: drillActions): DrillsState['categories'] => {
+const categories = (state = initStateCategories,
+                    action: drillActions): DrillsState['categories'] => {
   switch (action.type) {
     case GET_CATEGORIES_REQUEST:
-      return { ...initialState, loading: true };
+      return { ...initStateCategories, loading: true };
     case GET_CATEGORIES_SUCCESS:
       return { data: action.payload.categories, loading: false };
     case GET_CATEGORIES_FAIL:
-      return { ...initialState, loading: false };
+      return { ...initStateCategories, loading: false };
     default:
       return state;
   }
@@ -72,15 +73,6 @@ const selectedDrill = (state = null, action: drillActions): DrillDetailed | null
   }
 };
 
-const getGenerationStatusInitialState = () => {
-  try {
-    const status = localStorage.getItem('generation_status');
-    return status ? JSON.parse(status) : {};
-  } catch (e) {
-    return {};
-  }
-};
-
 export const generationStatus = (
   state = getGenerationStatusInitialState(),
   action: drillActions,
@@ -92,6 +84,15 @@ export const generationStatus = (
       return action.payload.status;
     default:
       return state;
+  }
+};
+
+const getGenerationStatusInitialState = () => {
+  try {
+    const status = localStorage.getItem('generation_status');
+    return status ? JSON.parse(status) : {};
+  } catch (e) {
+    return {};
   }
 };
 
