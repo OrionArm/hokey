@@ -10,7 +10,7 @@ import {
   Card,
 } from '@material-ui/core';
 import { LogoModel } from 'src/store/logos/model';
-import Mark from 'src/UI/Mark';
+import { Mark } from 'src/UI';
 
 const styles = (theme: any) =>
   createStyles({
@@ -81,21 +81,21 @@ type Props = {
   regenerateWithNewLogo?: (logoId: string) => void;
 };
 const LogoItem: React.SFC<Props> = ({
-  classes,
-  logo,
-  pickDefaultLogo,
-  editLogo,
-  deleteLogo,
-  regenerateWithNewLogo,
-}) => {
-  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
-  const onEditLogo = editLogo ? () => editLogo(logo) : null;
+                                      classes,
+                                      logo,
+                                      pickDefaultLogo,
+                                      editLogo,
+                                      deleteLogo,
+                                      regenerateWithNewLogo,
+                                    }) => {
+  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
+  const onEditLogo   = editLogo ? () => editLogo(logo) : null;
   const onDeleteLogo = deleteLogo ? () => deleteLogo(logo) : null;
 
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(logo.id)
     : null;
-  const radioLabel = regenerateWithNewLogo
+  const radioLabel              = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 
@@ -150,7 +150,7 @@ const LogoItem: React.SFC<Props> = ({
         {clearName(logo.name)}
       </Typography>
 
-      {logo.isMain && <Mark textContent="default" />}
+      {logo.isMain && <Mark textContent="default"/>}
     </Card>
   );
 };
