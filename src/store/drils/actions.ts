@@ -1,3 +1,4 @@
+import { DrillStatus } from 'src/store/drils/model';
 import { ActionsUnion } from 'src/utils/typedAction/action';
 import { createAction } from 'src/utils/typedAction/createAction';
 import {
@@ -57,7 +58,7 @@ export const REGENERATE_DRILLS_FAIL    = '[drills] REGENERATE_DRILLS_FAIL';
 export const regenerateDrillsRequest = (payload: RegenereteDrill) =>
   createAction(REGENERATE_DRILLS_REQUEST, payload);
 export type regenerateDrillsRequest = ReturnType<typeof regenerateDrillsRequest>;
-export const regenerateDrillsSuccess = (status: { [drillId: string]: string }) =>
+export const regenerateDrillsSuccess = (status: DrillStatus) =>
                  createAction(REGENERATE_DRILLS_SUCCESS, { status });
 export const regenerateDrillsFail    = (error: any) =>
   createAction(REGENERATE_DRILLS_FAIL, { error });
