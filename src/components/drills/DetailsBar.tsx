@@ -80,8 +80,12 @@ const styles = (theme: Theme) =>
 
 class DetailsBar extends Component<DetailsProps, any> {
   public render() {
+<<<<<<< HEAD
     const { classes } = this.props;
 
+=======
+    const { classes, theme, logo } = this.props;
+>>>>>>> a5ca3dc1fafee3631c62e39c8dfcdc946375aef8
     return (
       <Paper style={{ marginBottom: 24 }}>
         <Tabs

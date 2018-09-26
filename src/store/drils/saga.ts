@@ -1,9 +1,14 @@
-
 import { eventChannel } from 'redux-saga';
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+
 import api from 'src/store/drils/api';
-// tslint:disable-next-line:max-line-length
-import { Drill, DrillCategoriesGroupped, DrillCategoryType, DrillDetailed } from 'src/store/drils/model';
+import {
+  Drill,
+  DrillCategoriesGroupped,
+  DrillCategoryType,
+  DrillDetailed,
+  DrillStatus,
+} from 'src/store/drils/model';
 import { getUserId } from 'src/store/selectors';
 import { errorHandler } from 'src/utils/errorHandler';
 import * as actions from './actions';
@@ -11,9 +16,7 @@ import { getGenerationStatusSelector } from './selectors';
 
 function timer() {
   return eventChannel(emitter => {
-    const iv = setInterval(() => {
-      emitter({});
-    },                     5000);
+    const iv = setInterval(() => emitter({}), 3000);
     return () => {
       clearInterval(iv);
     };
@@ -32,18 +35,18 @@ function* watcher() {
 }
 
 function* checkGenerationStatus() {
-  const currentStatus = yield select(getGenerationStatusSelector);
+  const currentStatus        = yield select(getGenerationStatusSelector);
   const pendingGenerationIds = Object.values(currentStatus);
   if (pendingGenerationIds.length === 0) {
     return;
   }
   const userId = yield select(getUserId);
   try {
-    const response = yield call(
+    const response      = yield call(
       api.checkGenerationStatus as any, userId, pendingGenerationIds,
     );
     const generationIds = response.data;
-    const newStatus = Object.keys(currentStatus)
+    const newStatus     = Object.keys(currentStatus)
       .filter(drillId => generationIds.includes(currentStatus[drillId]))
       .reduce((a, drillId) => ({ ...a, [drillId]: currentStatus[drillId] }), {});
     localStorage.setItem('generation_status', JSON.stringify(newStatus));
@@ -54,15 +57,18 @@ function* checkGenerationStatus() {
 }
 
 function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
+  const userId = yield select(getUserId);
   try {
+    const id      = action.payload.drill_ids[0];
     const request = action.payload.logoId
       ? api.regenerateWithNewLogo
       : api.regenerate;
-    const response = yield call(request as any, action.payload);
-    const status: { [drillId: string]: string } = action.payload.drill_ids
+    const response            = yield call(request as any, action.payload);
+    const status: DrillStatus = action.payload.drill_ids
       .reduce((a, id, i) => ({ ...a, [id]: response.data[i] }), {});
     localStorage.setItem('generation_status', JSON.stringify(status));
     yield put(actions.regenerateDrillsSuccess(status));
+    yield put(actions.getDrillRequest(id, userId));
   } catch (error) {
     yield put(actions.regenerateDrillsFail(error));
     yield call(errorHandler, error);
@@ -71,7 +77,7 @@ function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
 
 function* searchDrillsListSaga(action: actions.searchDrillsByIdRequest) {
   try {
-    const response = yield call(api.searchDrills, action.payload.id);
+    const response        = yield call(api.searchDrills, action.payload.id);
     const drills: Drill[] = [response.data];
 
     yield put(actions.searchDrillsByIdSuccess(drills));
@@ -85,8 +91,8 @@ function* searchDrillsListSaga(action: actions.searchDrillsByIdRequest) {
 
 function* getDrillsListSaga(action: actions.getDrillsByCategoryIdRequest) {
   try {
-    const userId = yield select(getUserId);
-    const response = yield call(api.getDrillsByCategoryId, { ...action.payload, userId });
+    const userId          = yield select(getUserId);
+    const response        = yield call(api.getDrillsByCategoryId, { ...action.payload, userId });
     const drills: Drill[] = response.data;
 
     yield put(actions.getDrillsByCategoryIdSuccess(drills));
@@ -100,8 +106,8 @@ function* getDrillsListSaga(action: actions.getDrillsByCategoryIdRequest) {
 
 function* getCategoriesSaga(action: actions.getDrillsCategoriesRequest) {
   try {
-    const userId = yield select(getUserId);
-    const response = yield call(api.getCategories, userId);
+    const userId                              = yield select(getUserId);
+    const response                            = yield call(api.getCategories, userId);
     const categories: DrillCategoriesGroupped = response.data;
     yield put(actions.getDrillsCategoriesSuccess(categories));
     const firstCategory = categories[DrillCategoryType.Public][0];
@@ -114,7 +120,7 @@ function* getCategoriesSaga(action: actions.getDrillsCategoriesRequest) {
 
 function* getDrillSaga(action: actions.getDrillRequest) {
   try {
-    const response = yield call(api.getDrill, action.payload.id, action.payload.userId);
+    const response             = yield call(api.getDrill, action.payload.id, action.payload.userId);
     const drill: DrillDetailed = response.data;
     yield put(actions.getDrillSuccess(drill));
   } catch (error) {

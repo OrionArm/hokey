@@ -32,3 +32,5 @@ export type RegenereteDrill = {
   userId: number | string | 'me',
   logoId?: string,
 };
+
+export type DrillStatus = { [drillId: string]: string };
