@@ -14,10 +14,13 @@ interface DrillsProps {
   classes: any;
   selectedDrill: DrillDetailed | null;
 }
+
 type Props = DrillsProps &
   ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps>;
-interface State {}
+
+interface State {
+}
 
 const styles = createStyles({
   rootBtn: {
@@ -35,13 +38,15 @@ class AvailableLogos extends Component<Props, State> {
     if (!this.props.selectedDrill) {
       return;
     }
-    this.props.actions.regenerateDrillsRequest(
-      [this.props.selectedDrill.id],
-      this.props.selectedUserId,
+    this.props.actions.regenerateDrillsRequest({
       logoId,
-    );
+      drill_ids: [this.props.selectedDrill.id],
+      userId: this.props.selectedUserId,
+    });
   }
-  componentDidMount() {}
+
+  componentDidMount() {
+  }
 
   public render() {
     return (
@@ -71,23 +76,23 @@ class AvailableLogos extends Component<Props, State> {
             alignItems: 'stretch',
           }}
         >
-          {this.props.logos.map(logo => {
-            return (
+          {
+            this.props.logos.map(logo =>
               <Grid item key={logo.id}>
                 <ItemLogo
                   logo={logo}
                   regenerateWithNewLogo={this.regenerateWithNewLogo}
                 />
-              </Grid>
-            );
-          })}
+              </Grid>,
+            )
+          }
         </Grid>
       </Paper>
     );
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps    = (state: RootState) => ({
   logos: state.watermarks.logos,
   selectedDrill: getSelectedDrillSelector(state),
   selectedUserId: getUserId(state),

@@ -12,82 +12,23 @@ import {
 import { LogoModel } from 'src/store/logos/model';
 import { Mark } from 'src/UI';
 
-const styles = (theme: any) =>
-  createStyles({
-    rootRadio: {
-      color: theme.palette.common.white,
-      '&$checkedRadio': {
-        color: theme.palette.common.white,
-      },
-    },
-    checkedRadio: {},
-
-    labelRadio: {
-      color: theme.palette.common.white,
-    },
-
-    card: {
-      minHeight: 280,
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-
-      '&:hover $logoHovering': {
-        top: 0,
-      },
-    },
-
-    logoHovering: {
-      transition: '0.7s',
-      display: 'flex',
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(78, 78, 78, 0.5)',
-      position: 'absolute',
-      zIndex: 2,
-      top: -500,
-      left: 0,
-      padding: theme.spacing.unit * 2,
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
-
-    HoverGroupButton: {
-      display: 'flex',
-      flexDirection: 'column',
-      marginLeft: 'auto',
-      position: 'absolute',
-      bottom: '10px',
-      right: '10px',
-    },
-    wrapperImg: {
-      flexGrow: 1,
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-    },
-    media: {
-      backgroundColor: theme.palette.common.white,
-    },
-  });
-
 type Props = {
   classes?: any;
   logo: LogoModel;
   pickDefaultLogo?: (logo: LogoModel) => void;
   editLogo?: (logo: LogoModel) => void;
   deleteLogo?: (logo: LogoModel) => void;
-
   regenerateWithNewLogo?: (logoId: string) => void;
 };
-const LogoItem: React.SFC<Props> = ({
-                                      classes,
-                                      logo,
-                                      pickDefaultLogo,
-                                      editLogo,
-                                      deleteLogo,
-                                      regenerateWithNewLogo,
-                                    }) => {
+const LogoItem: React.SFC<Props> = (
+  {
+    classes,
+    logo,
+    pickDefaultLogo,
+    editLogo,
+    deleteLogo,
+    regenerateWithNewLogo,
+  }) => {
   const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
   const onEditLogo   = editLogo ? () => editLogo(logo) : null;
   const onDeleteLogo = deleteLogo ? () => deleteLogo(logo) : null;
@@ -158,5 +99,64 @@ const LogoItem: React.SFC<Props> = ({
 function clearName(name: string) {
   return name.replace(/.png/gi, '');
 }
+
+const styles = (theme: any) =>
+  createStyles({
+    rootRadio: {
+      color: theme.palette.common.white,
+      '&$checkedRadio': {
+        color: theme.palette.common.white,
+      },
+    },
+    checkedRadio: {},
+
+    labelRadio: {
+      color: theme.palette.common.white,
+    },
+
+    card: {
+      minHeight: 280,
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+
+      '&:hover $logoHovering': {
+        top: 0,
+      },
+    },
+
+    logoHovering: {
+      transition: '0.7s',
+      display: 'flex',
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(78, 78, 78, 0.5)',
+      position: 'absolute',
+      zIndex: 2,
+      top: -500,
+      left: 0,
+      padding: theme.spacing.unit * 2,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+
+    HoverGroupButton: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginLeft: 'auto',
+      position: 'absolute',
+      bottom: '10px',
+      right: '10px',
+    },
+    wrapperImg: {
+      flexGrow: 1,
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    media: {
+      backgroundColor: theme.palette.common.white,
+    },
+  });
 
 export default withStyles(styles)(LogoItem);

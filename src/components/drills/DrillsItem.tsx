@@ -43,7 +43,10 @@ class DrillsItem extends Component<DrillsProps, State> {
   }
   regenerate = (event: React.MouseEvent) => {
     event.stopPropagation();
-    this.props.actions.regenerateDrillsRequest([this.props.drill.id], this.props.selectedUserId);
+    this.props.actions.regenerateDrillsRequest({
+      userId: this.props.selectedUserId,
+      drill_ids: [this.props.drill.id],
+    });
   }
   selectDrill = (event: React.MouseEvent) => {
     this.props.selectDrill(this.props.drill.id, this.props.drill.userId);
@@ -105,9 +108,7 @@ const mapStateToProps = (state: RootState, props) => ({
   isRegenerating: Boolean(props.drill && getGenerationStatusSelector(state)[props.drill.id]),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({
-    regenerateDrillsRequest,
-  },                          dispatch),
+  actions: bindActionCreators({ regenerateDrillsRequest }, dispatch),
 });
 
 export default compose(

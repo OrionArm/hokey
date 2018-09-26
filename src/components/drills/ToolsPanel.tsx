@@ -47,10 +47,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
 
   handleChange = (event: any) => {
     if (event.target.value === '1') {
-      this.props.regenerateDrillsRequest(
-        this.props.checkedIds,
-        this.props.selectedUserId,
-      );
+      this.props.regenerateDrillsRequest({
+        drill_ids: this.props.checkedIds,
+        userId: this.props.selectedUserId,
+      });
     }
     // TODO: implement 'choose logo' modal
     // drillsAPI.regenerateWithNewLogo(

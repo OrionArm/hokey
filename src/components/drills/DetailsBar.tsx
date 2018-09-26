@@ -1,10 +1,22 @@
-import { createStyles, Paper, Tab, Tabs, Typography, withStyles } from '@material-ui/core';
+import {
+  createStyles,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+  withStyles,
+} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
 import { bindActionCreators, compose, Dispatch } from 'redux';
 // tslint:disable-next-line:max-line-length
-import { getSelectedDrillAnimationSelector, getSelectedDrillLogoSelector, getSelectedDrillPreviewSelector } from 'src/store/drils/selectors';
+
+import {
+  getSelectedDrillAnimationSelector,
+  getSelectedDrillLogoSelector,
+  getSelectedDrillPreviewSelector,
+} from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
 
@@ -82,10 +94,12 @@ class DetailsBar extends Component<DetailsProps, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          {this.props.showLogo && <Tab
-            classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-            label="Logo"
-          />}
+          {this.props.showLogo && (
+            <Tab
+              classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+              label="Logo"
+            />
+          )}
         </Tabs>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -93,17 +107,22 @@ class DetailsBar extends Component<DetailsProps, any> {
           onChangeIndex={this.props.onTabChange}
         >
           <TabContainer dir={theme.direction}>
-            <img style={{ width: '100%' }} src={this.props.preview || undefined} />
+            <img
+              style={{ width: '100%' }}
+              src={this.props.preview || undefined}
+            />
           </TabContainer>
           <TabContainer dir={theme.direction}>
-            {this.props.animation &&
+            {this.props.animation && (
               <video style={{ width: '100%' }} controls>
-                <source src={this.props.animation} type="video/mp4" />
+                <source src={this.props.animation} type="video/mp4"/>
               </video>
-            }
+            )}
           </TabContainer>
           <TabContainer dir={theme.direction}>
-            {this.props.logo && <img style={{ width: '100%' }} src={this.props.logo} />}
+            {this.props.logo && (
+              <img style={{ width: '100%' }} src={this.props.logo}/>
+            )}
           </TabContainer>
         </SwipeableViews>
       </Paper>
@@ -111,7 +130,7 @@ class DetailsBar extends Component<DetailsProps, any> {
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps    = (state: RootState) => ({
   preview: getSelectedDrillPreviewSelector(state),
   animation: getSelectedDrillAnimationSelector(state),
   logo: getSelectedDrillLogoSelector(state),
@@ -121,8 +140,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators({}, dispatch),
 });
 
-export default
-  compose(
-    withStyles(styles, { withTheme: true }),
-    connect(mapStateToProps, mapDispatchToProps),
-  )(DetailsBar) as any;
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(DetailsBar) as any;

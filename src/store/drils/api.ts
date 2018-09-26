@@ -2,6 +2,7 @@
 import { AxiosPromise } from 'axios';
 import FileSaver from 'file-saver';
 import { SearchType } from 'src/components/drills/CategoriesBar';
+import { RegenereteDrill } from 'src/store/drils/model';
 import request from '../../utils/request';
 import { DrillCategoryType, DrillDetailed } from './model';
 
@@ -117,15 +118,13 @@ function regenerate({ drill_ids, userId }: {
   );
 }
 
-function regenerateWithNewLogo({ id, logoId, userId }: {
-  id: string | string[],
-  logoId: string,
-  userId: number | 'me',
-}): AxiosPromise<any> {
+function regenerateWithNewLogo(payload: RegenereteDrill): AxiosPromise<any> {
+  const { drill_ids, logoId, userId } = payload;
+  console.log('drill_ids', drill_ids, 'logoId', logoId);
   return request.post(
     `/users/${userId}/watermarks/${logoId}/splice`,
     {},
-    { params: { drill_ids: Array.isArray(id) ? id : [id] } },
+    { params: { drill_ids: Array.isArray(drill_ids) ? drill_ids : [drill_ids] } },
   );
 }
 
