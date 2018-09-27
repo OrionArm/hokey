@@ -1,10 +1,12 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators, compose, Dispatch } from 'redux';
 import {
   faDownload,
   faFilm,
   faSyncAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// tslint:disable-next-line:max-line-length
 import {
   Checkbox,
   createStyles,
@@ -18,9 +20,7 @@ import {
   Tooltip,
   Theme,
 } from '@material-ui/core';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, compose, Dispatch } from 'redux';
+
 import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import drillsApi from 'src/store/drils/api';
 import { Drill } from 'src/store/drils/model';
@@ -28,7 +28,17 @@ import { getGenerationStatusSelector } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
 
-interface DrillsProps extends WithStyles<typeof styles> {
+const mapStateToProps = (state: RootState, props) => ({
+  selectedUserId: getUserId(state),
+  isRegenerating: Boolean(
+    props.drill && getGenerationStatusSelector(state)[props.drill.id],
+  ),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators({ regenerateDrillsRequest }, dispatch),
+});
+
+interface Props extends WithStyles<typeof styles> {
   drill: Drill;
   checked: boolean;
   onCheck: () => void;
@@ -40,23 +50,8 @@ interface DrillsProps extends WithStyles<typeof styles> {
   };
   isRegenerating: boolean;
 }
-interface State {}
 
-const styles = (theme: Theme) => {
-  return createStyles({
-    iconBtn: {
-      '&:disabled': {
-        backgroundColor: '#eeeeee',
-      },
-      '&:not(:disabled)': {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.common.white,
-      },
-    },
-  });
-};
-
-class DrillsItem extends Component<DrillsProps, State> {
+class DrillsItem extends Component<Props, object> {
   downloadPdf = (event: React.MouseEvent) => {
     event.stopPropagation();
     drillsApi.downloadPdf(this.props.drill.id, this.props.selectedUserId);
@@ -157,15 +152,20 @@ class DrillsItem extends Component<DrillsProps, State> {
   }
 }
 
-const mapStateToProps = (state: RootState, props) => ({
-  selectedUserId: getUserId(state),
-  isRegenerating: Boolean(
-    props.drill && getGenerationStatusSelector(state)[props.drill.id],
-  ),
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({ regenerateDrillsRequest }, dispatch),
-});
+const styles = (theme: Theme) => {
+  console.log(theme);
+  return createStyles({
+    iconBtn: {
+      '&:disabled': {
+        backgroundColor: '#eeeeee',
+      },
+      '&:not(:disabled)': {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+      },
+    },
+  });
+};
 
 export default compose(
   withStyles(styles),
