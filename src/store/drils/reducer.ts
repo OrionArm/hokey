@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux';
-import { DrillCategoryType, Drill, DrillDetailed, DrillCategoriesGroupped } from './model';
+import { DrillStatus } from 'src/store/drils/model';
+import {
+  DrillCategoryType,
+  Drill,
+  DrillDetailed,
+  DrillCategoriesGroupped,
+} from './model';
 import {
   drillActions, GET_DRILL_SUCCESS,
   GET_DRILLS_SUCCESS, GET_CATEGORIES_SUCCESS, GET_CATEGORIES_REQUEST,
@@ -7,8 +13,6 @@ import {
   SEARCH_DRILLS_REQUEST, SEARCH_DRILLS_SUCCESS, SEARCH_DRILLS_FAIL,
   REGENERATE_DRILLS_SUCCESS, UPDATE_GENERATION_STATUS,
 } from './actions';
-
-export type drillStatusType= 'pending' | 'done' | 'none';
 
 export interface DrillsState {
   categories: {
@@ -20,9 +24,7 @@ export interface DrillsState {
     data: Drill[];
   };
   selectedDrill: DrillDetailed | null;
-  generationStatus: {
-    [drillId: string]: drillStatusType;
-  };
+  generationStatus: DrillStatus;
 }
 
 const initStateCategories = {
@@ -48,7 +50,8 @@ const categories = (state = initStateCategories,
 };
 
 // tslint:disable-next-line:max-line-length
-const drills = (state = { data: [], loading: false }, action: drillActions): DrillsState['drills'] => {
+const drills = (state = { data: [], loading: false },
+                action: drillActions): DrillsState['drills'] => {
   switch (action.type) {
     case SEARCH_DRILLS_REQUEST:
     case GET_DRILLS_REQUEST:
@@ -92,9 +95,9 @@ export const generationStatus = (
 const getGenerationStatusInitialState = () => {
   try {
     const status = localStorage.getItem('generation_status');
-    return status ? JSON.parse(status) : 'none';
+    return status ? JSON.parse(status) : {};
   } catch (e) {
-    return 'none';
+    return {};
   }
 };
 

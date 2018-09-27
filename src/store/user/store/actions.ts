@@ -18,7 +18,7 @@ const tokenLogin         = (payload: { token: string }) => createAction(TOKEN_LO
 export type tokenLogin = ReturnType<typeof tokenLogin>;
 
 export const SELECT_USER = '[user] SELECT_USER';
-const selectUser = (id: number | 'me') => createAction(SELECT_USER, { id });
+const selectUser = (id: string | 'me') => createAction(SELECT_USER, { id });
 export type selectUser = ReturnType<typeof selectUser>;
 
 export const userActions = {
