@@ -21,6 +21,7 @@ import {
 import { RootState } from 'src/store/rootReducers';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
 import { WrapperLogoImg } from 'src/UI/';
+
 export interface DetailsProps extends WithStyles<typeof styles> {
   theme: Theme;
   preview: string;
@@ -105,11 +106,11 @@ class DetailsBar extends Component<DetailsProps, any> {
           />
           {
             this.props.showLogo && (
-            <Tab
-              classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Logo"
-            />
-          )}
+              <Tab
+                classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+                label="Logo"
+              />
+            )}
         </Tabs>
         <SwipeableViews
           index={this.props.selectedTab}
@@ -118,7 +119,7 @@ class DetailsBar extends Component<DetailsProps, any> {
         >
           <TabContainer>
             {this.props.preview ? (
-              <img className={classes.tabContent} src={this.props.preview} />
+              <img className={classes.tabContent} src={this.props.preview}/>
             ) : (
               <Typography variant="subheading">
                 No preview this drill
@@ -126,15 +127,17 @@ class DetailsBar extends Component<DetailsProps, any> {
             )}
           </TabContainer>
           <TabContainer>
-            {this.props.animation ? (
-              <video className={classes.tabContent} controls>
-                <source src={this.props.animation} type="video/mp4" />
-              </video>
-            ) : (
-              <Typography variant="subheading">
-                No animation this drill
-              </Typography>
-            )}
+            {
+              this.props.animation
+                ?
+                <video className={classes.tabContent} controls>
+                  <source src={this.props.animation} type="video/mp4"/>
+                </video>
+                :
+                <Typography variant="subheading">
+                  No animation this drill
+                </Typography>
+            }
           </TabContainer>
           <TabContainer key={logoKey}>
             {logo && <img className={classes.tabContent} src={logo}/>}
@@ -145,7 +148,7 @@ class DetailsBar extends Component<DetailsProps, any> {
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps    = (state: RootState) => ({
   preview: getSelectedDrillPreviewSelector(state),
   animation: getSelectedDrillAnimationSelector(state),
   logo: getSelectedDrillLogoSelector(state),

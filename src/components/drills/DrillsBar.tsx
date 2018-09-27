@@ -35,26 +35,15 @@ interface DrillsProps {
   selectedDrill: DrillDetailed | null;
   selectedUserId: string;
 }
+
 interface State {
   checkedIds: { [id: string]: boolean };
   // drills: Drill[];
 }
 
-const styles = createStyles({
-  rootBtn: {
-    textTransform: 'capitalize',
-    padding: 0,
-  },
-  rootLabel: {
-    margin: 0,
-    paddingRight: 16,
-  },
-});
-
 class DrillsBar extends Component<DrillsProps, State> {
   state = {
     checkedIds: {},
-    // drills: [],
   };
 
   get checkedIdsAsArray() {
@@ -127,7 +116,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                   root: classes.rootLabel,
                 }}
                 onChange={this.toggleAll}
-                control={<Checkbox color="primary" />}
+                control={<Checkbox color="primary"/>}
                 label="All"
               />
             </Button>
@@ -146,7 +135,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                   root: classes.rootLabel,
                 }}
                 onChange={this.toggleAnimated}
-                control={<Checkbox color="primary" />}
+                control={<Checkbox color="primary"/>}
                 label="Animated"
               />
             </Button>
@@ -158,23 +147,25 @@ class DrillsBar extends Component<DrillsProps, State> {
           />
         </header>
         <List>
-          {this.props.drills.map((value: Drill) => (
-            <DrillsItem
-              key={value.id}
-              onCheck={this.handleToggle(value.id)}
-              drill={value}
-              checked={this.state.checkedIds[value.id]}
-              selectDrill={this.props.actions.selectDrill}
-              isSelected={this.isDrillSelected(value.id)}
-            />
-          ))}
+          {
+            this.props.drills.map((drill: Drill) => (
+              <DrillsItem
+                key={drill.id}
+                onCheck={this.handleToggle(drill.id)}
+                drill={drill}
+                checked={this.state.checkedIds[drill.id]}
+                selectDrill={this.props.actions.selectDrill}
+                isSelected={this.isDrillSelected(drill.id)}
+              />
+            ))
+          }
         </List>
       </Paper>
     );
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps    = (state: RootState) => ({
   drills: getDrillsSelector(state),
   selectedDrill: getSelectedDrillSelector(state),
   selectedUserId: getUserId(state),
@@ -189,6 +180,16 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   ),
 });
 
+const styles = createStyles({
+  rootBtn: {
+    textTransform: 'capitalize',
+    padding: 0,
+  },
+  rootLabel: {
+    margin: 0,
+    paddingRight: 16,
+  },
+});
 export default compose(
   withStyles(styles),
   connect(
