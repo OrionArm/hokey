@@ -80,7 +80,7 @@ const styles = (theme: Theme) =>
 
 class DetailsBar extends Component<DetailsProps, any> {
   public render() {
-    const { classes, theme, logo, animation } = this.props;
+    const { classes, logo, animation } = this.props;
     const logoKey = logo && logo.slice(logo.indexOf('.com') + 3);
     const animationKey = animation && animation.slice(animation.indexOf('.com') + 3);
     return (
@@ -136,7 +136,7 @@ class DetailsBar extends Component<DetailsProps, any> {
               </Typography>
             )}
           </TabContainer>
-          <TabContainer dir={theme.direction} key={logoKey}>
+          <TabContainer key={logoKey}>
             {logo && <img className={classes.tabContent} src={logo}/>}
           </TabContainer>
         </SwipeableViews>
