@@ -70,9 +70,6 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
   }
 
   downloadSelectedVideos = () => {
-    if (this.props.checkedIds.length === 0) {
-      return;
-    }
     drillsAPI.downloadMultipleVideos(
       this.props.checkedIds,
       this.props.selectedUserId,
@@ -114,24 +111,30 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           </Select>
         </Button>
         <Tooltip title="Download Selected Video" placement="top">
-          <IconButton
-            classes={{
-              root: classes.rootIconBtn,
-            }}
-            onClick={this.downloadSelectedVideos}
-          >
-            <FontAwesomeIcon icon={faFilm} />
-          </IconButton>
+          <div>
+            <IconButton
+              classes={{
+                root: classes.rootIconBtn,
+              }}
+              onClick={this.downloadSelectedVideos}
+              disabled={this.props.checkedIds.length === 0}
+            >
+              <FontAwesomeIcon icon={faFilm} />
+            </IconButton>
+          </div>
         </Tooltip>
         <Tooltip title="Download Selected PDFS" placement="top">
-          <IconButton
-            classes={{
-              root: classes.rootIconBtn,
-            }}
-            onClick={this.downloadSelectedPdfs}
-          >
-            <FontAwesomeIcon icon={faDownload} />
-          </IconButton>
+          <div>
+            <IconButton
+              classes={{
+                root: classes.rootIconBtn,
+              }}
+              onClick={this.downloadSelectedPdfs}
+              disabled={this.props.checkedIds.length === 0}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+            </IconButton>
+          </div>
         </Tooltip>
       </div>
     );

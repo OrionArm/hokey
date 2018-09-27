@@ -18,20 +18,21 @@ const toDrillEntity = (x: any) => ({
   userId: x.user_id || x.userid,
 });
 
-function getDrillsByCategoryId(
-  payload: {
-    id: string,
-    categoryType: DrillCategoryType,
-    userId: number | 'me',
-  }): AxiosPromise<any>;
+function getDrillsByCategoryId(payload: {
+  id: string;
+  categoryType: DrillCategoryType;
+  userId: number | 'me';
+}): AxiosPromise<any>;
 
 function getDrillsByCategoryId(payload: any) {
   const { id, categoryType, userId } = payload;
 
-  return request.get(`/users/${userId}/drill-categories/${categoryType}/${id}/drills`).then(res => {
-    res.data = res.data.map(toDrillEntity);
-    return res;
-  });
+  return request
+    .get(`/users/${userId}/drill-categories/${categoryType}/${id}/drills`)
+    .then(res => {
+      res.data = res.data.map(toDrillEntity);
+      return res;
+    });
 }
 
 function getCategories(userId: number | 'me'): AxiosPromise<any> {
@@ -48,9 +49,11 @@ function getCategories(userId: number | 'me'): AxiosPromise<any> {
 }
 
 function downloadPdf(id: string, userId: number | string | 'me'): any {
-  return request.post(`/users/${userId}/drills/${id}/export/pdf`).then(response => {
-    window.open(response.data, '_blank');
-  });
+  return request
+    .post(`/users/${userId}/drills/${id}/export/pdf`)
+    .then(response => {
+      window.open(response.data, '_blank');
+    });
 }
 
 function downloadMultiplePDFs(userId: string, drill_ids: string[]) {
@@ -131,12 +134,9 @@ function regenerateWithNewLogo(payload: RegenereteDrill): AxiosPromise<any> {
   );
 }
 
-function searchUsers(
-  value: string,
-  type: SearchType,
-): AxiosPromise<any[]> {
+function searchUsers(value: string, type: SearchType): AxiosPromise<any[]> {
   return request.get('/users', { params: { value, type } }).then(response => {
-    const users   = response.data.map((user: any) => ({
+    const users = response.data.map((user: any) => ({
       value: user.userid,
       label: user.username,
     }));
