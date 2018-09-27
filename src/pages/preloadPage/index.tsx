@@ -6,7 +6,7 @@ type Props = {};
 const PreloadPage: SFC<Props> = props => {
   return (
     <>
-      <Header/>
+      <Header />
       <div style={{ marginTop: '250px' }}>
         <InCenter>
           <Loading />

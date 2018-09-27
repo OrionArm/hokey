@@ -43,7 +43,6 @@ interface DrillsProps extends WithStyles<typeof styles> {
 interface State {}
 
 const styles = (theme: Theme) => {
-  console.log(theme);
   return createStyles({
     iconBtn: {
       '&:disabled': {

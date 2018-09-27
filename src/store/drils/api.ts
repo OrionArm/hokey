@@ -1,4 +1,3 @@
-
 import { AxiosPromise } from 'axios';
 import FileSaver from 'file-saver';
 import { SearchType } from 'src/components/drills/CategoriesBar';
@@ -15,20 +14,21 @@ const toDrillEntity = (x: any) => ({
   userId: x.user_id || x.userid,
 });
 
-function getDrillsByCategoryId(
-  payload: {
-    id: string,
-    categoryType: DrillCategoryType,
-    userId: number | 'me',
-  }): AxiosPromise<any>;
+function getDrillsByCategoryId(payload: {
+  id: string;
+  categoryType: DrillCategoryType;
+  userId: number | 'me';
+}): AxiosPromise<any>;
 
 function getDrillsByCategoryId(payload: any) {
   const { id, categoryType, userId } = payload;
 
-  return request.get(`/users/${userId}/drill-categories/${categoryType}/${id}/drills`).then(res => {
-    res.data = res.data.map(toDrillEntity);
-    return res;
-  });
+  return request
+    .get(`/users/${userId}/drill-categories/${categoryType}/${id}/drills`)
+    .then(res => {
+      res.data = res.data.map(toDrillEntity);
+      return res;
+    });
 }
 
 function getCategories(userId: number | 'me'): AxiosPromise<any> {
@@ -45,43 +45,40 @@ function getCategories(userId: number | 'me'): AxiosPromise<any> {
 }
 
 function downloadPdf(id: string, userId: number | string | 'me'): any {
-  return request.post(`/users/${userId}/drills/${id}/export/pdf`).then(response => {
-    window.open(response.data, '_blank');
-  });
+  return request
+    .post(`/users/${userId}/drills/${id}/export/pdf`)
+    .then(response => {
+      window.open(response.data, '_blank');
+    });
 }
 
 function downloadMultiplePdfs(userId: string, drill_ids: string[]) {
-  return request.post(
-    `/users/${userId}/drills/download/pdfs`,
-    undefined,
-    {
+  return request
+    .post(`/users/${userId}/drills/download/pdfs`, undefined, {
       params: { drill_ids },
       responseType: 'blob',
     })
     .then(response => {
-      FileSaver.saveAs(
-        new Blob([response.data]),
-        'pdfs.zip',
-      );
+      FileSaver.saveAs(new Blob([response.data]), 'pdfs.zip');
     });
 }
 
 function downloadVideo(id: string, userId: number | 'me'): any {
-  return request.get(`/users/${userId}/drills/${id}/animation`).then(response => {
-    const url = response.data.s3video;
-    window.open(url, '_blank');
-  });
+  return request
+    .get(`/users/${userId}/drills/${id}/animation`)
+    .then(response => {
+      const url = response.data.s3video;
+      window.open(url, '_blank');
+    });
 }
 
 function downloadMultipleVideos(
   drill_ids: string[],
   userId: number | string | 'me',
 ) {
-  return request.post(
-    `/users/${userId}/drills/download/videos`,
-    undefined,
-    {
-      params      : { drill_ids },
+  return request
+    .post(`/users/${userId}/drills/download/videos`, undefined, {
+      params: { drill_ids },
       responseType: 'blob',
     })
     .then(response => {
@@ -89,7 +86,10 @@ function downloadMultipleVideos(
     });
 }
 
-function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<DrillDetailed> {
+function getDrill(
+  id: string,
+  userId: number | string | 'me',
+): AxiosPromise<DrillDetailed> {
   const toEntity = (x: any) => ({
     id: x.drillid,
     preview: x.s3url_1,
@@ -104,8 +104,12 @@ function getDrill(id: string, userId: number | string | 'me'): AxiosPromise<Dril
   });
 }
 
-function regenerate({ drill_ids, userId }: {
-  drill_ids: string[], userId: number | string | 'me',
+function regenerate({
+  drill_ids,
+  userId,
+}: {
+  drill_ids: string[];
+  userId: number | string | 'me';
 }): AxiosPromise<any> {
   return request.post(
     `/users/${userId}/drills/regenerate`,
@@ -124,14 +128,13 @@ function regenerateWithNewLogo(payload: RegenereteDrill): AxiosPromise<any> {
   return request.post(
     `/users/${userId}/watermarks/${logoId}/splice`,
     {},
-    { params: { drill_ids: Array.isArray(drill_ids) ? drill_ids : [drill_ids] } },
+    {
+      params: { drill_ids: Array.isArray(drill_ids) ? drill_ids : [drill_ids] },
+    },
   );
 }
 
-function searchUsers(
-  value: string,
-  type: SearchType,
-): AxiosPromise<any[]> {
+function searchUsers(value: string, type: SearchType): AxiosPromise<any[]> {
   return request.get('/users', { params: { value, type } }).then(response => {
     const users = response.data.map((user: any) => ({
       value: user.userid,
@@ -143,22 +146,26 @@ function searchUsers(
 }
 
 function searchDrills(value: string) {
-  return request.get('/drills', { params: { value } })
-    .then(res => {
-      res.data = toDrillEntity(res.data);
-      return res;
-    });
+  return request.get('/drills', { params: { value } }).then(res => {
+    res.data = toDrillEntity(res.data);
+    return res;
+  });
 }
 
-function checkGenerationStatus(userId: string, generation_ids: string): AxiosPromise<string[]> {
-  return request.get(
-    `/users/${userId}/watermarks/generation/status`,
-    { params: { generation_ids } },
-  ).then(response => {
-    response.data = Object.keys(response.data)
-      .filter(id => response.data[id] !== 'done');
-    return response;
-  });
+function checkGenerationStatus(
+  userId: string,
+  generation_ids: string,
+): AxiosPromise<string[]> {
+  return request
+    .get(`/users/${userId}/watermarks/generation/status`, {
+      params: { generation_ids },
+    })
+    .then(response => {
+      response.data = Object.keys(response.data).filter(
+        id => response.data[id] !== 'done',
+      );
+      return response;
+    });
 }
 
 const drillsAPI = {
