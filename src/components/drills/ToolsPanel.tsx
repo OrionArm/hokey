@@ -80,7 +80,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
     if (this.props.checkedIds.length === 0) {
       return;
     }
-    drillsAPI.downloadMultiplePdfs(
+    drillsAPI.downloadMultiplePDFs(
       this.props.selectedUserId,
       this.props.checkedIds,
     );

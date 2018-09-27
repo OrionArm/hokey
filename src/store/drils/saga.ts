@@ -12,7 +12,11 @@ import {
 import { getUserId } from 'src/store/selectors';
 import { errorHandler } from 'src/utils/errorHandler';
 import * as actions from './actions';
-import { getGenerationStatusSelector, getSelectedDrillSelector } from './selectors';
+import {
+  getDrillsSelector,
+  getGenerationStatusSelector,
+  getSelectedDrillSelector,
+} from './selectors';
 
 function timer() {
   return eventChannel(emitter => {
@@ -30,27 +34,38 @@ function* watcher() {
     takeLatest(actions.GET_DRILL_REQUEST, getDrillSaga),
     takeLatest(actions.SEARCH_DRILLS_REQUEST, searchDrillsListSaga),
     takeLatest(actions.REGENERATE_DRILLS_REQUEST, regenerateDrillsSaga),
+    takeLatest(actions.DRILL_GENERATION_STATUS_ERROR, drillGenerationStatusError),
     takeEvery(yield call(timer), checkGenerationStatus),
   ];
 }
 
 function* checkGenerationStatus() {
-  const currentStatus        = yield select(getGenerationStatusSelector);
-  const pendingGenerationIds = Object.values(currentStatus);
-  const userId               = yield select(getUserId);
+  const userId: string | 'me'      = yield select(getUserId);
+  const currentStatus: DrillStatus = yield select(getGenerationStatusSelector);
+  const drillIds: string[]         = Object.keys(currentStatus);
+  const pendingGenerationIds       = Object.values(currentStatus); // DrillStatusType
   if (pendingGenerationIds.length === 0) {
     return;
   }
   try {
-    const response      = yield call(
+    const { generatedIds, generatedErrorIds } = yield call(
       api.checkGenerationStatus as any, userId, pendingGenerationIds,
     );
-    const generationIds = response.data;
-    const newStatus     = Object.keys(currentStatus)
-      .filter(drillId => generationIds.includes(currentStatus[drillId]))
+    if (generatedErrorIds !== []) {
+      let errorDrillId: string = '';
+      generatedErrorIds.forEach(errorId => {
+        errorDrillId = drillIds.filter(drillId => currentStatus[drillId] === errorId)[0];
+      });
+      if (errorDrillId) {
+        yield put(actions.drillGenerationStatusError({ errorDrillId }));
+      }
+    }
+    const newStatus = drillIds.filter(drillId =>
+      generatedIds.includes(currentStatus[drillId]),
+    )
       .reduce((a, drillId) => ({ ...a, [drillId]: currentStatus[drillId] }), {});
     localStorage.setItem('generation_status', JSON.stringify(newStatus));
-    if (!generationIds[0]) {
+    if (!generatedIds[0]) {
       const selectedDrill: DrillDetailed = yield select(getSelectedDrillSelector);
       if (selectedDrill && selectedDrill.id) {
         const id = selectedDrill.id;
@@ -66,13 +81,17 @@ function* checkGenerationStatus() {
 function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
   const userId = yield select(getUserId);
   try {
-    const id                  = action.payload.drill_ids[0];
-    const request             = action.payload.logoId
+    const id      = action.payload.drill_ids[0];
+    const request = action.payload.logoId
       ? api.regenerateWithNewLogo
       : api.regenerate;
-    const response            = yield call(request as any, action.payload);
-    const status: DrillStatus = action.payload.drill_ids
-      .reduce((a, id, i) => ({ ...a, [id]: response.data[i] }), {});
+    yield call(request as any, action.payload);
+
+    const { data: response }  = yield call(request as any, action.payload);
+    const status: DrillStatus = action.payload.drill_ids.reduce(
+      (acc, drillId, i) => ({ ...acc, [drillId]: response[i] }), {},
+    );
+
     localStorage.setItem('generation_status', JSON.stringify(status));
     yield put(actions.regenerateDrillsSuccess(status));
     yield put(actions.getDrillRequest(id, userId));
@@ -135,4 +154,22 @@ function* getDrillSaga(action: actions.getDrillRequest) {
   }
 }
 
+function* drillGenerationStatusError(action: actions.drillGenerationStatusError) {
+  try {
+    const errorDrillId: string = action.payload.errorDrillId;
+    const allDrills: Drill[] = yield select(getDrillsSelector);
+    let drillName;
+    for (const drill of allDrills) {
+      if (drill.id === errorDrillId) {
+        drillName = drill.name;
+      }
+    }
+    if (drillName) {
+      console.log('drillName', drillName);
+    }
+    // yield put();
+  } catch (error) {
+    yield call(errorHandler, error);
+  }
+}
 export default watcher;
