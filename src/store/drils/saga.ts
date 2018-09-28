@@ -10,6 +10,7 @@ import {
   DrillStatus,
 } from 'src/store/drils/model';
 import { getUserId } from 'src/store/selectors';
+import { toastActions, ToastType } from 'src/store/toast/actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import * as actions from './actions';
 import {
@@ -165,7 +166,9 @@ function* drillGenerationStatusError(action: actions.drillGenerationStatusError)
       }
     }
     if (drillName) {
-      console.log('drillName', drillName);
+      const message = `Drill ${drillName} was not generated!`;
+      console.log(message);
+      yield put(toastActions.showToast(message, ToastType.Error));
     }
     // yield put();
   } catch (error) {

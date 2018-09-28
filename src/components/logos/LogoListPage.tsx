@@ -1,4 +1,4 @@
-import { createStyles } from '@material-ui/core';
+import { createStyles, WithStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
@@ -27,7 +27,7 @@ const selectedLogo: any      = null; // fix  change any to LogoModel
 const initialState           = { modalState, selectedLogo };
 
 type State = Readonly<typeof modalState & typeof selectedLogo>;
-type Props = { classes?: any } & injectDispatchProps & injectStateProps;
+type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
 
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;

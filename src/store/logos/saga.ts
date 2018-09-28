@@ -34,7 +34,7 @@ function* addLogo(action: fromActions.addLogosRequest) {
 
     console.log('setLogosSaga response.data', response.data);
     yield put(fromActions.logosActions.getLogosRequest());
-    // yield put(fromActions.logosActions.getLogosSuccess, response.data);
+    // yield put(fromActions.toastActions.getLogosSuccess, response.data);
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -49,7 +49,7 @@ function* deleteLogos(action: fromActions.deleteLogosRequest) {
     yield call(logosAPI.deleteLogos, { userId, logosIds });
     // ToDo(@Roman): Change behavior, need remove from store instead of send new request
     yield put(fromActions.logosActions.getLogosRequest());
-    // yield put(fromActions.logosActions.deleteLogosSuccess(logosIds));
+    // yield put(fromActions.toastActions.deleteLogosSuccess(logosIds));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -79,7 +79,7 @@ function* changeDefaultLogo(action: fromActions.changeDefaultLogoRequest) {
     const response = yield call(logosAPI.changeDefaultLogo, { userId, logoId });
     console.log('changeDefaultLogoSaga response.data', response.data);
     yield put(fromActions.logosActions.getLogosRequest());
-    // yield put(fromActions.logosActions.getLogosSuccess, response.data);
+    // yield put(fromActions.toastActions.getLogosSuccess, response.data);
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);

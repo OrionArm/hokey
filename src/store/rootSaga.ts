@@ -1,4 +1,5 @@
 import { all, spawn } from 'redux-saga/effects';
+import toastSaga from 'src/store/toast/saga';
 import userSaga from 'src/store/user/store/saga';
 import tokenSaga from 'src/store/user/token/saga';
 import logosSaga from 'src/store/logos/saga';
@@ -10,5 +11,6 @@ export default function* rootSaga() {
     spawn(tokenSaga),
     spawn(logosSaga),
     spawn(drillsSaga),
+    spawn(toastSaga),
   ]);
 }
