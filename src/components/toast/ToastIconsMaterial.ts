@@ -11,4 +11,4 @@
 //   Info: InfoIcon,
 // };
 
-//export const Icon = variantIcon[type];
+// export const Icon = variantIcon[type];

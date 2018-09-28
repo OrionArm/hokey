@@ -4,7 +4,7 @@ import {
   InputLabel, Input, withStyles, Typography,
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloudUploadAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { LogoModel } from 'src/store/logos/model';
 import FileLoadButton from 'src/UI/FileLoadButton';
@@ -76,9 +76,6 @@ class AddLogoModal extends Component<Props, State> {
             <>
               <img className={'img-uploader__preview'} src={preview} height={200}/>
               {/*TODO: clear img input by click*/}
-              <div className={'img-uploader__remove'}>
-                <FontAwesomeIcon icon={faTimes} className={'img-uploader__icon'}/>
-              </div>
             </>
             :
             <div className={'img-uploader__hint uploader-hint'}>
