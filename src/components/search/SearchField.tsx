@@ -60,7 +60,7 @@ class SearchField extends Component<ISearchFieldProps, any> {
     if (this.props.searchType !== SearchType.User) {
       return;
     }
-    this.props.actions.selectUser(option ? option.value : 'me');
+    this.props.actions.selectUser(option ? String(option.value) : 'me');
     this.props.actions.getDrillsCategoriesRequest();
   }
 

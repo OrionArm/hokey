@@ -1,7 +1,12 @@
 import { AxiosPromise } from 'axios';
 import FileSaver from 'file-saver';
 import { SearchType } from 'src/components/drills/CategoriesBar';
-import { RegenereteDrill } from 'src/store/drils/model';
+import {
+  DrillStatusType,
+  GeneratedDrillStatusResponse,
+  GeneratedStatusResponse,
+  RegenereteDrill,
+} from 'src/store/drils/model';
 import request from '../../utils/request';
 import { DrillCategoryType, DrillDetailed } from './model';
 
@@ -52,7 +57,7 @@ function downloadPdf(id: string, userId: number | string | 'me'): any {
     });
 }
 
-function downloadMultiplePdfs(drill_ids: string[], userId: string) {
+function downloadMultiplePDFs(userId: string, drill_ids: string[]) {
   return request
     .post(`/users/${userId}/drills/download/pdfs`, undefined, {
       params: { drill_ids },
@@ -152,25 +157,36 @@ function searchDrills(value: string) {
   });
 }
 
-function checkGenerationStatus(
-  userId: string,
-  generation_ids: string,
-): AxiosPromise<string[]> {
+function checkGenerationStatus(userId: string, generation_ids: string) {
   return request
     .get(`/users/${userId}/watermarks/generation/status`, {
       params: { generation_ids },
     })
     .then(response => {
-      response.data = Object.keys(response.data).filter(
-        id => response.data[id] !== 'done',
-      );
-      return response;
+      const data: GeneratedStatusResponse = response.data;
+      const list: string[] = Object.keys(data);
+      const init: GeneratedDrillStatusResponse = {
+        generatedIds: [],
+        generatedErrorIds: [],
+      };
+      return list.reduce((acc, id) => {
+        if (id && data[id] === DrillStatusType.error) {
+          acc.generatedErrorIds.push(id);
+        }
+        if (
+          data[id] !== DrillStatusType.done &&
+          data[id] !== DrillStatusType.error
+        ) {
+          acc.generatedIds.push(id);
+        }
+        return acc;
+      },                 init);
     });
 }
 
 const drillsAPI = {
   checkGenerationStatus,
-  downloadMultiplePdfs,
+  downloadMultiplePDFs,
   downloadMultipleVideos,
   downloadPdf,
   downloadVideo,

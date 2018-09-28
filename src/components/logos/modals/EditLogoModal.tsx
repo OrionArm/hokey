@@ -12,19 +12,20 @@ import { LogoModel } from 'src/store/logos/model';
 type Props = {
   open: boolean;
   modalName: string,
-  item: any;
+  item: LogoModel;
   close(modalName: string): void;
   confirm(item: any): void;
   classes?: any;
 };
-type State = Readonly<{ logo: LogoModel, preview: string | null, newName: string | null }>;
 
+type State = Readonly<{ logo: LogoModel | null, preview: string, newName: string }>;
+const initialState = {
+  logo: null,
+  preview: '',
+  newName: '',
+};
 class EditLogoModal extends Component<Props, State> {
-  readonly state: State = {
-    logo: this.props.item,
-    preview: null,
-    newName: null,
-  };
+  readonly state: State = initialState;
 
   static getDerivedStateFromProps(props: Props, state: State) {
     if (props.item) {
@@ -35,8 +36,8 @@ class EditLogoModal extends Component<Props, State> {
   }
 
   render() {
-    const { open, classes } = this.props;
-    const { preview }       = this.state;
+    const { open, classes, item }    = this.props;
+    const { preview, newName } = this.state;
     return (
       <Dialog
         open={open}
@@ -66,7 +67,7 @@ class EditLogoModal extends Component<Props, State> {
               classes={{
                 underline: classes.cssUnderline,
               }}
-              defaultValue={this.state.logo && this.state.logo.name && this.state.logo.name}
+              defaultValue={item && item.name}
               id="LogoName-input"
               onChange={this.onChangeName}
             />
@@ -78,6 +79,7 @@ class EditLogoModal extends Component<Props, State> {
             variant="contained"
             color="secondary"
             autoFocus
+            disabled={!newName}
           >
             Ok
           </Button>
@@ -89,12 +91,19 @@ class EditLogoModal extends Component<Props, State> {
     );
   }
 
-  onConfirm = () => this.props.confirm({ logo: this.state.logo, newName: this.state.newName });
+  onConfirm = () => {
+    this.props.confirm({ logo: this.state.logo, newName: this.state.newName });
+    this.setState({ ...this.state, ...initialState });
+  }
 
-  onClose = () => this.props.close(this.props.modalName);
+  onClose = () => {
+    this.setState({ ...this.state, ...initialState });
+    this.props.close(this.props.modalName);
+  }
 
   onChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.currentTarget.value;
+    console.log('name', name);
     this.setState({ ...this.state, newName: name });
   }
 }

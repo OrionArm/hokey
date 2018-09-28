@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+import { DrillStatus } from 'src/store/drils/model';
+
 import {
   DrillCategoryType,
   Drill,
@@ -37,10 +39,9 @@ export interface DrillsState {
     data: Drill[];
   };
   selectedDrill: DrillDetailed | null;
-  generationStatus: {
-    [drillId: string]: drillStatusType;
-  };
+
   downloadDrill: DownloadDrill | null;
+  generationStatus: DrillStatus;
 }
 
 const initStateCategories = {
@@ -118,9 +119,9 @@ export const generationStatus = (
 const getGenerationStatusInitialState = () => {
   try {
     const status = localStorage.getItem('generation_status');
-    return status ? JSON.parse(status) : 'none';
+    return status ? JSON.parse(status) : {};
   } catch (e) {
-    return 'none';
+    return {};
   }
 };
 

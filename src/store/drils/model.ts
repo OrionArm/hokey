@@ -52,3 +52,15 @@ export type DownloadParams = {
 };
 
 export type DrillStatus = { [drillId: string]: string };
+
+export enum DrillStatusType {
+  pending = 'pending',
+  done    = 'done',
+  none    = 'none',
+  error   = 'error',
+}
+export type GeneratedDrillStatusResponse = { generatedIds: string[], generatedErrorIds: string[] };
+
+export type GeneratedStatusTypeResponse = 'pending' | 'done' | 'none' | 'error';
+
+export type GeneratedStatusResponse = { [drillId: string]: GeneratedStatusTypeResponse };

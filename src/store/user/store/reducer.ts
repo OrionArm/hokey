@@ -2,7 +2,7 @@ import * as fromActions from './actions';
 
 export interface UserState {
   profile: IUser | null;
-  selectedUserId: number | 'me';
+  selectedUserId: string | 'me';
 }
 
 export const initialState: UserState = {
