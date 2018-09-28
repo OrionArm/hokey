@@ -19,7 +19,7 @@ interface State {
 type Props = injectStateProps;
 
 class DrillsPage extends React.Component<Props, State> {
-  state       = {
+  state = {
     selectedTab: 0,
   };
   onTabChange = (selectedTab: number) => this.setState({ selectedTab });
@@ -33,23 +33,20 @@ class DrillsPage extends React.Component<Props, State> {
         </Grid>
         <Grid container wrap="nowrap" spacing={16} justify="space-between">
           <Grid item md={4}>
-            <CategoriesBar/>
+            <CategoriesBar />
           </Grid>
           <Grid item md={selectDrill ? 5 : 8}>
-            <DrillsBar/>
+            <DrillsBar />
           </Grid>
-          {
-            selectDrill
-              ? <Grid item md={3}>
-                <DetailsBar
-                  selectedTab={this.state.selectedTab}
-                  onTabChange={this.onTabChange}
-                />
-                {this.state.selectedTab === 2 && <AvailableLogos/>}
-              </Grid>
-              : null
-          }
-
+          {selectDrill ? (
+            <Grid item md={3}>
+              <DetailsBar
+                selectedTab={this.state.selectedTab}
+                onTabChange={this.onTabChange}
+              />
+              {this.state.selectedTab === 2 && <AvailableLogos />}
+            </Grid>
+          ) : null}
         </Grid>
       </>
     );

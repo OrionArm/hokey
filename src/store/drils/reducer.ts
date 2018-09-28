@@ -1,14 +1,31 @@
 import { combineReducers } from 'redux';
-import { DrillCategoryType, Drill, DrillDetailed, DrillCategoriesGroupped } from './model';
 import {
-  drillActions, GET_DRILL_SUCCESS,
-  GET_DRILLS_SUCCESS, GET_CATEGORIES_SUCCESS, GET_CATEGORIES_REQUEST,
-  GET_CATEGORIES_FAIL, GET_DRILLS_REQUEST, GET_DRILLS_FAIL,
-  SEARCH_DRILLS_REQUEST, SEARCH_DRILLS_SUCCESS, SEARCH_DRILLS_FAIL,
-  REGENERATE_DRILLS_SUCCESS, UPDATE_GENERATION_STATUS,
+  DrillCategoryType,
+  Drill,
+  DrillDetailed,
+  DrillCategoriesGroupped,
+  DownloadDrill,
+} from './model';
+import {
+  drillActions,
+  GET_DRILL_SUCCESS,
+  GET_DRILLS_SUCCESS,
+  GET_CATEGORIES_SUCCESS,
+  GET_CATEGORIES_REQUEST,
+  GET_CATEGORIES_FAIL,
+  GET_DRILLS_REQUEST,
+  GET_DRILLS_FAIL,
+  SEARCH_DRILLS_REQUEST,
+  SEARCH_DRILLS_SUCCESS,
+  SEARCH_DRILLS_FAIL,
+  REGENERATE_DRILLS_SUCCESS,
+  DOWNLOAD_DRILLS_SUCCESS,
+  DOWNLOAD_DRILLS_FAIL,
+  UPDATE_GENERATION_STATUS,
+  DOWNLOAD_DRILLS_REQUEST,
 } from './actions';
 
-export type drillStatusType= 'pending' | 'done' | 'none';
+export type drillStatusType = 'pending' | 'done' | 'none';
 
 export interface DrillsState {
   categories: {
@@ -23,6 +40,7 @@ export interface DrillsState {
   generationStatus: {
     [drillId: string]: drillStatusType;
   };
+  downloadDrill: DownloadDrill | null;
 }
 
 const initStateCategories = {
@@ -33,8 +51,10 @@ const initStateCategories = {
   },
 };
 
-const categories = (state = initStateCategories,
-                    action: drillActions): DrillsState['categories'] => {
+const categories = (
+  state = initStateCategories,
+  action: drillActions,
+): DrillsState['categories'] => {
   switch (action.type) {
     case GET_CATEGORIES_REQUEST:
       return { ...initStateCategories, loading: true };
@@ -48,7 +68,10 @@ const categories = (state = initStateCategories,
 };
 
 // tslint:disable-next-line:max-line-length
-const drills = (state = { data: [], loading: false }, action: drillActions): DrillsState['drills'] => {
+const drills = (
+  state = { data: [], loading: false },
+  action: drillActions,
+): DrillsState['drills'] => {
   switch (action.type) {
     case SEARCH_DRILLS_REQUEST:
     case GET_DRILLS_REQUEST:
@@ -64,7 +87,10 @@ const drills = (state = { data: [], loading: false }, action: drillActions): Dri
   }
 };
 
-const selectedDrill = (state = null, action: drillActions): DrillDetailed | null => {
+const selectedDrill = (
+  state = null,
+  action: drillActions,
+): DrillDetailed | null => {
   switch (action.type) {
     case GET_DRILL_SUCCESS:
       return action.payload.drill;
@@ -98,9 +124,33 @@ const getGenerationStatusInitialState = () => {
   }
 };
 
+const downloadDrill = (
+  state = {
+    loading: {
+      allVideo: false,
+      allPdf: false,
+      selfVideo: false,
+      selfPdf: false,
+    },
+  },
+  action: drillActions,
+): DrillsState['downloadDrill'] => {
+  switch (action.type) {
+    case DOWNLOAD_DRILLS_REQUEST:
+      return { loading: { ...state.loading, ...action.payload.loading } };
+    case DOWNLOAD_DRILLS_SUCCESS:
+      return { loading: { ...state.loading, ...action.payload.loading } };
+    case DOWNLOAD_DRILLS_FAIL:
+      return { loading: { ...state.loading, ...action.payload.error } };
+    default:
+      return state;
+  }
+};
+
 export const reducer = combineReducers<DrillsState, drillActions>({
   categories,
   drills,
   selectedDrill,
   generationStatus,
+  downloadDrill,
 });

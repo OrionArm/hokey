@@ -28,9 +28,27 @@ export interface DrillCategoriesGroupped {
 }
 
 export type RegenereteDrill = {
-  drill_ids: string[],
-  userId: number | string | 'me',
-  logoId?: string,
+  drill_ids: string[];
+  userId: number | string | 'me';
+  logoId?: string;
+};
+
+// interface IKeyLoading {
+//   allVideo: boolean;
+//   allPdf: boolean;
+//   selfVideo: boolean;
+//   selfPdf: boolean;
+// }
+type neType = 'allVideo' | 'allPdf' | 'selfVideo' | 'selfPdf';
+// const newtest: typeof eKeyLoading;
+
+export type DownloadDrill = {
+  loading: Partial<Record<neType, boolean | string>>;
+};
+
+export type DownloadParams = {
+  checkedIds?: string[];
+  selectedUserId?: string | number | 'me';
 };
 
 export type DrillStatus = { [drillId: string]: string };

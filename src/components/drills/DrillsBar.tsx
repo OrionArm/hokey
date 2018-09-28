@@ -7,6 +7,7 @@ import {
   List,
   Paper,
   withStyles,
+  WithStyles,
 } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -14,23 +15,26 @@ import { bindActionCreators, compose, Dispatch } from 'redux';
 import {
   getDrillRequest,
   regenerateDrillsRequest,
+  downloadDrillsRequest,
 } from 'src/store/drils/actions';
-import { Drill, DrillDetailed } from 'src/store/drils/model';
+import { Drill, DrillDetailed, DownloadDrill } from 'src/store/drils/model';
 import { getUserId } from 'src/store/selectors';
 import {
   getDrillsSelector,
   getSelectedDrillSelector,
+  getLoadingData,
 } from '../../store/drils/selectors';
 import { RootState } from '../../store/rootReducers';
 import DrillsItem from './DrillsItem';
 import ToolsPanel from './ToolsPanel';
 
-interface DrillsProps {
-  classes: any;
+interface DrillsProps extends WithStyles<typeof styles> {
   drills: Drill[];
+  loadingData: DownloadDrill;
   actions: {
     selectDrill: typeof getDrillRequest;
     regenerateDrillsRequest: typeof regenerateDrillsRequest;
+    downloadDrillsRequest: typeof downloadDrillsRequest;
   };
   selectedDrill: DrillDetailed | null;
   selectedUserId: string;
@@ -116,7 +120,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                   root: classes.rootLabel,
                 }}
                 onChange={this.toggleAll}
-                control={<Checkbox color="primary"/>}
+                control={<Checkbox color="primary" />}
                 label="All"
               />
             </Button>
@@ -135,7 +139,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                   root: classes.rootLabel,
                 }}
                 onChange={this.toggleAnimated}
-                control={<Checkbox color="primary"/>}
+                control={<Checkbox color="primary" />}
                 label="Animated"
               />
             </Button>
@@ -144,28 +148,29 @@ class DrillsBar extends Component<DrillsProps, State> {
             checkedIds={this.checkedIdsAsArray}
             selectedUserId={this.props.selectedUserId}
             regenerateDrillsRequest={this.props.actions.regenerateDrillsRequest}
+            downloadDrillsRequest={this.props.actions.downloadDrillsRequest}
+            loadingData={this.props.loadingData}
           />
         </header>
         <List>
-          {
-            this.props.drills.map((drill: Drill) => (
-              <DrillsItem
-                key={drill.id}
-                onCheck={this.handleToggle(drill.id)}
-                drill={drill}
-                checked={this.state.checkedIds[drill.id]}
-                selectDrill={this.props.actions.selectDrill}
-                isSelected={this.isDrillSelected(drill.id)}
-              />
-            ))
-          }
+          {this.props.drills.map((drill: Drill) => (
+            <DrillsItem
+              key={drill.id}
+              onCheck={this.handleToggle(drill.id)}
+              drill={drill}
+              checked={this.state.checkedIds[drill.id]}
+              selectDrill={this.props.actions.selectDrill}
+              isSelected={this.isDrillSelected(drill.id)}
+            />
+          ))}
         </List>
       </Paper>
     );
   }
 }
 
-const mapStateToProps    = (state: RootState) => ({
+const mapStateToProps = (state: RootState) => ({
+  loadingData: getLoadingData(state),
   drills: getDrillsSelector(state),
   selectedDrill: getSelectedDrillSelector(state),
   selectedUserId: getUserId(state),
@@ -174,6 +179,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(
     {
       regenerateDrillsRequest,
+      downloadDrillsRequest,
       selectDrill: getDrillRequest,
     },
     dispatch,
@@ -190,6 +196,7 @@ const styles = createStyles({
     paddingRight: 16,
   },
 });
+
 export default compose(
   withStyles(styles),
   connect(

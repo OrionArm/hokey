@@ -1,6 +1,6 @@
-import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
+import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// tslint:disable-next-line:max-line-length
+import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
 import {
   Button,
   createStyles,
@@ -12,43 +12,20 @@ import {
   WithStyles,
   Tooltip,
 } from '@material-ui/core';
-import React, { Component } from 'react';
-import { regenerateDrillsRequest } from 'src/store/drils/actions';
-import drillsAPI from 'src/store/drils/api';
+import {
+  regenerateDrillsRequest,
+  downloadDrillsRequest,
+} from 'src/store/drils/actions';
+import { DownloadDrill } from 'src/store/drils/model';
+import { PreloadDownload } from '../../UI/Loading';
 
-type ToolsPanelProps = WithStyles<typeof styles> & {
+interface ToolsPanelProps extends WithStyles<typeof styles> {
   checkedIds: string[];
   selectedUserId: string;
   regenerateDrillsRequest: typeof regenerateDrillsRequest;
-};
-
-const styles = (theme: Theme) =>
-  createStyles({
-    wrapperPanel: {
-      display: 'flex',
-      border: '1px solid rgba(0, 0, 0, 0.12)',
-      borderRadius: theme.shape.borderRadius,
-    },
-    rootSelect: {
-      fontSize: '0.875rem',
-    },
-    select: {
-      paddingLeft: theme.spacing.unit,
-      paddingTop: 0,
-      paddingBottom: 0,
-      height: 50,
-      display: 'flex',
-      alignItems: 'center',
-    },
-    rootBtn: {
-      textTransform: 'capitalize',
-      padding: 0,
-    },
-    rootIconBtn: {
-      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
-      borderRadius: 0,
-    },
-  });
+  downloadDrillsRequest: typeof downloadDrillsRequest;
+  loadingData: DownloadDrill;
+}
 
 class ToolsPanel extends Component<ToolsPanelProps, any> {
   state = {
@@ -70,20 +47,19 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
   }
 
   downloadSelectedVideos = () => {
-    drillsAPI.downloadMultipleVideos(
-      this.props.checkedIds,
-      this.props.selectedUserId,
-    );
+    this.props.downloadDrillsRequest({
+      checkedIds: this.props.checkedIds,
+      selectedUserId: this.props.selectedUserId,
+      loading: { allVideo: true },
+    });
   }
 
   downloadSelectedPdfs = () => {
-    if (this.props.checkedIds.length === 0) {
-      return;
-    }
-    drillsAPI.downloadMultiplePdfs(
-      this.props.selectedUserId,
-      this.props.checkedIds,
-    );
+    this.props.downloadDrillsRequest({
+      checkedIds: this.props.checkedIds,
+      selectedUserId: this.props.selectedUserId,
+      loading: { allPdf: true },
+    });
   }
 
   render() {
@@ -111,7 +87,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           </Select>
         </Button>
         <Tooltip title="Download Selected Video" placement="top">
-          <div>
+          <div style={{ position: 'relative' }}>
             <IconButton
               classes={{
                 root: classes.rootIconBtn,
@@ -121,10 +97,14 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             >
               <FontAwesomeIcon icon={faFilm} />
             </IconButton>
+            {this.props.loadingData.loading.allVideo &&
+              this.props.loadingData.loading.allVideo !== 'error' && (
+                <PreloadDownload />
+              )}
           </div>
         </Tooltip>
         <Tooltip title="Download Selected PDFS" placement="top">
-          <div>
+          <div style={{ position: 'relative' }}>
             <IconButton
               classes={{
                 root: classes.rootIconBtn,
@@ -134,11 +114,58 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             >
               <FontAwesomeIcon icon={faDownload} />
             </IconButton>
+            {this.props.loadingData.loading.allPdf &&
+              this.props.loadingData.loading.allPdf !== 'error' && (
+                <PreloadDownload />
+              )}
           </div>
         </Tooltip>
       </div>
     );
   }
 }
+
+const styles = (theme: Theme) => {
+  return createStyles({
+    wrapperPanel: {
+      display: 'flex',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      borderBottomLeftRadius: theme.shape.borderRadius,
+    },
+    rootSelect: {
+      fontSize: '0.875rem',
+    },
+    select: {
+      paddingLeft: theme.spacing.unit,
+      paddingTop: 0,
+      paddingBottom: 0,
+      height: 50,
+      display: 'flex',
+      alignItems: 'center',
+      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderBottomLeftRadius: theme.shape.borderRadius,
+    },
+    rootBtn: {
+      textTransform: 'capitalize',
+      padding: 0,
+    },
+    wrapperBtn: {
+      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      background: theme.palette.action.disabledBackground,
+      borderRadius: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 50,
+      height: '100%',
+    },
+    rootIconBtn: {
+      width: 50,
+      height: '100%',
+      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderRadius: 0,
+    },
+  });
+};
 
 export default withStyles(styles)(ToolsPanel);

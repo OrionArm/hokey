@@ -20,45 +20,64 @@ import {
   Tooltip,
   Theme,
 } from '@material-ui/core';
-
-import { regenerateDrillsRequest } from 'src/store/drils/actions';
-import drillsApi from 'src/store/drils/api';
-import { Drill } from 'src/store/drils/model';
-import { getGenerationStatusSelector } from 'src/store/drils/selectors';
+import { PreloadDownload } from 'src/UI/Loading';
+import {
+  regenerateDrillsRequest,
+  downloadDrillsRequest,
+} from 'src/store/drils/actions';
+import { Drill, DownloadDrill } from 'src/store/drils/model';
+import {
+  getGenerationStatusSelector,
+  getLoadingData,
+} from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
 
 const mapStateToProps = (state: RootState, props) => ({
   selectedUserId: getUserId(state),
+  loadingData: getLoadingData(state),
   isRegenerating: Boolean(
     props.drill && getGenerationStatusSelector(state)[props.drill.id],
   ),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({ regenerateDrillsRequest }, dispatch),
+  actions: bindActionCreators(
+    { regenerateDrillsRequest, downloadDrillsRequest },
+    dispatch,
+  ),
 });
 
 interface Props extends WithStyles<typeof styles> {
   drill: Drill;
   checked: boolean;
+  loadingData: DownloadDrill;
   onCheck: () => void;
   selectDrill: (id: string, userId: string) => void;
   isSelected: boolean;
   selectedUserId: number | 'me';
   actions: {
     regenerateDrillsRequest: typeof regenerateDrillsRequest;
+    downloadDrillsRequest: typeof downloadDrillsRequest;
   };
   isRegenerating: boolean;
 }
 
 class DrillsItem extends Component<Props, object> {
-  downloadPdf = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    drillsApi.downloadPdf(this.props.drill.id, this.props.selectedUserId);
-  }
   downloadVideo = (event: React.MouseEvent) => {
     event.stopPropagation();
-    drillsApi.downloadVideo(this.props.drill.id, this.props.selectedUserId);
+    this.props.actions.downloadDrillsRequest({
+      checkedIds: [this.props.drill.id],
+      selectedUserId: this.props.selectedUserId,
+      loading: { selfVideo: this.props.drill.id },
+    });
+  }
+  downloadPdf = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    this.props.actions.downloadDrillsRequest({
+      checkedIds: [this.props.drill.id],
+      selectedUserId: this.props.selectedUserId,
+      loading: { selfPdf: this.props.drill.id },
+    });
   }
   regenerate = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -120,7 +139,7 @@ class DrillsItem extends Component<Props, object> {
             ) : (
               <>
                 <Tooltip title="Download Video" placement="top">
-                  <div style={{ marginRight: 8 }}>
+                  <div style={{ marginRight: 8, position: 'relative' }}>
                     <IconButton
                       aria-label="Download Video"
                       className={classes.iconBtn}
@@ -129,10 +148,15 @@ class DrillsItem extends Component<Props, object> {
                     >
                       <FontAwesomeIcon icon={faFilm} />
                     </IconButton>
+                    {this.props.loadingData.loading.selfVideo ===
+                      this.props.drill.id &&
+                      this.props.loadingData.loading.selfVideo !== 'error' && (
+                        <PreloadDownload />
+                      )}
                   </div>
                 </Tooltip>
                 <Tooltip title="Download PDF" placement="top">
-                  <div>
+                  <div style={{ marginRight: 8, position: 'relative' }}>
                     <IconButton
                       aria-label="Download PDF"
                       onClick={this.downloadPdf}
@@ -140,6 +164,11 @@ class DrillsItem extends Component<Props, object> {
                     >
                       <FontAwesomeIcon icon={faDownload} />
                     </IconButton>
+                    {this.props.loadingData.loading.selfPdf ===
+                      this.props.drill.id &&
+                      this.props.loadingData.loading.selfPdf !== 'error' && (
+                        <PreloadDownload />
+                      )}
                   </div>
                 </Tooltip>
               </>
@@ -153,7 +182,6 @@ class DrillsItem extends Component<Props, object> {
 }
 
 const styles = (theme: Theme) => {
-  console.log(theme);
   return createStyles({
     iconBtn: {
       '&:disabled': {

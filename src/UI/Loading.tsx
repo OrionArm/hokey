@@ -17,3 +17,20 @@ export const Loading: SFC<Props> = props => {
     </div>
   );
 };
+
+export const PreloadDownload: SFC<Props> = () => {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 1,
+      }}
+    >
+      <Fade in>
+        <CircularProgress color="secondary" size={48} />
+      </Fade>
+    </div>
+  );
+};

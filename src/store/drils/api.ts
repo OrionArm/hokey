@@ -52,7 +52,7 @@ function downloadPdf(id: string, userId: number | string | 'me'): any {
     });
 }
 
-function downloadMultiplePdfs(userId: string, drill_ids: string[]) {
+function downloadMultiplePdfs(drill_ids: string[], userId: string) {
   return request
     .post(`/users/${userId}/drills/download/pdfs`, undefined, {
       params: { drill_ids },
