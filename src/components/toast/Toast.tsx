@@ -14,7 +14,11 @@ import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faExclamationTriangle, faCheckCircle, faInfoCircle, faExclamationCircle, faTimesCircle,
+  faExclamationTriangle,
+  faCheckCircle,
+  faInfoCircle,
+  faExclamationCircle,
+  faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { RootState } from 'src/store/rootReducers';
@@ -43,12 +47,20 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   clear: () => dispatch(toastActions.clearToast()),
 });
 
-type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps & {
-  className?: string;
-  rest?: any;
-};
+type Props = WithStyles<typeof styles> &
+  injectDispatchProps &
+  injectStateProps & {
+    className?: string;
+    rest?: any;
+  };
 
-const Toast: React.SFC<Props> = ({ toast, clear, classes, className, rest }) => {
+const Toast: React.SFC<Props> = ({
+  toast,
+  clear,
+  classes,
+  className,
+  rest,
+}) => {
   const handleClose = () => clear();
   const { messages, isOpen, type } = toast;
 
@@ -71,8 +83,8 @@ const Toast: React.SFC<Props> = ({ toast, clear, classes, className, rest }) => 
         aria-describedby="client-snackbar"
         message={
           <span id="client-snackbar" className={classes.message}>
-          <Icon type={variantIcon[type]}/> {messages}
-        </span>}
+            <Icon type={variantIcon[type]} /> {messages}
+          </span>}
         action={[
           <IconButton
             key="close"
@@ -80,7 +92,8 @@ const Toast: React.SFC<Props> = ({ toast, clear, classes, className, rest }) => 
             color="inherit"
             className={classes.closeButton}
             onClick={handleClose}
-          ><Icon type={variantIcon['Close']}/>
+          >
+            <Icon type={variantIcon['Close']} />
           </IconButton>,
         ]}
         {...rest}
@@ -89,35 +102,39 @@ const Toast: React.SFC<Props> = ({ toast, clear, classes, className, rest }) => 
   );
 };
 
-const styles = ({ palette, spacing }: Theme) => createStyles({
-  success: {
-    backgroundColor: green[600],
-  },
-  error: {
-    backgroundColor: palette.error.dark,
-  },
-  info: {
-    backgroundColor: palette.primary.dark,
-  },
-  warning: {
-    backgroundColor: amber[700],
-  },
-  icon: {
-    fontSize: 20,
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: spacing.unit,
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  closeButton: {},
-});
+const styles = ({ palette, spacing }: Theme) =>
+  createStyles({
+    success: {
+      backgroundColor: green[600],
+    },
+    error: {
+      backgroundColor: palette.error.dark,
+    },
+    info: {
+      backgroundColor: palette.primary.dark,
+    },
+    warning: {
+      backgroundColor: amber[700],
+    },
+    icon: {
+      fontSize: 20,
+    },
+    iconVariant: {
+      opacity: 0.9,
+      marginRight: spacing.unit,
+    },
+    message: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    closeButton: {},
+  });
 
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(Toast),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Toast),
 );

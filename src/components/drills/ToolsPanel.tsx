@@ -62,6 +62,13 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
     });
   }
 
+  handleDisableIconBtn = (variants, current) => {
+    const foo = Object.entries(variants).filter(item => item[1]);
+    // const fooo = foo.includes(current);
+    const fooo = foo.map(item => item.includes(current))[0];
+
+    return fooo;
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -110,7 +117,10 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
                 root: classes.rootIconBtn,
               }}
               onClick={this.downloadSelectedPdfs}
-              disabled={this.props.checkedIds.length === 0}
+              disabled={this.handleDisableIconBtn(
+                this.props.loadingData.loading,
+                'allPdf',
+              )}
             >
               <FontAwesomeIcon icon={faDownload} />
             </IconButton>

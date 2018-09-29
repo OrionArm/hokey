@@ -33,34 +33,32 @@ export type RegenereteDrill = {
   logoId?: string;
 };
 
-// interface IKeyLoading {
-//   allVideo: boolean;
-//   allPdf: boolean;
-//   selfVideo: boolean;
-//   selfPdf: boolean;
-// }
 type neType = 'allVideo' | 'allPdf' | 'selfVideo' | 'selfPdf';
-// const newtest: typeof eKeyLoading;
 
 export type DownloadDrill = {
   loading: Partial<Record<neType, boolean | string>>;
 };
 
 export type DownloadParams = {
-  checkedIds?: string[];
-  selectedUserId?: string | number | 'me';
+  checkedIds: string[];
+  selectedUserId: string | number | 'me';
 };
 
 export type DrillStatus = { [drillId: string]: string };
 
 export enum DrillStatusType {
   pending = 'pending',
-  done    = 'done',
-  none    = 'none',
-  error   = 'error',
+  done = 'done',
+  none = 'none',
+  error = 'error',
 }
-export type GeneratedDrillStatusResponse = { generatedIds: string[], generatedErrorIds: string[] };
+export type GeneratedDrillStatusResponse = {
+  generatedIds: string[];
+  generatedErrorIds: string[];
+};
 
 export type GeneratedStatusTypeResponse = 'pending' | 'done' | 'none' | 'error';
 
-export type GeneratedStatusResponse = { [drillId: string]: GeneratedStatusTypeResponse };
+export type GeneratedStatusResponse = {
+  [drillId: string]: GeneratedStatusTypeResponse;
+};
