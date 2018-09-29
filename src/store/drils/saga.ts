@@ -35,6 +35,7 @@ function* watcher() {
     takeLatest(actions.GET_DRILL_REQUEST, getDrillSaga),
     takeLatest(actions.SEARCH_DRILLS_REQUEST, searchDrillsListSaga),
     takeLatest(actions.REGENERATE_DRILLS_REQUEST, regenerateDrillsSaga),
+    takeLatest(actions.DOWNLOAD_DRILLS_REQUEST, downloadDrillsSaga),
     takeLatest(
       actions.DRILL_GENERATION_STATUS_ERROR,
       drillGenerationStatusError,
@@ -104,7 +105,6 @@ function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
       (acc, drillId, i) => ({ ...acc, [drillId]: response[i] }),
       {},
     );
-
     localStorage.setItem('generation_status', JSON.stringify(status));
     yield put(actions.regenerateDrillsSuccess(status));
     yield put(actions.getDrillRequest(id, userId));
@@ -127,7 +127,7 @@ function* downloadDrillsSaga({ payload }: actions.downloadDrillsRequest) {
       chooseApi = 'downloadMultipleVideos';
       break;
     case 'allPdf':
-      chooseApi = 'downloadMultiplePdfs';
+      chooseApi = 'downloadMultiplePDFs';
       break;
     case 'selfVideo':
       chooseApi = 'downloadVideo';

@@ -33,13 +33,15 @@ import {
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
 
-const mapStateToProps = (state: RootState, props) => ({
-  selectedUserId: getUserId(state),
-  loadingData: getLoadingData(state),
-  isRegenerating: Boolean(
-    props.drill && getGenerationStatusSelector(state)[props.drill.id],
-  ),
-});
+const mapStateToProps = (state: RootState, props) => {
+  return {
+    selectedUserId: getUserId(state),
+    loadingData: getLoadingData(state),
+    isRegenerating: Boolean(
+      props.drill && getGenerationStatusSelector(state)[props.drill.id],
+    ),
+  };
+};
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(
     { regenerateDrillsRequest, downloadDrillsRequest },
@@ -72,7 +74,7 @@ class DrillsItem extends Component<Props, object> {
     });
   }
   downloadPdf = (event: React.MouseEvent) => {
-    event.stopPropagation();
+    // event.stopPropagation();
     this.props.actions.downloadDrillsRequest({
       checkedIds: [this.props.drill.id],
       selectedUserId: this.props.selectedUserId,
@@ -80,7 +82,7 @@ class DrillsItem extends Component<Props, object> {
     });
   }
   regenerate = (event: React.MouseEvent) => {
-    event.stopPropagation();
+    // event.stopPropagation();
     this.props.actions.regenerateDrillsRequest({
       userId: this.props.selectedUserId,
       drill_ids: [this.props.drill.id],
