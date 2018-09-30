@@ -28,14 +28,17 @@ class DrillsPage extends React.Component<Props, State> {
     const { selectDrill } = this.props;
     return (
       <>
-        <Grid item sm={12} style={{ marginBottom: 16 }}>
-          <Typography variant="headline">My Drills</Typography>
-        </Grid>
-        <Grid container wrap="nowrap" spacing={16} justify="space-between">
-          <Grid item md={4}>
+        <Typography
+          style={{ marginBottom: 16, flexGrow: 1 }}
+          variant="headline"
+        >
+          My Drills
+        </Typography>
+        <Grid container wrap="nowrap" spacing={8} justify="space-between">
+          <Grid item md={3}>
             <CategoriesBar />
           </Grid>
-          <Grid item md={selectDrill ? 5 : 8}>
+          <Grid item md={selectDrill ? 6 : 9}>
             <DrillsBar />
           </Grid>
           {selectDrill ? (

@@ -34,7 +34,7 @@ export interface DetailsProps extends WithStyles<typeof styles> {
 
 const TabContainer = props => {
   return (
-    <WrapperLogoImg style={{ padding: 24 }}>{props.children}</WrapperLogoImg>
+    <WrapperLogoImg style={{ padding: 16 }}>{props.children}</WrapperLogoImg>
   );
 };
 
@@ -59,15 +59,10 @@ const styles = (theme: Theme) =>
       },
 
       '&$tabSelected': {
-        // color: '#fff',
         backgroundColor: theme.palette.primary.main,
         '&:hover': {
           color: theme.palette.primary.contrastText,
         },
-      },
-      '&:focus': {
-        // backgrounColor: theme.palette.primary.light,
-        // color: '#fff',
       },
     },
     tabSelected: {
@@ -76,6 +71,7 @@ const styles = (theme: Theme) =>
     tabContent: {
       maxWidth: '100%',
       height: '100%',
+      objectFit: 'contain',
     },
   });
 
@@ -83,7 +79,8 @@ class DetailsBar extends Component<DetailsProps, any> {
   public render() {
     const { classes, logo, animation } = this.props;
     const logoKey = logo && logo.slice(logo.indexOf('.com') + 3);
-    const animationKey = animation && animation.slice(animation.indexOf('.com') + 3);
+    const animationKey =
+      animation && animation.slice(animation.indexOf('.com') + 3);
     return (
       <Paper style={{ marginBottom: 24 }}>
         <Tabs
@@ -104,13 +101,12 @@ class DetailsBar extends Component<DetailsProps, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          {
-            this.props.showLogo && (
-              <Tab
-                classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-                label="Logo"
-              />
-            )}
+          {this.props.showLogo && (
+            <Tab
+              classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
+              label="Logo"
+            />
+          )}
         </Tabs>
         <SwipeableViews
           index={this.props.selectedTab}
@@ -119,7 +115,7 @@ class DetailsBar extends Component<DetailsProps, any> {
         >
           <TabContainer>
             {this.props.preview ? (
-              <img className={classes.tabContent} src={this.props.preview}/>
+              <img className={classes.tabContent} src={this.props.preview} />
             ) : (
               <Typography variant="subheading">
                 No preview this drill
@@ -127,20 +123,18 @@ class DetailsBar extends Component<DetailsProps, any> {
             )}
           </TabContainer>
           <TabContainer>
-            {
-              this.props.animation
-                ?
-                <video className={classes.tabContent} controls>
-                  <source src={this.props.animation} type="video/mp4"/>
-                </video>
-                :
-                <Typography variant="subheading">
-                  No animation this drill
-                </Typography>
-            }
+            {this.props.animation ? (
+              <video className={classes.tabContent} controls>
+                <source src={this.props.animation} type="video/mp4" />
+              </video>
+            ) : (
+              <Typography variant="subheading">
+                No animation this drill
+              </Typography>
+            )}
           </TabContainer>
           <TabContainer key={logoKey}>
-            {logo && <img className={classes.tabContent} src={logo}/>}
+            {logo && <img className={classes.tabContent} src={logo} />}
           </TabContainer>
         </SwipeableViews>
       </Paper>
@@ -148,7 +142,7 @@ class DetailsBar extends Component<DetailsProps, any> {
   }
 }
 
-const mapStateToProps    = (state: RootState) => ({
+const mapStateToProps = (state: RootState) => ({
   preview: getSelectedDrillPreviewSelector(state),
   animation: getSelectedDrillAnimationSelector(state),
   logo: getSelectedDrillLogoSelector(state),
