@@ -41,7 +41,7 @@ const ControlBtn: React.SFC<Props> = ({
     if (isAll() && checkedIds) {
       return checkedIds.length === 0;
     }
-    if (current === 'selfVideo') {
+    if (current === 'selfVideo' || current === 'regenerate') {
       return hasAnimation;
     }
 
@@ -63,7 +63,8 @@ const ControlBtn: React.SFC<Props> = ({
       >
         {children}
       </IconButton>
-      {handlePreloadСondition() && <PreloadDownload />}
+      {current !== 'regenerate' &&
+        handlePreloadСondition() && <PreloadDownload />}
     </>
   );
 };
@@ -71,8 +72,8 @@ const ControlBtn: React.SFC<Props> = ({
 const styles = (theme: Theme) => {
   return createStyles({
     iconBtn: {
-      width: 49,
-      height: '100%',
+      width: 50,
+      height: 50,
       '&:disabled': {
         backgroundColor: '#eeeeee',
       },

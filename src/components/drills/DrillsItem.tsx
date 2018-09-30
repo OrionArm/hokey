@@ -11,7 +11,6 @@ import {
   Checkbox,
   createStyles,
   Divider,
-  IconButton,
   LinearProgress,
   ListItem,
   ListItemText,
@@ -93,7 +92,6 @@ class DrillsItem extends Component<Props, object> {
   }
 
   public render() {
-    const { classes } = this.props;
     return (
       <>
         <ListItem
@@ -102,6 +100,7 @@ class DrillsItem extends Component<Props, object> {
           button
           onClick={this.selectDrill}
           selected={this.props.isSelected}
+          style={{ display: 'flex' }}
         >
           <Checkbox
             checked={Boolean(this.props.checked)}
@@ -115,24 +114,24 @@ class DrillsItem extends Component<Props, object> {
           <div
             style={{
               display: 'flex',
-              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <Tooltip title="Regenerate" placement="top">
               <div style={{ marginRight: 8 }}>
-                <IconButton
-                  className={classes.iconBtn}
-                  disabled={!this.props.drill.has_animation}
-                  onClick={this.regenerate}
+                <ControllBtn
+                  loadingData={this.props.loadingData}
+                  onDownload={this.regenerate}
+                  current="regenerate"
+                  hasAnimation={!this.props.drill.has_animation}
                 >
                   <FontAwesomeIcon icon={faSyncAlt} />
-                </IconButton>
+                </ControllBtn>
               </div>
             </Tooltip>
-
             {this.props.isRegenerating ? (
               <LinearProgress
-                style={{ width: 104 }}
+                style={{ width: 116 }}
                 variant="query"
                 color="secondary"
               />
@@ -140,18 +139,6 @@ class DrillsItem extends Component<Props, object> {
               <>
                 <Tooltip title="Download Video" placement="top">
                   <div style={{ marginRight: 8, position: 'relative' }}>
-                    {/* <IconButton
-                      className={classes.iconBtn}
-                      disabled={!this.props.drill.has_animation}
-                      onClick={this.downloadVideo}
-                    >
-                      <FontAwesomeIcon icon={faFilm} />
-                    </IconButton>
-                    {this.props.loadingData.loading.selfVideo ===
-                      this.props.drill.id &&
-                      this.props.loadingData.loading.selfVideo !== 'error' && (
-                        <PreloadDownload />
-                      )} */}
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadVideo}
