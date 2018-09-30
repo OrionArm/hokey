@@ -20,7 +20,6 @@ import {
   Tooltip,
   Theme,
 } from '@material-ui/core';
-import { PreloadDownload } from 'src/UI/Loading';
 import {
   regenerateDrillsRequest,
   downloadDrillsRequest,
@@ -32,6 +31,7 @@ import {
 } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
+import ControllBtn from './ControlBtn';
 
 const mapStateToProps = (state: RootState, props) => {
   return {
@@ -74,7 +74,7 @@ class DrillsItem extends Component<Props, object> {
     });
   }
   downloadPdf = (event: React.MouseEvent) => {
-    // event.stopPropagation();
+    event.stopPropagation();
     this.props.actions.downloadDrillsRequest({
       checkedIds: [this.props.drill.id],
       selectedUserId: this.props.selectedUserId,
@@ -82,7 +82,7 @@ class DrillsItem extends Component<Props, object> {
     });
   }
   regenerate = (event: React.MouseEvent) => {
-    // event.stopPropagation();
+    event.stopPropagation();
     this.props.actions.regenerateDrillsRequest({
       userId: this.props.selectedUserId,
       drill_ids: [this.props.drill.id],
@@ -116,14 +116,12 @@ class DrillsItem extends Component<Props, object> {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
             }}
           >
             <Tooltip title="Regenerate" placement="top">
               <div style={{ marginRight: 8 }}>
                 <IconButton
                   className={classes.iconBtn}
-                  aria-label="Regenerate"
                   disabled={!this.props.drill.has_animation}
                   onClick={this.regenerate}
                 >
@@ -142,8 +140,7 @@ class DrillsItem extends Component<Props, object> {
               <>
                 <Tooltip title="Download Video" placement="top">
                   <div style={{ marginRight: 8, position: 'relative' }}>
-                    <IconButton
-                      aria-label="Download Video"
+                    {/* <IconButton
                       className={classes.iconBtn}
                       disabled={!this.props.drill.has_animation}
                       onClick={this.downloadVideo}
@@ -154,23 +151,28 @@ class DrillsItem extends Component<Props, object> {
                       this.props.drill.id &&
                       this.props.loadingData.loading.selfVideo !== 'error' && (
                         <PreloadDownload />
-                      )}
+                      )} */}
+                    <ControllBtn
+                      loadingData={this.props.loadingData}
+                      onDownload={this.downloadVideo}
+                      current="selfVideo"
+                      drillsId={this.props.drill.id}
+                      hasAnimation={!this.props.drill.has_animation}
+                    >
+                      <FontAwesomeIcon icon={faFilm} />
+                    </ControllBtn>
                   </div>
                 </Tooltip>
                 <Tooltip title="Download PDF" placement="top">
                   <div style={{ marginRight: 8, position: 'relative' }}>
-                    <IconButton
-                      aria-label="Download PDF"
-                      onClick={this.downloadPdf}
-                      className={classes.iconBtn}
+                    <ControllBtn
+                      loadingData={this.props.loadingData}
+                      onDownload={this.downloadPdf}
+                      current="selfPdf"
+                      drillsId={this.props.drill.id}
                     >
                       <FontAwesomeIcon icon={faDownload} />
-                    </IconButton>
-                    {this.props.loadingData.loading.selfPdf ===
-                      this.props.drill.id &&
-                      this.props.loadingData.loading.selfPdf !== 'error' && (
-                        <PreloadDownload />
-                      )}
+                    </ControllBtn>
                   </div>
                 </Tooltip>
               </>

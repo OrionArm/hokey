@@ -4,7 +4,6 @@ import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
 import {
   Button,
   createStyles,
-  IconButton,
   MenuItem,
   Select,
   Theme,
@@ -17,7 +16,7 @@ import {
   downloadDrillsRequest,
 } from 'src/store/drils/actions';
 import { DownloadDrill } from 'src/store/drils/model';
-import { PreloadDownload } from '../../UI/Loading';
+import ControlBtn from './ControlBtn';
 
 interface ToolsPanelProps extends WithStyles<typeof styles> {
   checkedIds: string[];
@@ -62,13 +61,8 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
     });
   }
 
-  handleDisableIconBtn = (variants, current) => {
-    const foo = Object.entries(variants).filter(item => item[1]);
-    // const fooo = foo.includes(current);
-    const fooo = foo.map(item => item.includes(current))[0];
+  handleDisableIconBtn = variants => Object.values(variants).includes(true);
 
-    return fooo;
-  }
   render() {
     const { classes } = this.props;
     return (
@@ -94,40 +88,39 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           </Select>
         </Button>
         <Tooltip title="Download Selected Video" placement="top">
-          <div style={{ position: 'relative' }}>
-            <IconButton
-              classes={{
-                root: classes.rootIconBtn,
-              }}
-              onClick={this.downloadSelectedVideos}
-              disabled={this.props.checkedIds.length === 0}
+          <div
+            style={{
+              position: 'relative',
+              borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+              borderRadius: 0,
+            }}
+          >
+            <ControlBtn
+              onDownload={this.downloadSelectedVideos}
+              loadingData={this.props.loadingData}
+              checkedIds={this.props.checkedIds}
+              current="allVideo"
             >
               <FontAwesomeIcon icon={faFilm} />
-            </IconButton>
-            {this.props.loadingData.loading.allVideo &&
-              this.props.loadingData.loading.allVideo !== 'error' && (
-                <PreloadDownload />
-              )}
+            </ControlBtn>
           </div>
         </Tooltip>
         <Tooltip title="Download Selected PDFS" placement="top">
-          <div style={{ position: 'relative' }}>
-            <IconButton
-              classes={{
-                root: classes.rootIconBtn,
-              }}
-              onClick={this.downloadSelectedPdfs}
-              disabled={this.handleDisableIconBtn(
-                this.props.loadingData.loading,
-                'allPdf',
-              )}
+          <div
+            style={{
+              position: 'relative',
+              borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+              borderRadius: 0,
+            }}
+          >
+            <ControlBtn
+              onDownload={this.downloadSelectedPdfs}
+              loadingData={this.props.loadingData}
+              checkedIds={this.props.checkedIds}
+              current="allPdf"
             >
               <FontAwesomeIcon icon={faDownload} />
-            </IconButton>
-            {this.props.loadingData.loading.allPdf &&
-              this.props.loadingData.loading.allPdf !== 'error' && (
-                <PreloadDownload />
-              )}
+            </ControlBtn>
           </div>
         </Tooltip>
       </div>
@@ -168,12 +161,6 @@ const styles = (theme: Theme) => {
       justifyContent: 'center',
       width: 50,
       height: '100%',
-    },
-    rootIconBtn: {
-      width: 50,
-      height: '100%',
-      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
-      borderRadius: 0,
     },
   });
 };
