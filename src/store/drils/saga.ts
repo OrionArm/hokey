@@ -118,24 +118,6 @@ function* downloadDrillsSaga({ payload }: actions.downloadDrillsRequest) {
   const key = Object.keys(payload.loading)[0];
   const loadingValue = value => ({ [key]: value });
 
-  // let chooseApi;
-  // switch (key) {
-  //   case 'allVideo':
-  //     chooseApi = 'downloadMultipleVideos';
-  //     break;
-  //   case 'allPdf':
-  //     chooseApi = 'downloadMultiplePDFs';
-  //     break;
-  //   case 'selfVideo':
-  //     chooseApi = 'downloadVideo';
-  //     break;
-  //   case 'selfPdf':
-  //     chooseApi = 'downloadPdf';
-  //     break;
-
-  //   default:
-  //     return '';
-  // }
   const chooseApi = {
     allVideo: 'downloadMultipleVideos',
     allPdf: 'downloadMultiplePDFs',
@@ -215,6 +197,7 @@ function* getDrillSaga(action: actions.getDrillRequest) {
     const drill: DrillDetailed = response.data;
     yield put(actions.getDrillSuccess(drill));
   } catch (error) {
+    yield put(toastActions.showToast(error.message, ToastType.Error));
     yield call(errorHandler, error);
   }
 }
