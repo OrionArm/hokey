@@ -103,7 +103,6 @@ class EditLogoModal extends Component<Props, State> {
 
   onChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.currentTarget.value;
-    console.log('name', name);
     this.setState({ ...this.state, newName: name });
   }
 }
