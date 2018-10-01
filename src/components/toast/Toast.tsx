@@ -64,7 +64,6 @@ const Toast: React.SFC<Props> = ({
   const handleClose = () => clear();
   const { messages, isOpen, type } = toast;
 
-  const Icon = icon => <FontAwesomeIcon icon={icon} />;
   const classStyle = classes[toastVariant[type]];
 
   return (
@@ -83,7 +82,11 @@ const Toast: React.SFC<Props> = ({
         aria-describedby="client-snackbar"
         message={
           <span id="client-snackbar" className={classes.message}>
-            <Icon type={variantIcon[type]} /> {messages}
+            <FontAwesomeIcon
+              icon={variantIcon[type]}
+              style={{ marginRight: 8 }}
+            />
+            {messages}
           </span>}
         action={[
           <IconButton
@@ -93,7 +96,7 @@ const Toast: React.SFC<Props> = ({
             className={classes.closeButton}
             onClick={handleClose}
           >
-            <Icon type={variantIcon['Close']} />
+            <FontAwesomeIcon icon={variantIcon['Close']} />
           </IconButton>,
         ]}
         {...rest}

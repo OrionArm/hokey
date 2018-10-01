@@ -49,9 +49,8 @@ const ControlBtn: React.SFC<Props> = ({
   };
   const handlePreloadСondition = () =>
     isAll()
-      ? loadingData.loading[current] && loadingData.loading[current] !== 'error'
-      : loadingData.loading[current] === drillsId &&
-        loadingData.loading[current] !== 'error';
+      ? loadingData.loading[current]
+      : loadingData.loading[current] === drillsId;
   return (
     <>
       <IconButton

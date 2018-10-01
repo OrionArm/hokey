@@ -144,7 +144,9 @@ function* downloadDrillsSaga({ payload }: actions.downloadDrillsRequest) {
     yield call(api[chooseApi], payload.checkedIds, payload.selectedUserId);
     yield put(actions.downloadDrillsSuccess({ loading: swipeLoad(false) }));
   } catch (error) {
-    yield put(actions.downloadDrillsFail(swipeLoad('error')));
+    yield put(toastActions.showToast(error.message, ToastType.Error));
+
+    yield put(actions.downloadDrillsFail(swipeLoad(false)));
     yield call(errorHandler, error);
   }
 }

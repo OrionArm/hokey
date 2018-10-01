@@ -9,7 +9,8 @@ export type toastState = Readonly<typeof initialState>;
 
 export const reducer = (
   state = initialState,
-  action: fromActions.toastActions): toastState => {
+  action: fromActions.toastActions,
+): toastState => {
   switch (action.type) {
     case fromActions.SHOW_TOAST: {
       return { ...state, ...action.payload, isOpen: true };
@@ -20,6 +21,7 @@ export const reducer = (
         ...initialState,
       };
     }
-    default: return state;
+    default:
+      return state;
   }
 };
