@@ -57,20 +57,6 @@ function downloadPdf(id: string, userId: number | string | 'me'): any {
     });
 }
 
-function downloadMultiplePDFs(
-  drill_ids: string[],
-  userId: number | string | 'me',
-) {
-  return request
-    .post(`/users/${userId}/drills/download/pdfs`, undefined, {
-      params: { drill_ids },
-      responseType: 'blob',
-    })
-    .then(response => {
-      FileSaver.saveAs(new Blob([response.data]), 'pdfs.zip');
-    });
-}
-
 function downloadVideo(id: string, userId: number | 'me'): any {
   return request
     .get(`/users/${userId}/drills/${id}/animation`)
@@ -91,6 +77,20 @@ function downloadMultipleVideos(
     })
     .then(response => {
       FileSaver.saveAs(new Blob([response.data]), 'animations.zip');
+    });
+}
+
+function downloadMultiplePDFs(
+  drill_ids: string[],
+  userId: number | string | 'me',
+) {
+  return request
+    .post(`/users/${userId}/drills/download/pdfs`, undefined, {
+      params: { drill_ids },
+      responseType: 'blob',
+    })
+    .then(response => {
+      FileSaver.saveAs(new Blob([response.data]), 'pdfs.zip');
     });
 }
 

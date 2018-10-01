@@ -23,7 +23,11 @@ import {
   regenerateDrillsRequest,
   downloadDrillsRequest,
 } from 'src/store/drils/actions';
-import { Drill, DownloadDrill } from 'src/store/drils/model';
+import {
+  Drill,
+  DownloadDrill,
+  CurrentLoadingType,
+} from 'src/store/drils/model';
 import {
   getGenerationStatusSelector,
   getLoadingData,
@@ -122,7 +126,7 @@ class DrillsItem extends Component<Props, object> {
                 <ControllBtn
                   loadingData={this.props.loadingData}
                   onDownload={this.regenerate}
-                  current="regenerate"
+                  current={CurrentLoadingType.regenerate}
                   hasAnimation={!this.props.drill.has_animation}
                 >
                   <FontAwesomeIcon icon={faSyncAlt} />
@@ -142,7 +146,7 @@ class DrillsItem extends Component<Props, object> {
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadVideo}
-                      current="selfVideo"
+                      current={CurrentLoadingType.selfVideo}
                       drillsId={this.props.drill.id}
                       hasAnimation={!this.props.drill.has_animation}
                     >
@@ -155,7 +159,7 @@ class DrillsItem extends Component<Props, object> {
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadPdf}
-                      current="selfPdf"
+                      current={CurrentLoadingType.selfPdf}
                       drillsId={this.props.drill.id}
                     >
                       <FontAwesomeIcon icon={faDownload} />

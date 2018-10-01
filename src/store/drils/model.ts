@@ -33,10 +33,16 @@ export type RegenereteDrill = {
   logoId?: string;
 };
 
-type neType = 'allVideo' | 'allPdf' | 'selfVideo' | 'selfPdf';
+export enum CurrentLoadingType {
+  selfVideo = 'selfVideo',
+  allVideo = 'allVideo',
+  allPdf = 'allPdf',
+  selfPdf = 'selfPdf',
+  regenerate = 'regenerate',
+}
 
 export type DownloadDrill = {
-  loading: Partial<Record<neType, boolean | string>>;
+  loading: Partial<Record<CurrentLoadingType, boolean | string>>;
 };
 
 export type DownloadParams = {
@@ -52,6 +58,7 @@ export enum DrillStatusType {
   none = 'none',
   error = 'error',
 }
+
 export type GeneratedDrillStatusResponse = {
   generatedIds: string[];
   generatedErrorIds: string[];

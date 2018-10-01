@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DownloadDrill } from 'src/store/drils/model';
+import { DownloadDrill, CurrentLoadingType } from 'src/store/drils/model';
 
 import {
   IconButton,
@@ -13,7 +13,7 @@ import { PreloadDownload } from '../../UI/Loading';
 interface Props extends WithStyles<typeof styles> {
   onDownload: any;
   loadingData: DownloadDrill;
-  current: string;
+  current: CurrentLoadingType;
   checkedIds?: string[];
   drillsId?: string;
   hasAnimation?: boolean;
@@ -41,7 +41,10 @@ const ControlBtn: React.SFC<Props> = ({
     if (isAll() && checkedIds) {
       return checkedIds.length === 0;
     }
-    if (current === 'selfVideo' || current === 'regenerate') {
+    if (
+      current === CurrentLoadingType.selfVideo ||
+      current === CurrentLoadingType.regenerate
+    ) {
       return hasAnimation;
     }
 
@@ -50,7 +53,8 @@ const ControlBtn: React.SFC<Props> = ({
   const handlePreloadСondition = () =>
     isAll()
       ? loadingData.loading[current]
-      : loadingData.loading[current] === drillsId;
+      : loadingData.loading[current] === drillsId &&
+        loadingData.loading[current];
   return (
     <>
       <IconButton
@@ -62,7 +66,7 @@ const ControlBtn: React.SFC<Props> = ({
       >
         {children}
       </IconButton>
-      {current !== 'regenerate' &&
+      {current !== CurrentLoadingType.regenerate &&
         handlePreloadСondition() && <PreloadDownload />}
     </>
   );

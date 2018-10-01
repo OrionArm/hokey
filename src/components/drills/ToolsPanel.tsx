@@ -15,7 +15,7 @@ import {
   regenerateDrillsRequest,
   downloadDrillsRequest,
 } from 'src/store/drils/actions';
-import { DownloadDrill } from 'src/store/drils/model';
+import { DownloadDrill, CurrentLoadingType } from 'src/store/drils/model';
 import ControlBtn from './ControlBtn';
 
 interface ToolsPanelProps extends WithStyles<typeof styles> {
@@ -99,7 +99,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
               onDownload={this.downloadSelectedVideos}
               loadingData={this.props.loadingData}
               checkedIds={this.props.checkedIds}
-              current="allVideo"
+              current={CurrentLoadingType.allVideo}
             >
               <FontAwesomeIcon icon={faFilm} />
             </ControlBtn>
@@ -117,7 +117,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
               onDownload={this.downloadSelectedPdfs}
               loadingData={this.props.loadingData}
               checkedIds={this.props.checkedIds}
-              current="allPdf"
+              current={CurrentLoadingType.allPdf}
             >
               <FontAwesomeIcon icon={faDownload} />
             </ControlBtn>

@@ -115,38 +115,41 @@ function* regenerateDrillsSaga(action: actions.regenerateDrillsRequest) {
 }
 
 function* downloadDrillsSaga({ payload }: actions.downloadDrillsRequest) {
-  const keyPayload = Object.keys(payload.loading);
-  const swipeLoad = changer =>
-    keyPayload.map(item => ({
-      [item]: changer,
-    }))[0];
+  const key = Object.keys(payload.loading)[0];
+  const loadingValue = value => ({ [key]: value });
 
-  let chooseApi;
-  switch (keyPayload[0]) {
-    case 'allVideo':
-      chooseApi = 'downloadMultipleVideos';
-      break;
-    case 'allPdf':
-      chooseApi = 'downloadMultiplePDFs';
-      break;
-    case 'selfVideo':
-      chooseApi = 'downloadVideo';
-      break;
-    case 'selfPdf':
-      chooseApi = 'downloadPdf';
-      break;
+  // let chooseApi;
+  // switch (key) {
+  //   case 'allVideo':
+  //     chooseApi = 'downloadMultipleVideos';
+  //     break;
+  //   case 'allPdf':
+  //     chooseApi = 'downloadMultiplePDFs';
+  //     break;
+  //   case 'selfVideo':
+  //     chooseApi = 'downloadVideo';
+  //     break;
+  //   case 'selfPdf':
+  //     chooseApi = 'downloadPdf';
+  //     break;
 
-    default:
-      return '';
-  }
+  //   default:
+  //     return '';
+  // }
+  const chooseApi = {
+    allVideo: 'downloadMultipleVideos',
+    allPdf: 'downloadMultiplePDFs',
+    selfVideo: 'downloadVideo',
+    selfPdf: 'downloadPdf',
+  };
 
   try {
-    yield call(api[chooseApi], payload.checkedIds, payload.selectedUserId);
-    yield put(actions.downloadDrillsSuccess({ loading: swipeLoad(false) }));
+    yield call(api[chooseApi[key]], payload.checkedIds, payload.selectedUserId);
+    yield put(actions.downloadDrillsSuccess({ loading: loadingValue(false) }));
   } catch (error) {
     yield put(toastActions.showToast(error.message, ToastType.Error));
 
-    yield put(actions.downloadDrillsFail(swipeLoad(false)));
+    yield put(actions.downloadDrillsFail(loadingValue(false)));
     yield call(errorHandler, error);
   }
 }
