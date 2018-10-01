@@ -17,59 +17,13 @@ import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/selectors';
 import ItemLogo from '../logos/LogoItem';
 
-interface DrillsProps {
+type Props = {
   classes: any;
   selectedDrill: DrillDetailed | null;
-}
+} & ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
+type State = {}
 
-type Props = DrillsProps &
-  ReturnType<typeof mapDispatchToProps> &
-  ReturnType<typeof mapStateToProps>;
-
-interface State {}
-
-class AvailableLogos extends Component<Props, State> {
-  regenerateWithNewLogo = (logoId: string) => {
-    if (!this.props.selectedDrill) {
-      return;
-    }
-    this.props.actions.regenerateDrillsRequest({
-      logoId,
-      drill_ids: [this.props.selectedDrill.id],
-      userId: this.props.selectedUserId,
-    });
-  }
-
-  componentDidMount() {}
-
-  public render() {
-    return (
-      <Slide direction="up" in>
-        <Paper component="section" style={{ padding: 24 }}>
-          <Grid container spacing={24} direction="column">
-            <Grid item>
-              <Typography variant="title" color="primary" component="h4">
-                Available Logos
-              </Typography>
-            </Grid>
-            {this.props.logos.map(logo => {
-              return (
-                <Grid item key={logo.id}>
-                  <ItemLogo
-                    logo={logo}
-                    regenerateWithNewLogo={this.regenerateWithNewLogo}
-                  />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Paper>
-      </Slide>
-    );
-  }
-}
-
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps    = (state: RootState) => ({
   logos: state.watermarks.logos,
   selectedDrill: getSelectedDrillSelector(state),
   selectedUserId: getUserId(state),
@@ -83,6 +37,47 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch,
   ),
 });
+
+class AvailableLogos extends Component<Props, State> {
+  public render() {
+    return (
+      <Slide direction="up" in>
+        <Paper component="section" style={{ padding: 24 }}>
+          <Grid container spacing={24} direction="column">
+            <Grid item>
+              <Typography variant="title" color="primary" component="h4">
+                Available Logos
+              </Typography>
+            </Grid>
+            {
+              this.props.logos.map(logo => {
+                return (
+                  <Grid item key={logo.id}>
+                    <ItemLogo
+                      logo={logo}
+                      regenerateWithNewLogo={this.regenerateWithNewLogo}
+                    />
+                  </Grid>
+                );
+              })
+            }
+          </Grid>
+        </Paper>
+      </Slide>
+    );
+  }
+  regenerateWithNewLogo = (logoId: string) => {
+    if (!this.props.selectedDrill) {
+      return;
+    }
+
+    this.props.actions.regenerateDrillsRequest({
+      logoId,
+      drill_ids: [this.props.selectedDrill.id],
+      userId: this.props.selectedUserId,
+    });
+  }
+}
 
 const styles = createStyles({});
 

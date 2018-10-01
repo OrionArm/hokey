@@ -12,7 +12,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
 import { bindActionCreators, compose, Dispatch } from 'redux';
-// tslint:disable-next-line:max-line-length
 import {
   getSelectedDrillAnimationSelector,
   getSelectedDrillLogoSelector,
@@ -21,6 +20,22 @@ import {
 import { RootState } from 'src/store/rootReducers';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
 import { WrapperLogoImg } from 'src/UI/';
+
+const TabContainer = props => {
+  return (
+    <WrapperLogoImg style={{ padding: 16 }}>{props.children}</WrapperLogoImg>
+  );
+};
+
+const mapStateToProps = (state: RootState) => ({
+  preview: getSelectedDrillPreviewSelector(state),
+  animation: getSelectedDrillAnimationSelector(state),
+  logo: getSelectedDrillLogoSelector(state),
+  showLogo: isLogosAvailableSelector(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators({}, dispatch),
+});
 
 export interface DetailsProps extends WithStyles<typeof styles> {
   theme: Theme;
@@ -31,49 +46,6 @@ export interface DetailsProps extends WithStyles<typeof styles> {
   selectedTab: number;
   onTabChange: (index: number) => void;
 }
-
-const TabContainer = props => {
-  return (
-    <WrapperLogoImg style={{ padding: 16 }}>{props.children}</WrapperLogoImg>
-  );
-};
-
-const styles = (theme: Theme) =>
-  createStyles({
-    tabsRoot: {
-      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-    },
-    tabsIndicator: {},
-    flexContainer: {
-      justifyContent: 'space-between',
-    },
-    tabRoot: {
-      textTransform: 'capitalize',
-      minWidth: 'auto',
-      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-      '&:last-child': {
-        borderRight: 'none',
-      },
-      '&:hover': {
-        color: theme.palette.primary.main,
-      },
-
-      '&$tabSelected': {
-        backgroundColor: theme.palette.primary.main,
-        '&:hover': {
-          color: theme.palette.primary.contrastText,
-        },
-      },
-    },
-    tabSelected: {
-      transition: 'background-color 0.7s',
-    },
-    tabContent: {
-      maxWidth: '100%',
-      height: '100%',
-      objectFit: 'contain',
-    },
-  });
 
 class DetailsBar extends Component<DetailsProps, any> {
   public render() {
@@ -142,15 +114,42 @@ class DetailsBar extends Component<DetailsProps, any> {
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  preview: getSelectedDrillPreviewSelector(state),
-  animation: getSelectedDrillAnimationSelector(state),
-  logo: getSelectedDrillLogoSelector(state),
-  showLogo: isLogosAvailableSelector(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({}, dispatch),
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    tabsRoot: {
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    },
+    tabsIndicator: {},
+    flexContainer: {
+      justifyContent: 'space-between',
+    },
+    tabRoot: {
+      textTransform: 'capitalize',
+      minWidth: 'auto',
+      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+      '&:last-child': {
+        borderRight: 'none',
+      },
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+
+      '&$tabSelected': {
+        backgroundColor: theme.palette.primary.main,
+        '&:hover': {
+          color: theme.palette.primary.contrastText,
+        },
+      },
+    },
+    tabSelected: {
+      transition: 'background-color 0.7s',
+    },
+    tabContent: {
+      maxWidth: '100%',
+      height: '100%',
+      objectFit: 'contain',
+    },
+  });
 
 export default compose(
   withStyles(styles),
