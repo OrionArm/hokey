@@ -9,6 +9,8 @@ import {
   withStyles,
   WithStyles,
 } from '@material-ui/core';
+import ContentLoader from 'react-content-loader';
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose, Dispatch } from 'redux';
@@ -152,18 +154,35 @@ class DrillsBar extends Component<DrillsProps, State> {
             loadingData={this.props.loadingData}
           />
         </header>
-        <List>
-          {this.props.drills.map((drill: Drill) => (
-            <DrillsItem
-              key={drill.id}
-              onCheck={this.handleToggle(drill.id)}
-              drill={drill}
-              checked={this.state.checkedIds[drill.id]}
-              selectDrill={this.props.actions.selectDrill}
-              isSelected={this.isDrillSelected(drill.id)}
-            />
-          ))}
-        </List>
+
+        {this.props.drills.length ? (
+          <List style={{ padding: 0 }}>
+            {this.props.drills.map((drill: Drill) => (
+              <DrillsItem
+                key={drill.id}
+                onCheck={this.handleToggle(drill.id)}
+                drill={drill}
+                checked={this.state.checkedIds[drill.id]}
+                selectDrill={this.props.actions.selectDrill}
+                isSelected={this.isDrillSelected(drill.id)}
+              />
+            ))}
+          </List>
+        ) : (
+          <ContentLoader
+            height={100}
+            width={373}
+            speed={2}
+            primaryColor="#f3f3f3"
+            secondaryColor="#ecebeb"
+          >
+            <rect x="5.5" y="5" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="25" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="45" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="65" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="85" rx="0" ry="0" width="365" height="10" />
+          </ContentLoader>
+        )}
       </Paper>
     );
   }
