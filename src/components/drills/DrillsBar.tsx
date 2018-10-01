@@ -9,6 +9,8 @@ import {
   withStyles,
   WithStyles,
 } from '@material-ui/core';
+import ContentLoader from 'react-content-loader';
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose, Dispatch } from 'redux';
@@ -29,7 +31,7 @@ import DrillsItem from './DrillsItem';
 import ToolsPanel from './ToolsPanel';
 
 interface DrillsProps extends WithStyles<typeof styles> {
-  drills: Drill[];
+  drills: { loading: boolean; data: Drill[] };
   loadingData: DownloadDrill;
   actions: {
     selectDrill: typeof getDrillRequest;
@@ -65,7 +67,7 @@ class DrillsBar extends Component<DrillsProps, State> {
   }
 
   toggleAll = (event: any, checked: boolean) => {
-    const checkedIds = this.props.drills.reduce(
+    const checkedIds = this.props.drills.data.reduce(
       (a, drill) => ({ ...a, [drill.id]: checked }),
       {},
     );
@@ -73,7 +75,7 @@ class DrillsBar extends Component<DrillsProps, State> {
   }
 
   toggleAnimated = (event: any, checked: boolean) => {
-    const checkedIds = this.props.drills
+    const checkedIds = this.props.drills.data
       .filter(drill => drill.has_animation)
       .reduce(
         (a, drill) => ({ ...a, [drill.id]: checked }),
@@ -89,7 +91,14 @@ class DrillsBar extends Component<DrillsProps, State> {
   }
 
   public render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      drills,
+      selectedUserId,
+      actions,
+      loadingData,
+    } = this.props;
+
     return (
       <Paper>
         <header
@@ -146,24 +155,41 @@ class DrillsBar extends Component<DrillsProps, State> {
           </div>
           <ToolsPanel
             checkedIds={this.checkedIdsAsArray}
-            selectedUserId={this.props.selectedUserId}
-            regenerateDrillsRequest={this.props.actions.regenerateDrillsRequest}
-            downloadDrillsRequest={this.props.actions.downloadDrillsRequest}
-            loadingData={this.props.loadingData}
+            selectedUserId={selectedUserId}
+            regenerateDrillsRequest={actions.regenerateDrillsRequest}
+            downloadDrillsRequest={actions.downloadDrillsRequest}
+            loadingData={loadingData}
           />
         </header>
-        <List>
-          {this.props.drills.map((drill: Drill) => (
-            <DrillsItem
-              key={drill.id}
-              onCheck={this.handleToggle(drill.id)}
-              drill={drill}
-              checked={this.state.checkedIds[drill.id]}
-              selectDrill={this.props.actions.selectDrill}
-              isSelected={this.isDrillSelected(drill.id)}
-            />
-          ))}
-        </List>
+
+        {!drills.loading ? (
+          <List style={{ padding: 0 }}>
+            {drills.data.map((drill: Drill) => (
+              <DrillsItem
+                key={drill.id}
+                onCheck={this.handleToggle(drill.id)}
+                drill={drill}
+                checked={this.state.checkedIds[drill.id]}
+                selectDrill={actions.selectDrill}
+                isSelected={this.isDrillSelected(drill.id)}
+              />
+            ))}
+          </List>
+        ) : (
+          <ContentLoader
+            height={100}
+            width={373}
+            speed={2}
+            primaryColor="#f3f3f3"
+            secondaryColor="#ecebeb"
+          >
+            <rect x="5.5" y="5" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="25" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="45" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="65" rx="0" ry="0" width="365" height="10" />
+            <rect x="5.5" y="85" rx="0" ry="0" width="365" height="10" />
+          </ContentLoader>
+        )}
       </Paper>
     );
   }

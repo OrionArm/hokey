@@ -18,7 +18,7 @@ export const getLoadingData = (state: RootState): DownloadDrill | null => {
 };
 
 export const getDrillsSelector = (state: RootState) => {
-  return state.drills.drills.data;
+  return state.drills.drills;
 };
 
 export const getDrillsRequestStatusSelector = (state: RootState) => {
