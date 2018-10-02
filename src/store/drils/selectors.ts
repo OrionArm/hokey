@@ -13,7 +13,7 @@ export const getCategoriesRequestStatusSelector = (state: RootState) => {
   return state.drills.categories.loading;
 };
 
-export const getLoadingData = (state: RootState): DownloadDrill | null => {
+export const getLoadingData = (state: RootState): DownloadDrill => {
   return state.drills.downloadDrill;
 };
 

@@ -20,7 +20,7 @@ import {
   searchDrillsByIdRequest,
 } from 'src/store/drils/actions';
 import {
-  DrillCategoriesGroupped,
+  DrillCategoriesGrouped,
   DrillCategoryType,
   Drill,
 } from 'src/store/drils/model';
@@ -38,7 +38,7 @@ import SearchField from 'src/components/search/SearchField';
 import SearchSelection from 'src/components/search/SearchSelection';
 
 export interface ICategoriesProps extends WithStyles<typeof styles> {
-  categories: DrillCategoriesGroupped;
+  categories: DrillCategoriesGrouped;
   drills: { loading: boolean; data: Drill[] };
   actions: {
     searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
@@ -93,6 +93,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
       this.getDrills(firstDrill.id, categoryType);
     }
   }
+
   getDrills = (id: string, category = this.state.categoryType) =>
     this.props.actions.getDrillsByCategoryIdRequest(id, category)
 

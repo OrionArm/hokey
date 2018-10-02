@@ -24,7 +24,7 @@ import {
   downloadDrillsRequest,
 } from 'src/store/drils/actions';
 import {
-  Drill,
+  DrillModel,
   DownloadDrill,
   CurrentLoadingType,
 } from 'src/store/drils/model';
@@ -53,7 +53,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  drill: Drill;
+  drill: DrillModel;
   checked: boolean;
   loadingData: DownloadDrill;
   onCheck: () => void;
@@ -96,6 +96,7 @@ class DrillsItem extends Component<Props, object> {
   }
 
   public render() {
+    console.log('this.props.drill.name', this.props.drill.name);
     return (
       <>
         <ListItem
@@ -127,7 +128,7 @@ class DrillsItem extends Component<Props, object> {
                   loadingData={this.props.loadingData}
                   onDownload={this.regenerate}
                   current={CurrentLoadingType.regenerate}
-                  hasAnimation={!this.props.drill.has_animation}
+                  hasAnimation={!this.props.drill.hasAnimation}
                 >
                   <FontAwesomeIcon icon={faSyncAlt} />
                 </ControllBtn>
@@ -148,7 +149,7 @@ class DrillsItem extends Component<Props, object> {
                       onDownload={this.downloadVideo}
                       current={CurrentLoadingType.selfVideo}
                       drillsId={this.props.drill.id}
-                      hasAnimation={!this.props.drill.has_animation}
+                      hasAnimation={!this.props.drill.hasAnimation}
                     >
                       <FontAwesomeIcon icon={faFilm} />
                     </ControllBtn>

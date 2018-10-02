@@ -1,4 +1,7 @@
-// tslint:disable-next-line:max-line-length
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators, compose, Dispatch } from 'redux';
+import ContentLoader from 'react-content-loader';
 import {
   Button,
   Checkbox,
@@ -9,46 +12,46 @@ import {
   withStyles,
   WithStyles,
 } from '@material-ui/core';
-import ContentLoader from 'react-content-loader';
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators, compose, Dispatch } from 'redux';
+import { NormDrills } from 'src/store/drils/model';
+import {
+  getDrillsSelector,
+  getLoadingData,
+  getSelectedDrillSelector,
+} from 'src/store/drils/selectors';
+import { RootState } from 'src/store/rootReducers';
+import { getUserId } from 'src/store/selectors';
 import {
   getDrillRequest,
   regenerateDrillsRequest,
   downloadDrillsRequest,
 } from 'src/store/drils/actions';
-import { Drill, DrillDetailed, DownloadDrill } from 'src/store/drils/model';
-import { getUserId } from 'src/store/selectors';
-import {
-  getDrillsSelector,
-  getSelectedDrillSelector,
-  getLoadingData,
-} from '../../store/drils/selectors';
-import { RootState } from '../../store/rootReducers';
+
 import DrillsItem from './DrillsItem';
 import ToolsPanel from './ToolsPanel';
 
-interface DrillsProps extends WithStyles<typeof styles> {
-  drills: { loading: boolean; data: Drill[] };
-  loadingData: DownloadDrill;
-  actions: {
-    selectDrill: typeof getDrillRequest;
-    regenerateDrillsRequest: typeof regenerateDrillsRequest;
-    downloadDrillsRequest: typeof downloadDrillsRequest;
-  };
-  selectedDrill: DrillDetailed | null;
-  selectedUserId: string;
-}
+type State = Readonly<{ checkedIds: { [id: string]: boolean } }>;
+type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
 
-interface State {
-  checkedIds: { [id: string]: boolean };
-  // drills: Drill[];
-}
+const mapStateToProps    = (state: RootState) => ({
+  loadingData: getLoadingData(state),
+  drills: getDrillsSelector(state),
+  selectedDrill: getSelectedDrillSelector(state),
+  selectedUserId: getUserId(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators(
+    {
+      regenerateDrillsRequest,
+      downloadDrillsRequest,
+      selectDrill: getDrillRequest,
+    },
+    dispatch,
+  ),
+});
 
-class DrillsBar extends Component<DrillsProps, State> {
-  state = {
+class DrillsBar extends Component<Props, State> {
+  readonly state = {
     checkedIds: {},
   };
 
@@ -67,20 +70,27 @@ class DrillsBar extends Component<DrillsProps, State> {
   }
 
   toggleAll = (event: any, checked: boolean) => {
-    const checkedIds = this.props.drills.data.reduce(
-      (a, drill) => ({ ...a, [drill.id]: checked }),
-      {},
+    const checkedIds = toggleDrills(
+      {
+        checked,
+        drills: this.props.drills.data,
+        checkedIds: this.state.checkedIds,
+      },
     );
+
     this.setState({ checkedIds });
   }
 
   toggleAnimated = (event: any, checked: boolean) => {
-    const checkedIds = this.props.drills.data
-      .filter(drill => drill.has_animation)
-      .reduce(
-        (a, drill) => ({ ...a, [drill.id]: checked }),
-        this.state.checkedIds,
-      );
+    const checkedIds = toggleDrills(
+      {
+        checked,
+        drills: this.props.drills.data,
+        filter: 'hasAnimation',
+        checkedIds: this.state.checkedIds,
+      },
+    );
+
     this.setState({ checkedIds });
   }
 
@@ -92,12 +102,13 @@ class DrillsBar extends Component<DrillsProps, State> {
 
   public render() {
     const {
-      classes,
-      drills,
-      selectedUserId,
-      actions,
-      loadingData,
-    } = this.props;
+            classes,
+            drills,
+            selectedUserId,
+            actions,
+            loadingData,
+          }         = this.props;
+    const drillsIds = Object.keys(drills.data);
 
     return (
       <Paper>
@@ -129,7 +140,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                   root: classes.rootLabel,
                 }}
                 onChange={this.toggleAll}
-                control={<Checkbox color="primary" />}
+                control={<Checkbox color="primary"/>}
                 label="All"
               />
             </Button>
@@ -148,7 +159,7 @@ class DrillsBar extends Component<DrillsProps, State> {
                   root: classes.rootLabel,
                 }}
                 onChange={this.toggleAnimated}
-                control={<Checkbox color="primary" />}
+                control={<Checkbox color="primary"/>}
                 label="Animated"
               />
             </Button>
@@ -161,56 +172,71 @@ class DrillsBar extends Component<DrillsProps, State> {
             loadingData={loadingData}
           />
         </header>
-
-        {!drills.loading ? (
-          <List style={{ padding: 0 }}>
-            {drills.data.map((drill: Drill) => (
-              <DrillsItem
-                key={drill.id}
-                onCheck={this.handleToggle(drill.id)}
-                drill={drill}
-                checked={this.state.checkedIds[drill.id]}
-                selectDrill={actions.selectDrill}
-                isSelected={this.isDrillSelected(drill.id)}
-              />
-            ))}
-          </List>
-        ) : (
-          <ContentLoader
-            height={100}
-            width={373}
-            speed={2}
-            primaryColor="#f3f3f3"
-            secondaryColor="#ecebeb"
-          >
-            <rect x="5.5" y="5" rx="0" ry="0" width="365" height="10" />
-            <rect x="5.5" y="25" rx="0" ry="0" width="365" height="10" />
-            <rect x="5.5" y="45" rx="0" ry="0" width="365" height="10" />
-            <rect x="5.5" y="65" rx="0" ry="0" width="365" height="10" />
-            <rect x="5.5" y="85" rx="0" ry="0" width="365" height="10" />
-          </ContentLoader>
-        )}
+        {
+          !drills.loading && drills
+            ?
+            <List style={{ padding: 0 }}>
+              {
+                drillsIds.map((id: string) => (
+                  <DrillsItem
+                    key={id}
+                    onCheck={this.handleToggle(id)}
+                    drill={drills.data[id]}
+                    checked={this.state.checkedIds[id]}
+                    selectDrill={actions.selectDrill}
+                    isSelected={this.isDrillSelected(id)}
+                  />
+                ))
+              }
+            </List>
+            :
+            <ContentLoader
+              height={100}
+              width={373}
+              speed={2}
+              primaryColor="#f3f3f3"
+              secondaryColor="#ecebeb"
+            >
+              <rect x="5.5" y="5" rx="0" ry="0" width="365" height="10"/>
+              <rect x="5.5" y="25" rx="0" ry="0" width="365" height="10"/>
+              <rect x="5.5" y="45" rx="0" ry="0" width="365" height="10"/>
+              <rect x="5.5" y="65" rx="0" ry="0" width="365" height="10"/>
+              <rect x="5.5" y="85" rx="0" ry="0" width="365" height="10"/>
+            </ContentLoader>
+        }
       </Paper>
     );
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  loadingData: getLoadingData(state),
-  drills: getDrillsSelector(state),
-  selectedDrill: getSelectedDrillSelector(state),
-  selectedUserId: getUserId(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(
-    {
-      regenerateDrillsRequest,
-      downloadDrillsRequest,
-      selectDrill: getDrillRequest,
+function toggleDrills(payload: {
+  drills: NormDrills,
+  checked: boolean,
+  checkedIds: State['checkedIds'],
+  filter?: string,
+}): State['checkedIds'] {
+  const drills                = payload.drills;
+  const checked               = payload.checked;
+  const checkedIds            = payload.checkedIds;
+  const drillIdList: string[] = Object.keys(drills);
+  const filter                = payload.filter;
+  return drillIdList.reduce(
+    (acc, drillId) => {
+      let filtered;
+      if (filter === 'hasAnimation') {
+        filtered = drills[drillId].hasAnimation;
+      } else {
+        filtered = true;
+      }
+      if (filtered) {
+        acc[drillId] = checked;
+        return acc;
+      }
+      return acc;
     },
-    dispatch,
-  ),
-});
+    checkedIds,
+  );
+}
 
 const styles = createStyles({
   rootBtn: {
@@ -222,6 +248,8 @@ const styles = createStyles({
     paddingRight: 16,
   },
 });
+type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type injectStateProps = ReturnType<typeof mapStateToProps>;
 
 export default compose(
   withStyles(styles),

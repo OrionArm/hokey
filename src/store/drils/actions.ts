@@ -1,12 +1,11 @@
-import { DrillStatus } from 'src/store/drils/model';
+import { DrillStatus, NormDrills } from 'src/store/drils/model';
 import { ActionsUnion } from 'src/utils/typedAction/action';
 import { createAction } from 'src/utils/typedAction/createAction';
 import {
-  DrillCategoriesGroupped,
-  Drill,
+  DrillCategoriesGrouped,
   DrillDetailed,
   DrillCategoryType,
-  RegenereteDrill,
+  RegenerateDrill,
   DownloadDrill,
   DownloadParams,
 } from './model';
@@ -22,7 +21,7 @@ export const getDrillsByCategoryIdRequest = (
 export type getDrillsByCategoryIdRequest = ReturnType<
   typeof getDrillsByCategoryIdRequest
 >;
-export const getDrillsByCategoryIdSuccess = (drills: Drill[]) =>
+export const getDrillsByCategoryIdSuccess = (drills: NormDrills) =>
   createAction(GET_DRILLS_SUCCESS, { drills });
 export const getDrillsByCategoryIdFail = (error: any) =>
   createAction(GET_DRILLS_FAIL, { error });
@@ -36,7 +35,7 @@ export type getDrillsCategoriesRequest = ReturnType<
   typeof getDrillsCategoriesRequest
 >;
 export const getDrillsCategoriesSuccess = (
-  categories: DrillCategoriesGroupped,
+  categories: DrillCategoriesGrouped,
 ) => createAction(GET_CATEGORIES_SUCCESS, { categories });
 export const getDrillsCategoriesFail = (error: any) =>
   createAction(GET_CATEGORIES_FAIL, { error });
@@ -60,7 +59,7 @@ export const searchDrillsByIdRequest = (id: string) =>
 export type searchDrillsByIdRequest = ReturnType<
   typeof searchDrillsByIdRequest
 >;
-export const searchDrillsByIdSuccess = (drills: Drill[]) =>
+export const searchDrillsByIdSuccess = (drills: NormDrills) =>
   createAction(SEARCH_DRILLS_SUCCESS, { drills });
 export const searchDrillsByIdFail = (error: any) =>
   createAction(SEARCH_DRILLS_FAIL, { error });
@@ -69,7 +68,7 @@ export const REGENERATE_DRILLS_REQUEST = '[drills] REGENERATE_DRILLS_REQUEST';
 export const REGENERATE_DRILLS_SUCCESS = '[drills] REGENERATE_DRILLS_SUCCESS';
 export const REGENERATE_DRILLS_FAIL = '[drills] REGENERATE_DRILLS_FAIL';
 
-export const regenerateDrillsRequest = (payload: RegenereteDrill) =>
+export const regenerateDrillsRequest = (payload: RegenerateDrill) =>
   createAction(REGENERATE_DRILLS_REQUEST, payload);
 export type regenerateDrillsRequest = ReturnType<
   typeof regenerateDrillsRequest

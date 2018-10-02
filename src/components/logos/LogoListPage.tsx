@@ -29,6 +29,19 @@ const initialState           = { modalState, selectedLogo };
 type State = Readonly<typeof modalState & typeof selectedLogo>;
 type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
 
+const mapStateToProps = (state: RootState) => ({
+  logos: state.watermarks.logos,
+  loading: state.watermarks.loading,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  logosAction: bindActionCreators(logosActions, dispatch),
+  addLogo: (payload: { image: File; name: string }) =>
+    dispatch(
+      logosActions.addLogosRequest({ image: payload.image, name: payload.name }),
+    ),
+});
+
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
 
@@ -192,19 +205,6 @@ const styles = (theme: any) =>
 
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
-
-const mapStateToProps = (state: RootState) => ({
-  logos: state.watermarks.logos,
-  loading: state.watermarks.loading,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  logosAction: bindActionCreators(logosActions, dispatch),
-  addLogo: (payload: { image: File; name: string }) =>
-    dispatch(
-      logosActions.addLogosRequest({ image: payload.image, name: payload.name }),
-    ),
-});
 
 export default withStyles(styles)(
   connect(
