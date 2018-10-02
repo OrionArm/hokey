@@ -99,8 +99,6 @@ function getDrill(
   userId: number | string | 'me',
 ): AxiosPromise<DrillDetailed> {
   const toEntity = (x: any) => {
-    console.log(x);
-
     return {
       id: x.drillid,
       preview: x.s3url_1,

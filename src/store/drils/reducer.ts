@@ -96,8 +96,6 @@ const selectedDrill = (
     case GET_DRILL_SUCCESS:
       return action.payload.drill;
     case GET_DRILLS_FAIL:
-      console.log(action.payload);
-
       return null;
     default:
       return state;

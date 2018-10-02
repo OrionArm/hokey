@@ -25,6 +25,7 @@ export enum SearchType {
 
 export interface ISearchFieldProps extends WithStyles<typeof styles> {
   searchType: SearchType;
+  isDrillExist: () => boolean;
   actions: {
     searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
     getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
@@ -56,25 +57,28 @@ class SearchField extends Component<ISearchFieldProps, any> {
     return true;
   }
 
-  selectUser = (option: { value: number; label: string } | null) => {
-    if (this.props.searchType !== SearchType.User) {
-      return;
+  handleSelect = (option: { value: number; label: string } | null) => {
+    if (this.props.searchType === SearchType.User) {
+      this.props.actions.selectUser(option ? String(option.value) : 'me');
+      this.props.actions.getDrillsCategoriesRequest();
+    } else if (this.props.searchType === SearchType.Drill && option) {
+      this.props.actions.searchDrillsByIdRequest(option.label);
     }
-    this.props.actions.selectUser(option ? String(option.value) : 'me');
-    this.props.actions.getDrillsCategoriesRequest();
+    return;
   }
 
-  searchDrill = (id: string) => {
-    if (this.props.searchType !== SearchType.Drill || !id) {
-      return;
-    }
-    this.props.actions.searchDrillsByIdRequest(id);
-  }
+  // searchDrill = (id: string) => {
+  //   if (this.props.searchType !== SearchType.Drill || !id) {
+  //     return;
+  //   }
+  //   this.props.actions.searchDrillsByIdRequest(id);
+  // }
 
   get searchPlaceholder() {
     if (this.props.searchType === SearchType.Drill) {
       return 'Search by ID...';
     }
+
     return 'Search by email or name...';
   }
 
@@ -88,16 +92,19 @@ class SearchField extends Component<ISearchFieldProps, any> {
     };
     return (
       <AsyncSelect
-        styles={selectStyles}
-        classes={classes}
-        components={components}
         loadOptions={this.loadOptions}
-        isClearable={true}
-        onCreateOption={this.searchDrill}
+        isClearable
+        // onCreateOption={this.searchDrill}
         isValidNewOption={this.validateSearchInput}
         formatCreateLabel={value => `Search ${value}`}
-        onChange={this.selectUser}
+        noOptionsMessage={() => 'Enter id drill'}
+        onChange={this.handleSelect}
         placeholder={this.searchPlaceholder}
+        styles={selectStyles}
+        classes={classes}
+        isDrillExist={this.props.isDrillExist}
+        components={components}
+        valueContainer={() => 'asdasd'}
       />
     );
   }
@@ -115,12 +122,14 @@ const styles = (theme: Theme) =>
       display: 'flex',
       padding: 0,
       minHeight: 50,
+
       borderRight: '1px solid rgba(0, 0, 0, 0.12)',
       '&:hover $svgSearch': {
         color: 'hsl(0,0%,0%)',
       },
     },
     svgSearch: {
+      transition: 'color 0.3s',
       color: 'hsl(0,0%,60%)',
     },
   });
@@ -156,6 +165,7 @@ function Control(props) {
   return (
     <TextField
       fullWidth
+      error={props.selectProps.isDrillExist()}
       InputProps={{
         inputComponent,
         inputProps: {

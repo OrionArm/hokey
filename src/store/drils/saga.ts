@@ -147,6 +147,8 @@ function* searchDrillsListSaga(action: actions.searchDrillsByIdRequest) {
     yield put(actions.searchDrillsByIdFail(error));
     yield call(errorHandler, error);
     // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));
+    const errorMessage = `drill with id ${action.payload.id} does not exist`;
+    yield put(toastActions.showToast(errorMessage, ToastType.Error));
   }
 }
 
@@ -197,7 +199,6 @@ function* getDrillSaga(action: actions.getDrillRequest) {
     const drill: DrillDetailed = response.data;
     yield put(actions.getDrillSuccess(drill));
   } catch (error) {
-    yield put(toastActions.showToast(error.message, ToastType.Error));
     yield call(errorHandler, error);
   }
 }

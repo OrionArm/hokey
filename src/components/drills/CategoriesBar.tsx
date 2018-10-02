@@ -22,11 +22,13 @@ import {
 import {
   DrillCategoriesGroupped,
   DrillCategoryType,
+  Drill,
 } from 'src/store/drils/model';
 // tslint:disable-next-line:max-line-length
 import {
   getCategoriesRequestStatusSelector,
   getGrouppedCategoriesSelector,
+  getDrillsSelector,
 } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import userActions from 'src/store/user/store/actions';
@@ -37,6 +39,7 @@ import SearchSelection from 'src/components/search/SearchSelection';
 
 export interface ICategoriesProps extends WithStyles<typeof styles> {
   categories: DrillCategoriesGroupped;
+  drills: { loading: boolean; data: Drill[] };
   actions: {
     searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
     getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
@@ -98,6 +101,10 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
       searchType: event.target.value,
     });
   }
+  isDrillExist = () =>
+    this.props.drills.data.length === 0 &&
+    !this.props.drills.loading &&
+    this.state.searchType === SearchType.Drill
 
   render() {
     const { isAdmin, classes } = this.props;
@@ -113,6 +120,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
             <SearchField
               searchType={this.state.searchType}
               actions={this.props.actions}
+              isDrillExist={this.isDrillExist}
             />
             <SearchSelection
               onSearchTypesChange={this.onSearchTypesChange}
@@ -166,6 +174,7 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
 
 const mapStateToProps = (state: RootState) => ({
   categories: getGrouppedCategoriesSelector(state),
+  drills: getDrillsSelector(state),
   loading: getCategoriesRequestStatusSelector(state),
   isAdmin: isUserAnAdminSelector(state),
 });
