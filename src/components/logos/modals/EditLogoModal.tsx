@@ -18,7 +18,7 @@ type Props = {
   classes?: any;
 };
 
-type State = Readonly<{ logo: LogoModel | null, preview: string, newName: string }>;
+type State = Readonly<{ logo?: LogoModel | null, preview: string, newName: string }>;
 const initialState = {
   logo: null,
   preview: '',
@@ -29,8 +29,7 @@ class EditLogoModal extends Component<Props, State> {
 
   static getDerivedStateFromProps(props: Props, state: State) {
     if (props.item) {
-      const preview = props.item.url;
-      return { ...state, preview, logo: props.item };
+      return { ...state, preview: props.item.url, logo: props.item };
     }
     return state;
   }

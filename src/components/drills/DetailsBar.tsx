@@ -11,7 +11,7 @@ import {
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
-import { bindActionCreators, compose, Dispatch } from 'redux';
+import { compose } from 'redux';
 import {
   getSelectedDrillAnimationSelector,
   getSelectedDrillLogoSelector,
@@ -32,9 +32,6 @@ const mapStateToProps = (state: RootState) => ({
   animation: getSelectedDrillAnimationSelector(state),
   logo: getSelectedDrillLogoSelector(state),
   showLogo: isLogosAvailableSelector(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators({}, dispatch),
 });
 
 export interface DetailsProps extends WithStyles<typeof styles> {
@@ -155,6 +152,6 @@ export default compose(
   withStyles(styles),
   connect(
     mapStateToProps,
-    mapDispatchToProps,
+    null,
   ),
 )(DetailsBar) as any;

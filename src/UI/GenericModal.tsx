@@ -19,6 +19,7 @@ export const GenericModal: SFC<Props> = (
   const onClose = (): void => close(modalName);
   return (
     <Dialog
+      keepMounted
       open={open}
       onClose={onClose}
       aria-labelledby="alert-dialog-title"

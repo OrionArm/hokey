@@ -189,7 +189,9 @@ const styles = (theme: any) => ({
 
 async function validateImage(file: File, options: ImageSettings): Promise<boolean> {
   const imageOptions = await getImageSize(file);
-  if ((options.width >= imageOptions.width) && (options.height >= imageOptions.height)) {
+  if ((options.width >= imageOptions.width)
+    && (options.height >= imageOptions.height)
+    && imageOptions.width !== 0 && imageOptions.height !== 0) {
     return true;
   }
   return false;
