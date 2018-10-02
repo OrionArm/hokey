@@ -25,6 +25,7 @@ export enum SearchType {
 
 export interface ISearchFieldProps extends WithStyles<typeof styles> {
   searchType: SearchType;
+  theme: Theme;
   isDrillExist: () => boolean;
   actions: {
     searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
@@ -34,6 +35,9 @@ export interface ISearchFieldProps extends WithStyles<typeof styles> {
 }
 
 class SearchField extends Component<ISearchFieldProps, any> {
+  state = {
+    value: '',
+  };
   debounce: any = null;
   loadOptions = (query: string) => {
     if (this.props.searchType === SearchType.Drill) {
@@ -62,6 +66,9 @@ class SearchField extends Component<ISearchFieldProps, any> {
       this.props.actions.selectUser(option ? String(option.value) : 'me');
       this.props.actions.getDrillsCategoriesRequest();
     } else if (this.props.searchType === SearchType.Drill && option) {
+      this.setState({
+        value: option.label,
+      });
       this.props.actions.searchDrillsByIdRequest(option.label);
     }
     return;
@@ -76,6 +83,13 @@ class SearchField extends Component<ISearchFieldProps, any> {
 
   get searchPlaceholder() {
     if (this.props.searchType === SearchType.Drill) {
+      if (this.props.isDrillExist()) {
+        return (
+          <span style={{ color: this.props.theme.palette.error.main }}>
+            Drill with id {this.state.value} not exist
+          </span>
+        );
+      }
       return 'Search by ID...';
     }
 
@@ -92,8 +106,10 @@ class SearchField extends Component<ISearchFieldProps, any> {
     };
     return (
       <AsyncSelect
+        autoFocus
         loadOptions={this.loadOptions}
-        isClearable
+        isClearable={!this.props.isDrillExist()}
+        controlShouldRenderValue={!this.props.isDrillExist()}
         // onCreateOption={this.searchDrill}
         isValidNewOption={this.validateSearchInput}
         formatCreateLabel={value => `Search ${value}`}
@@ -104,7 +120,6 @@ class SearchField extends Component<ISearchFieldProps, any> {
         classes={classes}
         isDrillExist={this.props.isDrillExist}
         components={components}
-        valueContainer={() => 'asdasd'}
       />
     );
   }
@@ -131,6 +146,10 @@ const styles = (theme: Theme) =>
     svgSearch: {
       transition: 'color 0.3s',
       color: 'hsl(0,0%,60%)',
+    },
+    svgSearchErorr: {
+      transition: 'color 0.3s',
+      color: theme.palette.error.main,
     },
   });
 
@@ -180,10 +199,14 @@ function Control(props) {
   );
 }
 
-const DropdownIndicator = props => (
+const DropdownIndicator = ({ selectProps }) => (
   <div style={{ paddingRight: 8 }}>
     <FontAwesomeIcon
-      className={props.selectProps.classes.svgSearch}
+      className={
+        selectProps.isDrillExist()
+          ? selectProps.classes.svgSearchErorr
+          : selectProps.classes.svgSearch
+      }
       icon={faSearch}
     />
   </div>
@@ -197,4 +220,4 @@ const components: any = {
   IndicatorSeparator: null,
 };
 
-export default withStyles(styles)(SearchField);
+export default withStyles(styles, { withTheme: true })(SearchField);
