@@ -1,6 +1,8 @@
-type IGetLogosResponse = LogoResponse[];
+import { LogoModel } from 'src/store/logos/model';
 
-type LogoResponse = {
+export type IGetLogosResponse = LogoResponse[];
+
+export type LogoResponse = {
   id: string;
   user_id: string;
   is_main: string;
@@ -14,7 +16,7 @@ type LogoResponse = {
   width: string;
 };
 
-type LogoEditResponse = {
+export type LogoEditResponse = {
   id: string;
   user_id: string;
   is_main: string;
@@ -28,27 +30,31 @@ type LogoEditResponse = {
   width?: string;
 };
 
-interface IChangeDefaultLogoRequest {
+export interface IChangeDefaultLogoRequest {
   logoId: string;
   userId: string;
 }
 
-interface IDeleteLogosRequest {
+export interface IDeleteLogosRequest {
   logosIds: string[];
   userId: string;
 }
 
-interface ISetLogosRequest {
+export interface ISetLogosRequest {
   image: File;
   userId: string;
   name: string;
 }
 
-interface IRefreshLogosRequest {
+export interface IRefreshLogosRequest {
   logoId: string;
   images: File;
   userId: string;
 }
+
+export type NormLogos = {
+  [key: string]: LogoModel;
+};
 
 // interface ISetLogoRequest {
 //   name;

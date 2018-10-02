@@ -175,7 +175,9 @@ function checkGenerationStatus(userId: string, generation_ids: string) {
     });
 }
 
-function normalizeDrills(acc: NormDrills, drillResponse: getDrillsByCategoryIdResponse) {
+function normalizeDrills(
+  acc: NormDrills,
+  drillResponse: getDrillsByCategoryIdResponse): NormDrills {
   const drill   = DrillModel.responseToModel(drillResponse);
   acc[drill.id] = drill;
   return acc;

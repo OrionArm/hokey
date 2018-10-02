@@ -8,18 +8,19 @@ import {
 import Slide from '@material-ui/core/Slide';
 import React, { SFC } from 'react';
 import { DrillDetailed } from 'src/store/drils/model';
-import { LogoModel } from 'src/store/logos/model';
+import { NormLogos } from 'src/store/logos/interface';
 
 import ItemLogo from '../logos/LogoItem';
 
 type Props = {
   classes: any;
   selectedDrill: DrillDetailed | null;
-  logos: LogoModel[];
+  logos: NormLogos;
   regenerateWithNewLogo(logoId: string): void;
 };
 
 const AvailableLogos: SFC<Props> = ({ logos, regenerateWithNewLogo }) => {
+  const logosIds: string[] = Object.keys(logos);
   return (
     <Slide direction="up" in>
       <Paper component="section" style={{ padding: 24 }}>
@@ -30,11 +31,11 @@ const AvailableLogos: SFC<Props> = ({ logos, regenerateWithNewLogo }) => {
             </Typography>
           </Grid>
           {
-            logos.map(logo => {
+            logosIds.map(id => {
               return (
-                <Grid item key={logo.id}>
+                <Grid item key={id}>
                   <ItemLogo
-                    logo={logo}
+                    logo={logos[id]}
                     regenerateWithNewLogo={regenerateWithNewLogo}
                   />
                 </Grid>

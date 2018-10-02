@@ -1,9 +1,9 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { NormLogos } from 'src/store/logos/interface';
 
 import * as fromActions from './actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import logosAPI from 'src/store/logos/api';
-import { LogoModel } from 'src/store/logos/model';
 import { getUserId } from 'src/store/selectors';
 
 function* watcher() {
@@ -17,7 +17,7 @@ function* watcher() {
 function* getLogos(action: fromActions.getLogosRequest) {
   const userId: string = yield select(getUserId);
   try {
-    const logos: LogoModel[] = yield call(logosAPI.getLogos, { userId });
+    const logos: NormLogos = yield call(logosAPI.getLogos, { userId });
     yield put(fromActions.logosActions.getLogosSuccess({ logos }));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {

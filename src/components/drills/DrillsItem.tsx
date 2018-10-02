@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators, compose, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import {
   faDownload,
   faFilm,

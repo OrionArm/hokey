@@ -1,8 +1,9 @@
+import { NormLogos } from 'src/store/logos/interface';
 import * as fromActions from './actions';
 import { LogoModel } from 'src/store/logos/model';
 
 export const initialState = {
-  logos: [new LogoModel()],
+  logos: { '': new LogoModel() } as NormLogos,
   loading: false,
   error: false,
 };
@@ -16,8 +17,7 @@ export const reducer = (
       return ({ ...state, loading: true });
     }
     case fromActions.GET_LOGOS_SUCCESS: {
-      const logos = action.payload.logos;
-
+      const logos: NormLogos = action.payload.logos;
       return ({ ...state, logos, loading: false });
     }
     default:

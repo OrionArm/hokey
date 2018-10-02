@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators, compose, Dispatch } from 'redux';
 
 import {
   AddLogoModal,
@@ -51,6 +51,8 @@ class LogoListPage extends Component<Props, State> {
 
   render() {
     const { logos, loading } = this.props;
+    const logosIds: string[] = Object.keys(logos);
+
     return (
       <>
         <DeleteLogoModal
@@ -84,34 +86,36 @@ class LogoListPage extends Component<Props, State> {
             alignItems: 'stretch',
           }}
         >
-          {loading ? (
-            <ContentLoader
-              height={200}
-              width={373}
-              speed={2}
-              primaryColor="#f3f3f3"
-              secondaryColor="#ecebeb"
-            >
-              <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
-              <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
-              <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
-              <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
-              <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
-              <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
-            </ContentLoader>
-          ) : (
-            logos.map(logo => {
-              return (
-                <LogoItem
-                  key={logo.id}
-                  logo={logo}
-                  pickDefaultLogo={this.setDefaultLogo}
-                  editLogo={this.openEditPopup}
-                  deleteLogo={this.handleDeleteLogo}
-                />
-              );
-            })
-          )}
+          {
+            loading
+              ?
+              <ContentLoader
+                height={200}
+                width={373}
+                speed={2}
+                primaryColor="#f3f3f3"
+                secondaryColor="#ecebeb"
+              >
+                <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
+                <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
+              </ContentLoader>
+              :
+              logosIds.map(id => {
+                return (
+                  <LogoItem
+                    key={id}
+                    logo={logos[id]}
+                    pickDefaultLogo={this.setDefaultLogo}
+                    editLogo={this.openEditPopup}
+                    deleteLogo={this.handleDeleteLogo}
+                  />
+                );
+              })
+          }
         </div>
       </>
     );
@@ -206,9 +210,10 @@ const styles = (theme: any) =>
 type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 
-export default withStyles(styles)(
+export default compose(
+  withStyles(styles),
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(LogoListPage),
-);
+  ),
+)(LogoListPage);

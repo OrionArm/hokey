@@ -1,6 +1,6 @@
+import { NormLogos } from 'src/store/logos/interface';
 import { createAction } from 'src/utils/typedAction/createAction';
 import { ActionsUnion } from 'src/utils/typedAction/action';
-import { LogoModel } from 'src/store/logos/model';
 
 export const GET_LOGOS_REQUEST = '[logos] GET_LOGOS_REQUEST';
 export type getLogosRequest = ReturnType<typeof getLogosRequest>;
@@ -8,7 +8,7 @@ const getLogosRequest = () => createAction(GET_LOGOS_REQUEST);
 
 export const GET_LOGOS_SUCCESS = '[logos] GET_LOGOS_SUCCESS';
 export type getLogosSuccess = ReturnType<typeof getLogosSuccess>;
-const getLogosSuccess = (payload: { logos: LogoModel[]}) => {
+const getLogosSuccess = (payload: { logos: NormLogos }) => {
   return createAction(GET_LOGOS_SUCCESS, payload);
 };
 

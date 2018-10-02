@@ -1,3 +1,5 @@
+import { LogoResponse } from 'src/store/logos/interface';
+
 export class LogoModel {
   constructor(
     public id           = '',
@@ -14,7 +16,7 @@ export class LogoModel {
   ) {
   }
 
-  static logoResponseToModel(json: LogoResponse): LogoModel {
+  static responseToModel(json: LogoResponse): LogoModel {
     const logo = new LogoModel();
 
     function isTrue(defaultLogo: any) {
