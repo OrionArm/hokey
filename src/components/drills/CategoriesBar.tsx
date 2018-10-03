@@ -1,4 +1,3 @@
-// tslint:disable-next-line:max-line-length
 import {
   createStyles,
   Grid,
@@ -13,7 +12,6 @@ import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
 import { connect } from 'react-redux';
 import { bindActionCreators, compose, Dispatch } from 'redux';
-// tslint:disable-next-line:max-line-length
 import {
   getDrillsByCategoryIdRequest,
   getDrillsCategoriesRequest,
@@ -21,10 +19,8 @@ import {
 } from 'src/store/drils/actions';
 import {
   DrillCategoriesGrouped,
-  DrillCategoryType,
-  Drill,
+  DrillCategoryType, NormDrills,
 } from 'src/store/drils/model';
-// tslint:disable-next-line:max-line-length
 import {
   getCategoriesRequestStatusSelector,
   getGrouppedCategoriesSelector,
@@ -39,7 +35,7 @@ import SearchSelection from 'src/components/search/SearchSelection';
 
 export interface ICategoriesProps extends WithStyles<typeof styles> {
   categories: DrillCategoriesGrouped;
-  drills: { loading: boolean; data: Drill[] };
+  drills: { loading: boolean; data: NormDrills };
   actions: {
     searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
     getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
@@ -51,7 +47,7 @@ export interface ICategoriesProps extends WithStyles<typeof styles> {
 }
 
 export enum SearchType {
-  User = 'user',
+  User  = 'user',
   Drill = 'drill',
 }
 
@@ -60,18 +56,24 @@ export interface ICategoriesState {
   searchType: SearchType;
 }
 
-const styles = (theme: Theme) =>
-  createStyles({
-    select: {
-      paddingLeft: 8,
-      paddingTop: 0,
-      paddingBottom: 0,
-      height: 50,
-      display: 'flex',
-      alignItems: 'center',
-      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+const mapStateToProps    = (state: RootState) => ({
+  categories: getGrouppedCategoriesSelector(state),
+  drills: getDrillsSelector(state),
+  loading: getCategoriesRequestStatusSelector(state),
+  isAdmin: isUserAnAdminSelector(state),
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators(
+    {
+      searchDrillsByIdRequest,
+      getDrillsByCategoryIdRequest,
+      getDrillsCategoriesRequest,
+      selectUser: userActions.selectUser,
+      // tslint:disable-next-line:align
     },
-  });
+    dispatch,
+  ),
+});
 
 class CategoriesBar extends Component<ICategoriesProps, any> {
   state = {
@@ -81,6 +83,76 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
 
   componentDidMount() {
     this.props.actions.getDrillsCategoriesRequest();
+  }
+
+  render() {
+    const { isAdmin, classes } = this.props;
+    return (
+      <Paper>
+        {
+          isAdmin
+          &&
+          <Grid
+            container
+            style={{
+              marginBottom: 8,
+            }}
+          >
+            <SearchField
+              searchType={this.state.searchType}
+              actions={this.props.actions}
+              isDrillExist={this.isDrillExist}
+            />
+            <SearchSelection
+              onSearchTypesChange={this.onSearchTypesChange}
+              searchType={this.state.searchType}
+            />
+          </Grid>
+        }
+        {
+          this.state.searchType !== SearchType.Drill &&
+          <>
+            <Select
+              value={this.state.categoryType}
+              onChange={this.onCategoryTypeChange}
+              name="categoryType"
+              autoWidth
+              fullWidth
+              classes={{
+                select: classes.select,
+              }}
+            >
+              <MenuItem value={DrillCategoryType.Public}>
+                Public Categories
+              </MenuItem>
+              <MenuItem value={DrillCategoryType.Custom}>
+                Custom Categories
+              </MenuItem>
+            </Select>
+            {
+              this.props.loading
+                ?
+                <ContentLoader
+                  height={200}
+                  width={373}
+                  speed={2}
+                  primaryColor="#f3f3f3"
+                  secondaryColor="#ecebeb"
+                >
+                  <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38"/>
+                  <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38"/>
+                  <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38"/>
+                </ContentLoader>
+                :
+                <CategoriesList
+                  categories={this.props.categories[this.state.categoryType]}
+                  onSelectCategory={this.getDrills}
+                />
+            }
+          </>
+        }
+      </Paper>
+    );
   }
 
   onCategoryTypeChange = (event: any) => {
@@ -102,95 +174,27 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
       searchType: event.target.value,
     });
   }
-  isDrillExist = () =>
-    this.props.drills.data.length === 0 &&
-    !this.props.drills.loading &&
-    this.state.searchType === SearchType.Drill
 
-  render() {
-    const { isAdmin, classes } = this.props;
-    return (
-      <Paper>
-        {isAdmin && (
-          <Grid
-            container
-            style={{
-              marginBottom: 8,
-            }}
-          >
-            <SearchField
-              searchType={this.state.searchType}
-              actions={this.props.actions}
-              isDrillExist={this.isDrillExist}
-            />
-            <SearchSelection
-              onSearchTypesChange={this.onSearchTypesChange}
-              searchType={this.state.searchType}
-            />
-          </Grid>
-        )}
-        {this.state.searchType !== SearchType.Drill && (
-          <>
-            <Select
-              value={this.state.categoryType}
-              onChange={this.onCategoryTypeChange}
-              name="categoryType"
-              autoWidth
-              fullWidth
-              classes={{
-                select: classes.select,
-              }}
-            >
-              <MenuItem value={DrillCategoryType.Public}>
-                Public Categories
-              </MenuItem>
-              <MenuItem value={DrillCategoryType.Custom}>
-                Custom Categories
-              </MenuItem>
-            </Select>
-            {this.props.loading ? (
-              <ContentLoader
-                height={200}
-                width={373}
-                speed={2}
-                primaryColor="#f3f3f3"
-                secondaryColor="#ecebeb"
-              >
-                <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38" />
-                <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38" />
-                <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
-              </ContentLoader>
-            ) : (
-              <CategoriesList
-                categories={this.props.categories[this.state.categoryType]}
-                onSelectCategory={this.getDrills}
-              />
-            )}
-          </>
-        )}
-      </Paper>
-    );
+  isDrillExist = () => {
+    const drillsIds = Object.keys(this.props.drills.data);
+    return drillsIds.length === 0
+      && !this.props.drills.loading
+      && this.state.searchType === SearchType.Drill;
   }
 }
 
-const mapStateToProps = (state: RootState) => ({
-  categories: getGrouppedCategoriesSelector(state),
-  drills: getDrillsSelector(state),
-  loading: getCategoriesRequestStatusSelector(state),
-  isAdmin: isUserAnAdminSelector(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(
-    {
-      searchDrillsByIdRequest,
-      getDrillsByCategoryIdRequest,
-      getDrillsCategoriesRequest,
-      selectUser: userActions.selectUser,
-      // tslint:disable-next-line:align
+const styles = (theme: Theme) => createStyles(
+  {
+    select: {
+      paddingLeft: 8,
+      paddingTop: 0,
+      paddingBottom: 0,
+      height: 50,
+      display: 'flex',
+      alignItems: 'center',
+      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
     },
-    dispatch,
-  ),
-});
+  });
 
 export default compose(
   connect(
