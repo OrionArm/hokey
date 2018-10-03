@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faFilm } from '@fortawesome/free-solid-svg-icons';
+import {
+  faDownload,
+  faFilm,
+  faSyncAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import {
   Button,
   createStyles,
@@ -26,13 +30,21 @@ interface ToolsPanelProps extends WithStyles<typeof styles> {
   loadingData: DownloadDrill;
 }
 
+export enum GenerateType {
+  Generate = 'Generate',
+  GenerateWithNewLogo = 'Generate with new logo',
+}
+
 class ToolsPanel extends Component<ToolsPanelProps, any> {
   state = {
-    selected: '1',
+    selected: GenerateType.Generate,
   };
 
   handleChange = (event: any) => {
-    if (event.target.value === '1') {
+    this.setState({
+      selected: event.target.value,
+    });
+    if (event.target.value === GenerateType.Generate) {
       this.props.regenerateDrillsRequest({
         drill_ids: this.props.checkedIds,
         userId: this.props.selectedUserId,
@@ -65,6 +77,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
 
   render() {
     const { classes } = this.props;
+
     return (
       <div className={classes.wrapperPanel}>
         <Button
@@ -76,15 +89,29 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
             value={this.state.selected}
             onChange={this.handleChange}
             name="selected"
-            disableUnderline
             autoWidth
             classes={{
               root: classes.rootSelect,
               select: classes.select,
             }}
+            renderValue={value => {
+              return (
+                <>
+                  <FontAwesomeIcon
+                    icon={faSyncAlt}
+                    style={{ marginRight: 8 }}
+                  />
+                  {value}
+                </>
+              );
+            }}
           >
-            <MenuItem value="1">Generate</MenuItem>
-            <MenuItem value="2">Generate with new logo</MenuItem>
+            <MenuItem value={GenerateType.Generate}>
+              {GenerateType.Generate}
+            </MenuItem>
+            <MenuItem value={GenerateType.GenerateWithNewLogo}>
+              {GenerateType.GenerateWithNewLogo}
+            </MenuItem>
           </Select>
         </Button>
         <Tooltip title="Download Selected Video" placement="top">

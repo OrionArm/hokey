@@ -19,8 +19,8 @@ import {
 } from 'src/store/drils/actions';
 
 export enum SearchType {
-  User = 'user',
-  Drill = 'drill',
+  User = 'User',
+  Drill = 'Drill',
 }
 
 export interface ISearchFieldProps extends WithStyles<typeof styles> {
@@ -82,18 +82,24 @@ class SearchField extends Component<ISearchFieldProps, any> {
   // }
 
   get searchPlaceholder() {
-    if (this.props.searchType === SearchType.Drill) {
-      if (this.props.isDrillExist()) {
-        return (
+    return (
+      <span
+        style={{
+          fontStyle: 'italic',
+          fontWeight: 300,
+        }}
+      >
+        {this.props.isDrillExist() ? (
           <span style={{ color: this.props.theme.palette.error.main }}>
             Drill with id {this.state.value} not exist
           </span>
-        );
-      }
-      return 'Search by ID...';
-    }
+        ) : (
+          'Search...'
+        )}
+      </span>
+    );
 
-    return 'Search by email or name...';
+    // return 'Search by email or name...';
   }
 
   public render() {
@@ -106,7 +112,6 @@ class SearchField extends Component<ISearchFieldProps, any> {
     };
     return (
       <AsyncSelect
-        autoFocus
         loadOptions={this.loadOptions}
         isClearable={!this.props.isDrillExist()}
         controlShouldRenderValue={!this.props.isDrillExist()}
@@ -120,6 +125,7 @@ class SearchField extends Component<ISearchFieldProps, any> {
         classes={classes}
         isDrillExist={this.props.isDrillExist}
         components={components}
+        classNamePrefix="111"
       />
     );
   }
@@ -151,6 +157,7 @@ const styles = (theme: Theme) =>
       transition: 'color 0.3s',
       color: theme.palette.error.main,
     },
+    placeholder: {},
   });
 
 function Option(props) {

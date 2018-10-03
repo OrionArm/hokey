@@ -175,7 +175,7 @@ class DrillsBar extends Component<Props, State> {
         {
           !drills.loading && drills
             ?
-            <List style={{ padding: 0 }}>
+            <List>
               {
                 drillsIds.map((id: string) => (
                   <DrillsItem
@@ -191,17 +191,17 @@ class DrillsBar extends Component<Props, State> {
             </List>
             :
             <ContentLoader
-              height={100}
+              height={150}
               width={373}
               speed={2}
               primaryColor="#f3f3f3"
               secondaryColor="#ecebeb"
             >
-              <rect x="5.5" y="5" rx="0" ry="0" width="365" height="10"/>
-              <rect x="5.5" y="25" rx="0" ry="0" width="365" height="10"/>
-              <rect x="5.5" y="45" rx="0" ry="0" width="365" height="10"/>
-              <rect x="5.5" y="65" rx="0" ry="0" width="365" height="10"/>
-              <rect x="5.5" y="85" rx="0" ry="0" width="365" height="10"/>
+              <rect x="5.5" y="5" rx="0" ry="0" width="365" height="20"/>
+              <rect x="5.5" y="35" rx="0" ry="0" width="365" height="20"/>
+              <rect x="5.5" y="65" rx="0" ry="0" width="365" height="20"/>
+              <rect x="5.5" y="95" rx="0" ry="0" width="365" height="20"/>
+              <rect x="5.5" y="125" rx="0" ry="0" width="365" height="20"/>
             </ContentLoader>
         }
       </Paper>

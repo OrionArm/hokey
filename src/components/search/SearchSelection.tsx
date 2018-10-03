@@ -13,8 +13,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faHockeyPuck } from '@fortawesome/free-solid-svg-icons';
 
 export enum SearchType {
-  User = 'user',
-  Drill = 'drill',
+  User = 'User',
+  Drill = 'Drill',
 }
 
 export interface ISearchFieldProps extends WithStyles<typeof styles> {
@@ -30,6 +30,23 @@ class SearchField extends Component<ISearchFieldProps, any> {
         value={this.props.searchType}
         onChange={e => this.props.onSearchTypesChange(e)}
         name="searchType"
+        renderValue={value => {
+          return (
+            <Tooltip title={value} placement="top">
+              <IconButton
+                className={classes.icon}
+                disableRipple
+                aria-label={`${value}`}
+              >
+                {value === SearchType.User ? (
+                  <FontAwesomeIcon icon={faUser} />
+                ) : (
+                  <FontAwesomeIcon icon={faHockeyPuck} />
+                )}
+              </IconButton>
+            </Tooltip>
+          );
+        }}
         autoWidth
         classes={{
           select: classes.selectUser,
@@ -37,26 +54,10 @@ class SearchField extends Component<ISearchFieldProps, any> {
         }}
       >
         <MenuItem className={classes.menuItem} value={SearchType.User}>
-          <Tooltip title="Users" placement="top">
-            <IconButton
-              className={classes.icon}
-              disableRipple
-              aria-label="Users"
-            >
-              <FontAwesomeIcon icon={faUser} />
-            </IconButton>
-          </Tooltip>
+          {SearchType.User}
         </MenuItem>
         <MenuItem className={classes.menuItem} value={SearchType.Drill}>
-          <Tooltip title="Drills" placement="top">
-            <IconButton
-              className={classes.icon}
-              disableRipple
-              aria-label="Drills"
-            >
-              <FontAwesomeIcon icon={faHockeyPuck} />
-            </IconButton>
-          </Tooltip>
+          {SearchType.Drill}
         </MenuItem>
       </Select>
     );
@@ -65,11 +66,7 @@ class SearchField extends Component<ISearchFieldProps, any> {
 
 const styles = (theme: Theme) =>
   createStyles({
-    menuItem: {
-      '&:hover $icon': {
-        color: theme.palette.primary.main,
-      },
-    },
+    menuItem: {},
     root: {
       width: 70,
     },
@@ -84,7 +81,7 @@ const styles = (theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       '&:hover $icon': {
-        color: theme.palette.primary.main,
+        opacity: 0.4,
       },
     },
   });

@@ -4,7 +4,6 @@ import {
   FormControlLabel,
   Radio,
   Button,
-  CardMedia,
   Typography,
   withStyles,
   Card,
@@ -41,46 +40,42 @@ const LogoItem: React.SFC<Props> = (
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(logo.id)
     : null;
-  const radioLabel              = regenerateWithNewLogo
+  const radioLabel = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 
-  return <>
-    <Card className={classes.card}>
+  return (
+    <>
+      <Card component="figure"className={classes.card}>
       <WrapperLogoImg>
-        <CardMedia
-          component="img"
+        <img
           className={classes.media}
           title={logo.name}
-          image={logo.url}
+          src={logo.url}
         />
         <div className={classes.logoHovering}>
           {
             !logo.isMain
-            &&
-            <FormControlLabel
-              value={radioLabel}
-              classes={{
-                label: classes.labelRadio,
-              }}
-              checked={regenerateWithNewLogo ? false : logo.isMain}
-              control={
-                <Radio
-                  classes={{
-                    root: classes.rootRadio,
-                    checked: classes.checkedRadio,
-                  }}
-                  onChange={(onRegenerateWithNewLogo || setDefault) as any}
-                />
-              }
-              label={radioLabel}
-            />
+            &&<FormControlLabel
+            value={radioLabel}
+            classes={{
+              label: classes.labelRadio,
+            }}
+            checked={regenerateWithNewLogo ? false : logo.isMain}
+            control={
+              <Radio
+                classes={{
+                  root: classes.rootRadio,
+                  checked: classes.checkedRadio,
+                }}
+                onChange={(onRegenerateWithNewLogo || setDefault) as any}
+              />
+            }
+            label={radioLabel}/>
           }
           <div className={classes.HoverGroupButton}>
-            {
-              onEditLogo
-              &&
-              <Button
+            {onEditLogo
+              &&<Button
                 className={classes.btn}
                 color="secondary"
                 onClick={onEditLogo}
@@ -89,9 +84,7 @@ const LogoItem: React.SFC<Props> = (
                 <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faEdit}/>
               </Button>
             }
-            {
-              onDeleteLogo
-              &&
+            {onDeleteLogo &&
               <Button
                 color="primary"
                 onClick={onDeleteLogo}
@@ -108,77 +101,79 @@ const LogoItem: React.SFC<Props> = (
         style={{ padding: 8, wordWrap: 'break-word' }}
         align="center"
         variant="headline"
-        component="h4"
+        component="figcaption"
       >
         {clearName(logo.name)}
       </Typography>
       {logo.isMain && <Mark textContent="default"/>}
     </Card>
     {children ? children : null}
-  </>;
+  </>);
 };
 
 function clearName(name: string) {
   return name.replace(/.png/gi, '');
 }
 
-const styles = (theme: Theme) => createStyles({
-  rootRadio: {
-    color: theme.palette.common.white,
-    '&$checkedRadio': {
+const styles = (theme: Theme) =>
+  createStyles({
+    rootRadio: {
+      color: theme.palette.common.white,
+      '&$checkedRadio': {
+        color: theme.palette.common.white,
+      },
+    },
+    checkedRadio: {},
+
+    labelRadio: {
       color: theme.palette.common.white,
     },
-  },
-  checkedRadio: {},
 
-  labelRadio: {
-    color: theme.palette.common.white,
-  },
-
-  card: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    '&:hover $logoHovering': {
-      top: 0,
+    card: {
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      margin: 0,
+      '&:hover $logoHovering': {
+        top: 0,
+      },
     },
-  },
 
-  logoHovering: {
-    transition: '0.7s',
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(78, 78, 78, 0.5)',
-    position: 'absolute',
-    zIndex: 2,
-    top: -500,
-    left: 0,
-    padding: theme.spacing.unit * 2,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
+    logoHovering: {
+      transition: '0.7s',
+      display: 'flex',
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(78, 78, 78, 0.5)',
+      position: 'absolute',
+      zIndex: 2,
+      top: -500,
+      left: 0,
+      padding: theme.spacing.unit * 2,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
 
-  HoverGroupButton: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: 'auto',
-    position: 'absolute',
-    bottom: '10px',
-    right: '10px',
-  },
-  media: {
-    backgroundColor: theme.palette.common.white,
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  btn: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-});
+    HoverGroupButton: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginLeft: 'auto',
+      position: 'absolute',
+      bottom: '10px',
+      right: '10px',
+    },
+    media: {
+      backgroundColor: theme.palette.common.white,
+      width: '100%',
+      height: '100%',
+      objectFit: 'contain',
+    },
+    btn: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+    },
+  });
 
 export default withStyles(styles)(LogoItem);

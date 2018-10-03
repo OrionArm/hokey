@@ -26,7 +26,15 @@ const AvailableLogos: SFC<Props> = ({ logos, regenerateWithNewLogo }) => {
       <Paper component="section" style={{ padding: 24 }}>
         <Grid container spacing={24} direction="column">
           <Grid item>
-            <Typography variant="title" color="primary" component="h4">
+            <Typography
+              style={{
+                borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+                paddingBottom: 8,
+              }}
+              variant="title"
+              color="primary"
+              component="h4"
+            >
               Available Logos
             </Typography>
           </Grid>

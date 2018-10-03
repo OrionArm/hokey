@@ -1,9 +1,16 @@
 ### Start project
+
 npm i
 cp .env.example .env
 npm run dev
 
+# for login
+
+login: asdfasdf
+password: 123456
+
 # Semantic Commit Messages
+
 Format: `<type>(<scope>): <subject>`
 
 `<scope>` is optional
@@ -18,6 +25,7 @@ feat: add hat wobble
 |
 +-------> Type: chore, docs, feat, fix, refactor, style, or test.
 ```
+
 - `feat`: (new feature for the user, not a new feature for build script)
 - `fix`: (bug fix for the user, not a fix to a build script)
 - `docs`: (changes to the documentation)
@@ -95,7 +103,6 @@ By default, the generated project uses the latest version of React.
 
 You can refer [to the React documentation](https://reactjs.org/docs/react-dom.html#browser-support) for more information about supported browsers.
 
-
 ### Visual Studio Code
 
 You would need to have the latest version of [VS Code](https://code.visualstudio.com) and VS Code [Chrome Debugger Extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) installed.
@@ -105,17 +112,19 @@ Then add the block below to your `launch.json` file and put it inside the `.vsco
 ```json
 {
   "version": "0.2.0",
-  "configurations": [{
-    "name": "Chrome",
-    "type": "chrome",
-    "request": "launch",
-    "url": "http://localhost:3000",
-    "webRoot": "${workspaceRoot}/src",
-    "userDataDir": "${workspaceRoot}/.vscode/chrome",
-    "sourceMapPathOverrides": {
-      "webpack:///src/*": "${webRoot}/*"
+  "configurations": [
+    {
+      "name": "Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}/src",
+      "userDataDir": "${workspaceRoot}/.vscode/chrome",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
     }
-  }]
+  ]
 }
 ```
 
@@ -128,11 +137,11 @@ You would need to have [WebStorm](https://www.jetbrains.com/webstorm/) and [JetB
 
 In the WebStorm menu `Run` select `Edit Configurations...`. Then click `+` and select `JavaScript Debug`. Paste `http://localhost:3000` into the URL field and save the configuration.
 
->Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
+> Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
 
 Start your app by running `npm start`, then press `^D` on macOS or `F9` on Windows and Linux or click the green debug icon to start debugging in WebStorm.
 
-The same way you can debug your application in IntelliJ IDEA Ultimate, PhpStorm, PyCharm Pro, and RubyMine. 
+The same way you can debug your application in IntelliJ IDEA Ultimate, PhpStorm, PyCharm Pro, and RubyMine.
 
 ## Formatting Code Automatically
 
@@ -150,9 +159,9 @@ Alternatively you may use `yarn`:
 yarn add husky lint-staged prettier
 ```
 
-* `husky` makes it easy to use githooks as if they are npm scripts.
-* `lint-staged` allows us to run scripts on staged files in git. See this [blog post about lint-staged to learn more about it](https://medium.com/@okonetchnikov/make-linting-great-again-f3890e1ad6b8).
-* `prettier` is the JavaScript formatter we will run before commits.
+- `husky` makes it easy to use githooks as if they are npm scripts.
+- `lint-staged` allows us to run scripts on staged files in git. See this [blog post about lint-staged to learn more about it](https://medium.com/@okonetchnikov/make-linting-great-again-f3890e1ad6b8).
+- `prettier` is the JavaScript formatter we will run before commits.
 
 Now we can make sure every file is formatted correctly by adding a few lines to the `package.json` in the project root.
 

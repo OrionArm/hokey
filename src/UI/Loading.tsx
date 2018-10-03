@@ -31,7 +31,7 @@ export const PreloadDownload: SFC<Props> = () => {
       }}
     >
       <Fade in>
-        <CircularProgress color="secondary" size={50} />
+        <CircularProgress color="secondary" size={48} />
       </Fade>
     </div>
   );

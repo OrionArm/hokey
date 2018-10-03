@@ -47,8 +47,8 @@ export interface ICategoriesProps extends WithStyles<typeof styles> {
 }
 
 export enum SearchType {
-  User  = 'user',
-  Drill = 'drill',
+  User  = 'User',
+  Drill = 'Drill',
 }
 
 export interface ICategoriesState {

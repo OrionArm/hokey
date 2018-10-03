@@ -114,7 +114,10 @@ class DrillsItem extends Component<Props, object> {
             onClick={event => event.stopPropagation()}
             onChange={this.props.onCheck}
           />
-          <ListItemText primary={this.props.drill.name} />
+          <ListItemText
+            primary={this.props.drill.name}
+            style={{ wordBreak: 'break-all' }}
+          />
           <div
             style={{
               display: 'flex',
@@ -122,7 +125,7 @@ class DrillsItem extends Component<Props, object> {
             }}
           >
             <Tooltip title="Regenerate" placement="top">
-              <div style={{ marginRight: 8 }}>
+              <div>
                 <ControllBtn
                   loadingData={this.props.loadingData}
                   onDownload={this.regenerate}
@@ -142,7 +145,7 @@ class DrillsItem extends Component<Props, object> {
             ) : (
               <>
                 <Tooltip title="Download Video" placement="top">
-                  <div style={{ marginRight: 8, position: 'relative' }}>
+                  <div style={{ marginLeft: 30, position: 'relative' }}>
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadVideo}
@@ -155,7 +158,7 @@ class DrillsItem extends Component<Props, object> {
                   </div>
                 </Tooltip>
                 <Tooltip title="Download PDF" placement="top">
-                  <div style={{ marginRight: 8, position: 'relative' }}>
+                  <div style={{ marginLeft: 30, position: 'relative' }}>
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadPdf}

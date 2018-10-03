@@ -37,7 +37,12 @@ class SignInPage extends Component<Props, State> {
         component="form"
         onSubmit={this.handleSubmit}
       >
-        <Typography variant="title">Sign In</Typography>
+        <Typography
+          style={{ fontSize: '1.8rem', fontWeight: 300 }}
+          variant="title"
+        >
+          Sign In
+        </Typography>
         <FormControl margin="dense">
           <InputLabel
             FormLabelClasses={{
@@ -46,7 +51,7 @@ class SignInPage extends Component<Props, State> {
             }}
             htmlFor="UserName-input"
           >
-            User name
+            Username
           </InputLabel>
           <Input
             classes={{
@@ -81,7 +86,11 @@ class SignInPage extends Component<Props, State> {
           variant="extendedFab"
           color="secondary"
           type="submit"
-          style={{ marginTop: 24 }}
+          style={{
+            marginTop: 24,
+            fontWeight: 300,
+            fontSize: '1.2rem',
+          }}
         >
           Log in
         </Button>
@@ -112,13 +121,14 @@ const styles = (theme: Theme) => {
   return {
     formStyle: {
       width: 400,
-      padding: theme.spacing.unit * 4,
-      margin: ' 0 auto',
-      transform: 'translateY(50%)',
+      padding: theme.spacing.unit * 3,
+      margin: '200px auto 0',
       boxShadow: theme.shadows[2],
-      backgroundColor: '#fff',
+      backgroundColor: theme.palette.common.white,
     },
+
     cssLabel: {
+      fontSize: '1rem',
       '&$cssFocused': {
         color: theme.palette.secondary.main,
       },

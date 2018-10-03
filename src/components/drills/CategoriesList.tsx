@@ -3,11 +3,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
   withStyles,
   createStyles,
   WithStyles,
-  Badge,
   Theme,
 } from '@material-ui/core';
 import { DrillCategory } from 'src/store/drils/model';
@@ -23,15 +21,15 @@ interface State {
 
 const styles = (theme: Theme) =>
   createStyles({
-    selectedItem: {
-      '&:hover $badge': {
-        backgroundColor: theme.palette.primary.main,
-      },
+    item: {
+      paddingLeft: 24,
     },
-
-    badge: {
-      right: -10,
-      fontSize: '1rem',
+    selectedItem: {
+      borderLeft: `3px solid ${theme.palette.primary.main}`,
+      paddingLeft: 21,
+    },
+    button: {
+      fontSize: 30,
     },
   });
 
@@ -49,34 +47,37 @@ class ListComponent extends Component<Props, State> {
     const { classes } = this.props;
     return (
       <List component="ul">
-        {
-          this.props.categories.map((category, i) => {
-            return (
-              <ListItem
-                component="li"
-                classes={{
-                  root: classes.selectedItem,
+        {this.props.categories.map((category, i) => {
+          return (
+            <ListItem
+              component="li"
+              classes={{
+                selected: classes.selectedItem,
+                root: classes.item,
+                button: classes.button,
+              }}
+              key={category.id}
+              button
+              selected={
+                this.state.selectedId === category.id ||
+                (this.state.selectedId === null && i === 0)
+              }
+              onClick={this.onSelect(category)}
+            >
+              <ListItemText primary={category.name} />
+              <span
+                style={{
+                  fontSize: '1rem',
+                  color: '#4d4d4d',
+                  fontWeight: 400,
+                  lineHeight: '1.5em',
                 }}
-                key={category.id}
-                button
-                // tslint:disable-next-line:max-line-length
-                selected={
-                  this.state.selectedId === category.id ||
-                  (this.state.selectedId === null && i === 0)
-                }
-                onClick={this.onSelect(category)}
               >
-                <ListItemText primary={category.name}/>
-                <Badge
-                  badgeContent={category.count}
-                  color="default"
-                  classes={{ badge: classes.badge }}
-                >
-                  <ListItemSecondaryAction/>
-                </Badge>
-              </ListItem>
-            );
-          })}
+                {category.count}
+              </span>
+            </ListItem>
+          );
+        })}
       </List>
     );
   }

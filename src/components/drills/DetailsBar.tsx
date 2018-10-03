@@ -116,26 +116,22 @@ const styles = (theme: Theme) =>
     tabsRoot: {
       borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
     },
-    tabsIndicator: {},
+    tabsIndicator: {
+      display: 'none',
+    },
     flexContainer: {
       justifyContent: 'space-between',
     },
     tabRoot: {
       textTransform: 'capitalize',
       minWidth: 'auto',
-      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-      '&:last-child': {
-        borderRight: 'none',
-      },
+      color: theme.palette.primary.main,
       '&:hover': {
-        color: theme.palette.primary.main,
+        color: theme.palette.primary.light,
       },
-
       '&$tabSelected': {
         backgroundColor: theme.palette.primary.main,
-        '&:hover': {
-          color: theme.palette.primary.contrastText,
-        },
+        color: theme.palette.common.white,
       },
     },
     tabSelected: {
