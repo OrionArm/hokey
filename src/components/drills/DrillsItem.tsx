@@ -96,7 +96,6 @@ class DrillsItem extends Component<Props, object> {
   }
 
   public render() {
-    console.log('this.props.drill.name', this.props.drill.name);
     return (
       <>
         <ListItem

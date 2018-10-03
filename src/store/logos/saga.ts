@@ -1,9 +1,11 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { NormLogos } from 'src/store/logos/interface';
 
+import * as fromToast from 'src/store/toast/actions';
 import * as fromActions from './actions';
+import { logoIdList, LogoResponse, NormLogos } from 'src/store/logos/interface';
+import { LogoModel } from 'src/store/logos/model';
 import { errorHandler } from 'src/utils/errorHandler';
-import logosAPI from 'src/store/logos/api';
+import logosAPI, { ICheckDeleted } from 'src/store/logos/api';
 import { getUserId } from 'src/store/selectors';
 
 function* watcher() {
@@ -27,13 +29,12 @@ function* getLogos(action: fromActions.getLogosRequest) {
 }
 
 function* addLogo(action: fromActions.addLogosRequest) {
-  const userId: string = yield select(getUserId);
-  const { image, name }       = action.payload;
+  const userId: string  = yield select(getUserId);
+  const { image, name } = action.payload;
   try {
-    const response = yield call(logosAPI.addLogo, { image, userId, name });
+    const logo: LogoModel = yield call(logosAPI.addLogo, { image, userId, name });
 
-    console.log('setLogosSaga response.data', response.data);
-    yield put(fromActions.logosActions.getLogosRequest());
+    yield put(fromActions.logosActions.addLogosSuccess({ logo }));
     // yield put(fromActions.toastActions.getLogosSuccess, response.data);
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
@@ -43,18 +44,24 @@ function* addLogo(action: fromActions.addLogosRequest) {
 }
 
 function* deleteLogos(action: fromActions.deleteLogosRequest) {
-  const userId: string = yield select(getUserId);
-  const logosIds       = action.payload.logosIds;
+  const userId: string           = yield select(getUserId);
+  const { logosIds }: logoIdList = action.payload;
   try {
-    yield call(logosAPI.deleteLogos, { userId, logosIds });
-    // ToDo(@Roman): Change behavior, need remove from store instead of send new request
-    yield put(fromActions.logosActions.getLogosRequest());
-    // yield put(fromActions.toastActions.deleteLogosSuccess(logosIds));
-    // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
+    const response: ICheckDeleted  = yield call(logosAPI.deleteLogos, { userId, logosIds });
+    const { failDeletedLogos, successDeletedLogos } = response;
+    if (failDeletedLogos.length !== 0) {
+      yield put(fromActions.logosActions.deleteLogosFail({ logosIds: successDeletedLogos }));
+      yield put(fromToast.toastActions.showToast('Deleted failed', fromToast.ToastType.Error));
+    }
+    if (successDeletedLogos.length !== 0) {
+      yield put(fromActions.logosActions.deleteLogosSuccess({ logosIds: successDeletedLogos }));
+      yield put(fromToast.toastActions.showToast('Success deleted', fromToast.ToastType.Success));
+    }
   } catch (error) {
     yield call(errorHandler, error);
     // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));
   }
+
 }
 
 function* editLogo(action: fromActions.editLogoRequest) {
@@ -62,9 +69,8 @@ function* editLogo(action: fromActions.editLogoRequest) {
   const name           = action.payload.name;
   const logoId         = action.payload.logoId;
   try {
-    yield call(logosAPI.editLogo, { name, userId, logoId });
-    yield put(fromActions.logosActions.getLogosRequest());
-    yield put(fromActions.logosActions.editLogoSuccess());
+    const request: LogoResponse = yield call(logosAPI.editLogo, { name, userId, logoId });
+    yield put(fromActions.logosActions.editLogoSuccess({ logoId: request.id, name: request.name }));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
@@ -74,13 +80,11 @@ function* editLogo(action: fromActions.editLogoRequest) {
 
 function* changeDefaultLogo(action: fromActions.changeDefaultLogoRequest) {
   const userId: string = yield select(getUserId);
-  const logoId         = action.payload.logoId;
+  const logoId: string = action.payload.logoId;
   try {
-    const response = yield call(logosAPI.changeDefaultLogo, { userId, logoId });
-    console.log('changeDefaultLogoSaga response.data', response.data);
-    yield put(fromActions.logosActions.getLogosRequest());
+    const response: LogoResponse = yield call(logosAPI.changeDefaultLogo, { userId, logoId });
+    yield put(fromActions.logosActions.changeDefaultLogoSuccess({ logoId: response.id }));
     // yield put(fromActions.toastActions.getLogosSuccess, response.data);
-    // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
     yield call(errorHandler, error);
     // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));

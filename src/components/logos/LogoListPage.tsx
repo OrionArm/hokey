@@ -26,7 +26,7 @@ const modalState: modalState = {
 const selectedLogo: any      = null; // fix  change any to LogoModel
 const initialState           = { modalState, selectedLogo };
 
-type State = Readonly<typeof modalState & typeof selectedLogo>;
+type State = Readonly<typeof initialState>;
 type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
 
 const mapStateToProps = (state: RootState) => ({
@@ -50,7 +50,7 @@ class LogoListPage extends Component<Props, State> {
   }
 
   render() {
-    const { logos, loading } = this.props;
+    const { loading, logos }        = this.props;
     const logosIds: string[] = Object.keys(logos);
 
     return (
@@ -107,7 +107,7 @@ class LogoListPage extends Component<Props, State> {
               logosIds.map(id => {
                 return (
                   <LogoItem
-                    key={id}
+                    key={`${id}_${logos[id].name}`}
                     logo={logos[id]}
                     pickDefaultLogo={this.setDefaultLogo}
                     editLogo={this.openEditPopup}
@@ -215,5 +215,7 @@ export default compose(
   connect(
     mapStateToProps,
     mapDispatchToProps,
+    null,
+    { pure: false },
   ),
 )(LogoListPage);

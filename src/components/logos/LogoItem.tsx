@@ -73,7 +73,9 @@ const LogoItem: React.SFC<Props> = (
             label={radioLabel}
           />
           <div className={classes.HoverGroupButton}>
-            {onEditLogo && (
+            {
+              onEditLogo
+              &&
               <Button
                 className={classes.btn}
                 color="secondary"
@@ -82,8 +84,10 @@ const LogoItem: React.SFC<Props> = (
                 Edit
                 <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faEdit}/>
               </Button>
-            )}
-            {onDeleteLogo && (
+            }
+            {
+              onDeleteLogo
+              &&
               <Button
                 color="primary"
                 onClick={onDeleteLogo}
@@ -92,7 +96,7 @@ const LogoItem: React.SFC<Props> = (
                 Delete
                 <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faTrash}/>
               </Button>
-            )}
+            }
           </div>
         </div>
       </WrapperLogoImg>

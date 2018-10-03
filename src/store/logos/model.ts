@@ -19,13 +19,6 @@ export class LogoModel {
   static responseToModel(json: LogoResponse): LogoModel {
     const logo = new LogoModel();
 
-    function isTrue(defaultLogo: any) {
-      if (defaultLogo && ((defaultLogo === 1) || defaultLogo === '1')) {
-        return true;
-      }
-      return false;
-    }
-
     logo.id           = json.id;
     logo.userId       = json.user_id;
     logo.isMain       = isTrue(json.is_main);
@@ -40,6 +33,9 @@ export class LogoModel {
     logo.width        = json.width;
 
     return logo;
-
   }
+}
+
+function isTrue(defaultLogo: any): boolean {
+  return defaultLogo && ((defaultLogo === 1) || defaultLogo === '1');
 }
