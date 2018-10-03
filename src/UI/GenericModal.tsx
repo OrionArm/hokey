@@ -14,8 +14,14 @@ type Props = {
   buttons: any;
 };
 
-export const GenericModal: SFC<Props> = (
-  { open, close, modalName, title, buttons: Buttons, children }) => {
+export const GenericModal: SFC<Props> = ({
+  open,
+  close,
+  modalName,
+  title,
+  buttons: Buttons,
+  children,
+}) => {
   const onClose = (): void => close(modalName);
   return (
     <Dialog
@@ -26,15 +32,22 @@ export const GenericModal: SFC<Props> = (
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle
-        className={'modal-dialog__title'}
+        style={{ padding: 20, fontWeight: 400 }}
         id="form-dialog-title"
       >
         {title}
       </DialogTitle>
-      <DialogContent className={'modal-dialog__body'}>
+      <DialogContent
+        style={{
+          padding: 20,
+          paddingBottom: 30,
+          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+        }}
+      >
         {children}
       </DialogContent>
-      <DialogActions className={'modal-dialog__footer'}>
+      <DialogActions style={{ padding: 20, margin: 0 }}>
         <Buttons />
       </DialogActions>
     </Dialog>
