@@ -10,12 +10,18 @@ import {
 
 type Props = {
   open: boolean;
-  modalName: string,
+  modalName: string;
   item: any;
   close(modalName: string): void;
   confirm(item: any): void;
 };
-const DeleteLogoModal: SFC<Props> = ({ open, modalName, item, close, confirm }) => {
+const DeleteLogoModal: SFC<Props> = ({
+  open,
+  modalName,
+  item,
+  close,
+  confirm,
+}) => {
   const onClose = () => close(modalName);
   return (
     <Dialog

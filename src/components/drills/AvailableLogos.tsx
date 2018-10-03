@@ -10,7 +10,7 @@ import React, { SFC } from 'react';
 import { DrillDetailed } from 'src/store/drils/model';
 import { NormLogos } from 'src/store/logos/interface';
 
-import ItemLogo from '../logos/LogoItem';
+import LogoItem from '../logos/LogoItem';
 
 type Props = {
   classes: any;
@@ -38,18 +38,16 @@ const AvailableLogos: SFC<Props> = ({ logos, regenerateWithNewLogo }) => {
               Available Logos
             </Typography>
           </Grid>
-          {
-            logosIds.map(id => {
-              return (
-                <Grid item key={id}>
-                  <ItemLogo
-                    logo={logos[id]}
-                    regenerateWithNewLogo={regenerateWithNewLogo}
-                  />
-                </Grid>
-              );
-            })
-          }
+          {logosIds.map(id => {
+            return (
+              <Grid item key={id}>
+                <LogoItem
+                  logo={logos[id]}
+                  regenerateWithNewLogo={regenerateWithNewLogo}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Paper>
     </Slide>

@@ -17,30 +17,31 @@ import { WrapperLogoImg } from 'src/UI';
 
 type Props = {
   classes?: any;
+  theme: Theme;
   logo: LogoModel;
   pickDefaultLogo?: (logo: LogoModel) => void;
   editLogo?: (logo: LogoModel) => void;
   deleteLogo?: (logo: LogoModel) => void;
   regenerateWithNewLogo?: (logoId: string) => void;
 };
-const LogoItem: React.SFC<Props> = (
-  {
-    classes,
-    logo,
-    pickDefaultLogo,
-    editLogo,
-    deleteLogo,
-    regenerateWithNewLogo,
-    children,
-  }) => {
-  const setDefault   = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
-  const onEditLogo   = editLogo ? () => editLogo(logo) : null;
+const LogoItem: React.SFC<Props> = ({
+  classes,
+  theme,
+  logo,
+  pickDefaultLogo,
+  editLogo,
+  deleteLogo,
+  regenerateWithNewLogo,
+  children,
+}) => {
+  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
+  const onEditLogo = editLogo ? () => editLogo(logo) : null;
   const onDeleteLogo = deleteLogo ? () => deleteLogo(logo) : null;
 
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(logo.id)
     : null;
-  const radioLabel              = regenerateWithNewLogo
+  const radioLabel = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 
@@ -48,15 +49,9 @@ const LogoItem: React.SFC<Props> = (
     <>
       <Card component="figure" className={classes.card}>
         <WrapperLogoImg>
-          <img
-            className={classes.media}
-            title={logo.name}
-            src={logo.url}
-          />
+          <img className={classes.media} title={logo.name} src={logo.url} />
           <div className={classes.logoHovering}>
-            {
-              !logo.isMain
-              &&
+            {!logo.isMain && (
               <FormControlLabel
                 value={radioLabel}
                 classes={{
@@ -74,28 +69,44 @@ const LogoItem: React.SFC<Props> = (
                 }
                 label={radioLabel}
               />
-            }
+            )}
             <div className={classes.HoverGroupButton}>
-              {onEditLogo
-              && <Button
-                className={classes.btn}
-                color="secondary"
-                onClick={onEditLogo}
-              >
-                Edit
-                <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faEdit}/>
-              </Button>
-              }
-              {onDeleteLogo &&
-              <Button
-                color="primary"
-                onClick={onDeleteLogo}
-                className={classes.btn}
-              >
-                Delete
-                <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faTrash}/>
-              </Button>
-              }
+              {onEditLogo && (
+                <Button
+                  classes={{
+                    root: classes.btn,
+                    label: classes.label,
+                  }}
+                  onClick={onEditLogo}
+                >
+                  Edit
+                  <FontAwesomeIcon
+                    style={{
+                      marginLeft: 8,
+                      color: theme.palette.secondary.main,
+                    }}
+                    icon={faEdit}
+                  />
+                </Button>
+              )}
+              {onDeleteLogo && (
+                <Button
+                  onClick={onDeleteLogo}
+                  classes={{
+                    root: classes.btn,
+                    label: classes.label,
+                  }}
+                >
+                  Delete
+                  <FontAwesomeIcon
+                    style={{
+                      marginLeft: 8,
+                      color: theme.palette.primary.main,
+                    }}
+                    icon={faTrash}
+                  />
+                </Button>
+              )}
             </div>
           </div>
         </WrapperLogoImg>
@@ -107,10 +118,11 @@ const LogoItem: React.SFC<Props> = (
         >
           {clearName(logo.name)}
         </Typography>
-        {logo.isMain && <Mark textContent="default"/>}
+        {logo.isMain && <Mark textContent="default" />}
       </Card>
       {children ? children : null}
-    </>);
+    </>
+  );
 };
 
 function clearName(name: string) {
@@ -129,6 +141,8 @@ const styles = (theme: Theme) =>
 
     labelRadio: {
       color: theme.palette.common.white,
+      fontSize: 18,
+      lineHeight: '27px',
     },
 
     card: {
@@ -155,6 +169,7 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 2,
       flexDirection: 'column',
       justifyContent: 'space-between',
+      borderRadius: 4,
     },
 
     HoverGroupButton: {
@@ -171,11 +186,12 @@ const styles = (theme: Theme) =>
       height: '100%',
       objectFit: 'contain',
     },
-    btn: {
+
+    label: {
+      color: theme.palette.common.white,
       display: 'flex',
-      alignItems: 'center',
       justifyContent: 'flex-end',
     },
   });
 
-export default withStyles(styles)(LogoItem);
+export default withStyles(styles, { withTheme: true })(LogoItem);
