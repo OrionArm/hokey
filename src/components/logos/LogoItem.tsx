@@ -55,23 +55,27 @@ const LogoItem: React.SFC<Props> = (
           image={logo.url}
         />
         <div className={classes.logoHovering}>
-          <FormControlLabel
-            value={radioLabel}
-            classes={{
-              label: classes.labelRadio,
-            }}
-            checked={regenerateWithNewLogo ? false : logo.isMain}
-            control={
-              <Radio
-                classes={{
-                  root: classes.rootRadio,
-                  checked: classes.checkedRadio,
-                }}
-                onChange={(onRegenerateWithNewLogo || setDefault) as any}
-              />
-            }
-            label={radioLabel}
-          />
+          {
+            !logo.isMain
+            &&
+            <FormControlLabel
+              value={radioLabel}
+              classes={{
+                label: classes.labelRadio,
+              }}
+              checked={regenerateWithNewLogo ? false : logo.isMain}
+              control={
+                <Radio
+                  classes={{
+                    root: classes.rootRadio,
+                    checked: classes.checkedRadio,
+                  }}
+                  onChange={(onRegenerateWithNewLogo || setDefault) as any}
+                />
+              }
+              label={radioLabel}
+            />
+          }
           <div className={classes.HoverGroupButton}>
             {
               onEditLogo

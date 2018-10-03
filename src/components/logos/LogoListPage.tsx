@@ -1,4 +1,4 @@
-import { createStyles, WithStyles } from '@material-ui/core';
+import { createStyles, Theme, WithStyles } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
 import ContentLoader from 'react-content-loader';
@@ -24,7 +24,6 @@ const modalState: modalState = {
   editModal: false,
 };
 const selectedLogo: any      = null; // fix  change any to LogoModel
-const initialState           = { modalState, selectedLogo };
 
 type State = Readonly<typeof initialState>;
 type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
@@ -42,6 +41,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ),
 });
 
+const initialState = { modalState, selectedLogo };
+
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
 
@@ -50,7 +51,7 @@ class LogoListPage extends Component<Props, State> {
   }
 
   render() {
-    const { loading, logos }        = this.props;
+    const { loading, logos } = this.props;
     const logosIds: string[] = Object.keys(logos);
 
     return (
@@ -174,7 +175,7 @@ class LogoListPage extends Component<Props, State> {
   }
 }
 
-const styles = (theme: any) =>
+const styles = (theme: Theme) =>
   createStyles({
     checked: {
       color: '#fff',
