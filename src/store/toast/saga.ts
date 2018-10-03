@@ -7,7 +7,7 @@ function* watcher() {
 }
 
 function* hideToast(action: fromActions.toastActions): IterableIterator<any> {
-  yield delay(6000);
+  yield delay(3000);
   yield put(fromActions.toastActions.clearToast());
 }
 

@@ -1,9 +1,10 @@
+import { ToastType } from 'src/store/toast/actions';
 import * as fromActions from './actions';
 
 export const initialState = {
-  messages: '',
-  type: fromActions.ToastType.Info,
   isOpen: false,
+  messages: '',
+  type: null as ToastType | null,
 };
 export type toastState = Readonly<typeof initialState>;
 

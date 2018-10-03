@@ -47,12 +47,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   clear: () => dispatch(toastActions.clearToast()),
 });
 
-type Props = WithStyles<typeof styles> &
-  injectDispatchProps &
-  injectStateProps & {
-    className?: string;
-    rest?: any;
-  };
+type Props = {
+  className?: string;
+  rest?: any }
+  & WithStyles<typeof styles>
+  & injectDispatchProps
+  & injectStateProps;
 
 const Toast: React.SFC<Props> = ({
   toast,
@@ -64,7 +64,7 @@ const Toast: React.SFC<Props> = ({
   const handleClose = () => clear();
   const { messages, isOpen, type } = toast;
 
-  const classStyle = classes[toastVariant[type]];
+  const classStyle = type ? classes[toastVariant[type]] : '';
 
   return (
     <Snackbar
@@ -82,10 +82,12 @@ const Toast: React.SFC<Props> = ({
         aria-describedby="client-snackbar"
         message={
           <span id="client-snackbar" className={classes.message}>
-            <FontAwesomeIcon
-              icon={variantIcon[type]}
-              style={{ marginRight: 8 }}
-            />
+            {
+              type && <FontAwesomeIcon
+                icon={variantIcon[type]}
+                style={{ marginRight: 8 }}
+              />
+            }
             {messages}
           </span>}
         action={[
