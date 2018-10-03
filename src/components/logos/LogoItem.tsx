@@ -40,42 +40,44 @@ const LogoItem: React.SFC<Props> = (
   const onRegenerateWithNewLogo = regenerateWithNewLogo
     ? () => regenerateWithNewLogo(logo.id)
     : null;
-  const radioLabel = regenerateWithNewLogo
+  const radioLabel              = regenerateWithNewLogo
     ? 'Use this logo for a drill'
     : 'Set as Default';
 
   return (
     <>
-      <Card component="figure"className={classes.card}>
-      <WrapperLogoImg>
-        <img
-          className={classes.media}
-          title={logo.name}
-          src={logo.url}
-        />
-        <div className={classes.logoHovering}>
-          {
-            !logo.isMain
-            &&<FormControlLabel
-            value={radioLabel}
-            classes={{
-              label: classes.labelRadio,
-            }}
-            checked={regenerateWithNewLogo ? false : logo.isMain}
-            control={
-              <Radio
+      <Card component="figure" className={classes.card}>
+        <WrapperLogoImg>
+          <img
+            className={classes.media}
+            title={logo.name}
+            src={logo.url}
+          />
+          <div className={classes.logoHovering}>
+            {
+              !logo.isMain
+              &&
+              <FormControlLabel
+                value={radioLabel}
                 classes={{
-                  root: classes.rootRadio,
-                  checked: classes.checkedRadio,
+                  label: classes.labelRadio,
                 }}
-                onChange={(onRegenerateWithNewLogo || setDefault) as any}
+                checked={regenerateWithNewLogo ? false : logo.isMain}
+                control={
+                  <Radio
+                    classes={{
+                      root: classes.rootRadio,
+                      checked: classes.checkedRadio,
+                    }}
+                    onChange={(onRegenerateWithNewLogo || setDefault) as any}
+                  />
+                }
+                label={radioLabel}
               />
             }
-            label={radioLabel}/>
-          }
-          <div className={classes.HoverGroupButton}>
-            {onEditLogo
-              &&<Button
+            <div className={classes.HoverGroupButton}>
+              {onEditLogo
+              && <Button
                 className={classes.btn}
                 color="secondary"
                 onClick={onEditLogo}
@@ -83,8 +85,8 @@ const LogoItem: React.SFC<Props> = (
                 Edit
                 <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faEdit}/>
               </Button>
-            }
-            {onDeleteLogo &&
+              }
+              {onDeleteLogo &&
               <Button
                 color="primary"
                 onClick={onDeleteLogo}
@@ -93,22 +95,22 @@ const LogoItem: React.SFC<Props> = (
                 Delete
                 <FontAwesomeIcon style={{ marginLeft: 8 }} icon={faTrash}/>
               </Button>
-            }
+              }
+            </div>
           </div>
-        </div>
-      </WrapperLogoImg>
-      <Typography
-        style={{ padding: 8, wordWrap: 'break-word' }}
-        align="center"
-        variant="headline"
-        component="figcaption"
-      >
-        {clearName(logo.name)}
-      </Typography>
-      {logo.isMain && <Mark textContent="default"/>}
-    </Card>
-    {children ? children : null}
-  </>);
+        </WrapperLogoImg>
+        <Typography
+          style={{ padding: 8, wordWrap: 'break-word' }}
+          align="center"
+          variant="headline"
+          component="figcaption"
+        >
+          {clearName(logo.name)}
+        </Typography>
+        {logo.isMain && <Mark textContent="default"/>}
+      </Card>
+      {children ? children : null}
+    </>);
 };
 
 function clearName(name: string) {
