@@ -1,24 +1,23 @@
 import React from 'react';
 import {
   createStyles,
-  FormControlLabel,
-  Radio,
-  Button,
   Typography,
   withStyles,
   Card,
   Theme,
   WithStyles,
 } from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+
 import { LogoModel } from 'src/store/logos/model';
 import { Mark } from 'src/UI/';
 import { WrapperLogoImg } from 'src/UI';
+import LogoHovering from './LogoHovering';
 
 type Props = {
   theme: Theme;
   logo: LogoModel;
+  isHoverOpen?: boolean | null;
+  onHoverHandle?: any;
   pickDefaultLogo?: (logo: LogoModel) => void;
   editLogo?: (logo: LogoModel) => void;
   deleteLogo?: (logo: LogoModel) => void;
@@ -26,85 +25,27 @@ type Props = {
 } & WithStyles<typeof styles>;
 const LogoItem: React.SFC<Props> = ({
   classes,
-  theme,
   logo,
-  pickDefaultLogo,
+  children,
+  isHoverOpen,
+  onHoverHandle,
   editLogo,
   deleteLogo,
-  regenerateWithNewLogo,
-  children,
+  pickDefaultLogo,
 }) => {
-  const setDefault = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
-  const onEditLogo = editLogo ? () => editLogo(logo) : null;
-  const onDeleteLogo = deleteLogo ? () => deleteLogo(logo) : null;
-
-  const onRegenerateWithNewLogo = regenerateWithNewLogo
-    ? () => regenerateWithNewLogo(logo.id)
-    : null;
-  const radioLabel = regenerateWithNewLogo
-    ? 'Use this logo for a drill'
-    : 'Set as Default';
-
   return (
     <>
-      <Card component="figure" className={classes.card}>
+      <Card component="figure" className={classes.card} onClick={onHoverHandle}>
         <WrapperLogoImg>
           <img className={classes.media} title={logo.name} src={logo.url} />
-          <div className={classes.logoHovering}>
-            <FormControlLabel
-              value={radioLabel}
-              classes={{
-                label: classes.labelRadio,
-              }}
-              checked={regenerateWithNewLogo ? false : logo.isMain}
-              control={
-                <Radio
-                  classes={{
-                    root: classes.rootRadio,
-                    checked: classes.checkedRadio,
-                  }}
-                  onChange={(onRegenerateWithNewLogo || setDefault) as any}
-                />
-              }
-              label={radioLabel}
+          {isHoverOpen && (
+            <LogoHovering
+              logo={logo}
+              editLogo={editLogo}
+              deleteLogo={deleteLogo}
+              pickDefaultLogo={pickDefaultLogo}
             />
-            <div className={classes.HoverGroupButton}>
-              {onEditLogo && (
-                <Button
-                  classes={{
-                    label: classes.label,
-                  }}
-                  onClick={onEditLogo}
-                >
-                  Edit
-                  <FontAwesomeIcon
-                    style={{
-                      color: theme.palette.secondary.main,
-                    }}
-                    className={classes.svg}
-                    icon={faEdit}
-                  />
-                </Button>
-              )}
-              {onDeleteLogo && (
-                <Button
-                  onClick={onDeleteLogo}
-                  classes={{
-                    label: classes.label,
-                  }}
-                >
-                  Delete
-                  <FontAwesomeIcon
-                    style={{
-                      color: theme.palette.primary.main,
-                    }}
-                    className={classes.svg}
-                    icon={faTrash}
-                  />
-                </Button>
-              )}
-            </div>
-          </div>
+          )}
         </WrapperLogoImg>
         <Typography
           style={{ padding: 8, wordWrap: 'break-word' }}
@@ -114,7 +55,7 @@ const LogoItem: React.SFC<Props> = ({
         >
           {logo.name}
         </Typography>
-        {logo.isMain && <Mark textContent="default" />}
+        {logo.isMain && !isHoverOpen && <Mark textContent="default" />}
       </Card>
       {children ? children : null}
     </>

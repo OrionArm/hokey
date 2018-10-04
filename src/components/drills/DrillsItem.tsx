@@ -124,7 +124,7 @@ class DrillsItem extends Component<Props, object> {
             }}
           >
             <Tooltip title="Regenerate" placement="top">
-              <div style={{ marginRight: 30 }}>
+              <div style={{ marginRight: 16 }}>
                 <ControllBtn
                   loadingData={this.props.loadingData}
                   onDownload={this.regenerate}
@@ -144,7 +144,7 @@ class DrillsItem extends Component<Props, object> {
             ) : (
               <>
                 <Tooltip title="Download Video" placement="top">
-                  <div style={{ marginRight: 30, position: 'relative' }}>
+                  <div style={{ marginRight: 16, position: 'relative' }}>
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadVideo}
