@@ -24,7 +24,7 @@ const modalState: modalState = {
   addModal: false,
   editModal: false,
 };
-const selectedLogo: any      = null; // fix  change any to LogoModel
+const selectedLogo: any = null; // fix  change any to LogoModel
 
 type State = Readonly<typeof initialState>;
 type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ),
 });
 
-const initialState = { modalState, selectedLogo };
+const initialState = { modalState, selectedLogo, isHoverOpen: null };
 
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
@@ -79,7 +79,7 @@ class LogoListPage extends Component<Props, State> {
           close={this.closePopup}
           confirm={this.confirmEdit}
         />
-        <LogoHeader addLogo={this.openAddPopup} access={access} />
+        <LogoHeader addLogo={this.openAddPopup}access={access}/>
         <div
           style={{
             display: 'grid',
@@ -89,40 +89,45 @@ class LogoListPage extends Component<Props, State> {
             alignItems: 'stretch',
           }}
         >
-          {
-            loading
-              ?
-              <ContentLoader
-                height={200}
-                width={373}
-                speed={2}
-                primaryColor="#f3f3f3"
-                secondaryColor="#ecebeb"
-              >
-                <rect x="0" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="70" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="140" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="210" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="280" y="8" rx="0" ry="0" width="55" height="60"/>
-                <rect x="350" y="8" rx="0" ry="0" width="55" height="60"/>
-              </ContentLoader>
-              :
-              logosIds.map(id => {
-                return (
-                  <LogoItem
-                    key={`${id}_${logos[id].name}`}
-                    logo={logos[id]}
-                    pickDefaultLogo={this.setDefaultLogo}
-                    editLogo={this.openEditPopup}
-                    deleteLogo={this.handleDeleteLogo}
-                  />
-                );
-              })
-          }
+          {loading ? (
+            <ContentLoader
+              height={200}
+              width={373}
+              speed={2}
+              primaryColor="#f3f3f3"
+              secondaryColor="#ecebeb"
+            >
+              <rect x="0" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="70" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="140" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="210" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="280" y="8" rx="0" ry="0" width="55" height="60" />
+              <rect x="350" y="8" rx="0" ry="0" width="55" height="60" />
+            </ContentLoader>
+          ) : (
+            logosIds.map(id => {
+              return (
+                <LogoItem
+                  key={`${id}_${logos[id].name}`}
+                  isHoverOpen={this.state.isHoverOpen === id}
+                  onHoverHandle={() => this.handleHover(id)}
+                  logo={logos[id]}
+                  pickDefaultLogo={this.setDefaultLogo}
+                  editLogo={this.openEditPopup}
+                  deleteLogo={this.handleDeleteLogo}
+                />
+              );
+            })
+          )}
         </div>
       </>
     );
   }
+
+  handleHover = hoveringLogo =>
+    this.setState({
+      isHoverOpen: hoveringLogo,
+    })
 
   openEditPopup = (logo: LogoModel) => {
     this.setState({

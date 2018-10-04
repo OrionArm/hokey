@@ -51,10 +51,10 @@ class DrillsPage extends React.Component<Props, State> {
           My Drills
         </Typography>
         <Grid container wrap="nowrap" spacing={8} justify="space-between">
-          <Grid item md={3}>
+          <Grid item md={3} style={{ minWidth: 270 }}>
             <CategoriesBar />
           </Grid>
-          <Grid item md={selectDrill ? 6 : 9}>
+          <Grid item style={{ flexGrow: 1 }}>
             <DrillsBar />
           </Grid>
           {
