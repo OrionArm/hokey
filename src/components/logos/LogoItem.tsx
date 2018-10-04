@@ -32,6 +32,7 @@ const LogoItem: React.SFC<Props> = ({
   editLogo,
   deleteLogo,
   pickDefaultLogo,
+  regenerateWithNewLogo,
 }) => {
   return (
     <>
@@ -44,6 +45,7 @@ const LogoItem: React.SFC<Props> = ({
               editLogo={editLogo}
               deleteLogo={deleteLogo}
               pickDefaultLogo={pickDefaultLogo}
+              regenerateWithNewLogo={regenerateWithNewLogo}
             />
           )}
         </WrapperLogoImg>
@@ -64,70 +66,17 @@ const LogoItem: React.SFC<Props> = ({
 
 const styles = (theme: Theme) =>
   createStyles({
-    rootRadio: {
-      color: theme.palette.common.white,
-      '&$checkedRadio': {
-        color: theme.palette.common.white,
-      },
-    },
-    checkedRadio: {},
-
-    labelRadio: {
-      color: theme.palette.common.white,
-      fontSize: 18,
-      lineHeight: '27px',
-    },
-
     card: {
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
       margin: 0,
-      '&:hover $logoHovering': {
-        top: 0,
-      },
-    },
-
-    logoHovering: {
-      transition: '0.7s',
-      display: 'flex',
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(78, 78, 78, 0.5)',
-      position: 'absolute',
-      zIndex: 2,
-      top: -500,
-      left: 0,
-      padding: theme.spacing.unit * 2,
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      borderRadius: 4,
-    },
-
-    HoverGroupButton: {
-      display: 'flex',
-      flexDirection: 'column',
-      marginLeft: 'auto',
-      position: 'absolute',
-      bottom: '10px',
-      right: '10px',
     },
     media: {
       backgroundColor: theme.palette.common.white,
       width: '100%',
-      height: '100%',
       objectFit: 'contain',
-    },
-    label: {
-      color: theme.palette.common.white,
-      display: 'flex',
-      alignItems: 'center',
-      position: 'relative',
-    },
-    svg: {
-      position: 'absolute',
-      right: 0,
     },
   });
 

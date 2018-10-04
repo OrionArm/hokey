@@ -118,14 +118,6 @@ const styles = (theme: Theme) =>
       lineHeight: '27px',
     },
 
-    card: {
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      margin: 0,
-    },
-
     logoHovering: {
       display: 'flex',
       width: '100%',
@@ -149,12 +141,7 @@ const styles = (theme: Theme) =>
       bottom: '10px',
       right: '10px',
     },
-    media: {
-      backgroundColor: theme.palette.common.white,
-      width: '100%',
-      height: '100%',
-      objectFit: 'contain',
-    },
+
     label: {
       color: theme.palette.common.white,
       display: 'flex',

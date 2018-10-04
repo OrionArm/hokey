@@ -1,6 +1,7 @@
 import createMuiTheme, {
   ThemeOptions,
 } from '@material-ui/core/styles/createMuiTheme';
+import 'typeface-poppins';
 
 function createMyTheme(options: ThemeOptions) {
   return createMuiTheme({
@@ -9,7 +10,7 @@ function createMyTheme(options: ThemeOptions) {
     },
     typography: {
       fontFamily: ['Poppins', 'sans-serif'].join(','),
-      htmlFontSize: 14,
+      fontSize: 14,
     },
     // #4F5467
     palette: {
