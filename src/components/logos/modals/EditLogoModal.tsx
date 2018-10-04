@@ -5,20 +5,28 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
-  Paper, FormControl, InputLabel, Input, withStyles,
+  Paper,
+  FormControl,
+  InputLabel,
+  Input,
+  withStyles,
 } from '@material-ui/core';
 import { LogoModel } from 'src/store/logos/model';
 
 type Props = {
   open: boolean;
-  modalName: string,
+  modalName: string;
   item: LogoModel;
   close(modalName: string): void;
   confirm(item: any): void;
   classes?: any;
 };
 
-type State = Readonly<{ logo?: LogoModel | null, preview: string, newName: string }>;
+type State = Readonly<{
+  logo?: LogoModel | null;
+  preview: string;
+  newName: string;
+}>;
 const initialState = {
   logo: null,
   preview: '',
@@ -35,8 +43,9 @@ class EditLogoModal extends Component<Props, State> {
   }
 
   render() {
-    const { open, classes, item }    = this.props;
+    const { open, classes, item } = this.props;
     const { preview, newName } = this.state;
+
     return (
       <Dialog
         open={open}
@@ -47,12 +56,11 @@ class EditLogoModal extends Component<Props, State> {
         <DialogTitle id="form-dialog-title">{'Edit logo'}</DialogTitle>
         <DialogContent>
           <Paper elevation={4}>
-            {preview && <img src={preview} height={200}/>}
+            {preview && (
+              <img src={preview} style={{ maxWidth: '100%', height: 'auto' }} />
+            )}
           </Paper>
-          <FormControl
-            className={classes.spacing}
-            fullWidth
-          >
+          <FormControl className={classes.spacingBtn} fullWidth>
             <InputLabel
               FormLabelClasses={{
                 root: classes.cssLabel,
@@ -76,13 +84,13 @@ class EditLogoModal extends Component<Props, State> {
           <Button
             onClick={this.onConfirm}
             variant="contained"
-            color="secondary"
+            color="primary"
             autoFocus
             disabled={!newName}
           >
-            Ok
+            Edit
           </Button>
-          <Button onClick={this.onClose} variant="contained" color="primary">
+          <Button onClick={this.onClose} variant="contained">
             Cancel
           </Button>
         </DialogActions>
@@ -107,8 +115,8 @@ class EditLogoModal extends Component<Props, State> {
 }
 
 const styles = (theme: any) => ({
-  button: {
-    margin: theme.spacing.unit,
+  spacingBtn: {
+    marginTop: theme.spacing.unit,
   },
   input: {
     margin: '15px 0',

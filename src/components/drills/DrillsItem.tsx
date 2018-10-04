@@ -100,7 +100,6 @@ class DrillsItem extends Component<Props, object> {
       <>
         <ListItem
           component="li"
-          role={undefined}
           button
           onClick={this.selectDrill}
           selected={this.props.isSelected}
@@ -125,7 +124,7 @@ class DrillsItem extends Component<Props, object> {
             }}
           >
             <Tooltip title="Regenerate" placement="top">
-              <div>
+              <div style={{ marginRight: 30 }}>
                 <ControllBtn
                   loadingData={this.props.loadingData}
                   onDownload={this.regenerate}
@@ -138,14 +137,14 @@ class DrillsItem extends Component<Props, object> {
             </Tooltip>
             {this.props.isRegenerating ? (
               <LinearProgress
-                style={{ width: 116 }}
+                style={{ width: 130 }}
                 variant="query"
                 color="secondary"
               />
             ) : (
               <>
                 <Tooltip title="Download Video" placement="top">
-                  <div style={{ marginLeft: 30, position: 'relative' }}>
+                  <div style={{ marginRight: 30, position: 'relative' }}>
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadVideo}
@@ -158,7 +157,7 @@ class DrillsItem extends Component<Props, object> {
                   </div>
                 </Tooltip>
                 <Tooltip title="Download PDF" placement="top">
-                  <div style={{ marginLeft: 30, position: 'relative' }}>
+                  <div style={{ position: 'relative' }}>
                     <ControllBtn
                       loadingData={this.props.loadingData}
                       onDownload={this.downloadPdf}

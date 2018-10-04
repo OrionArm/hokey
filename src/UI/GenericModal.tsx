@@ -31,23 +31,9 @@ export const GenericModal: SFC<Props> = ({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle
-        style={{ padding: 20, fontWeight: 400 }}
-        id="form-dialog-title"
-      >
-        {title}
-      </DialogTitle>
-      <DialogContent
-        style={{
-          padding: 20,
-          paddingBottom: 30,
-          borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-          borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-        }}
-      >
-        {children}
-      </DialogContent>
-      <DialogActions style={{ padding: 20, margin: 0 }}>
+      <DialogTitle id="form-dialog-title">{title}</DialogTitle>
+      <DialogContent>{children}</DialogContent>
+      <DialogActions>
         <Buttons />
       </DialogActions>
     </Dialog>

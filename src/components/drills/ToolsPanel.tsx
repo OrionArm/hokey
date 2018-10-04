@@ -6,7 +6,6 @@ import {
   faSyncAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
-  Button,
   createStyles,
   MenuItem,
   Select,
@@ -23,6 +22,7 @@ import { DownloadDrill, CurrentLoadingType } from 'src/store/drils/model';
 import ControlBtn from './ControlBtn';
 
 interface ToolsPanelProps extends WithStyles<typeof styles> {
+  theme: Theme;
   checkedIds: string[];
   selectedUserId: string;
   regenerateDrillsRequest: typeof regenerateDrillsRequest;
@@ -76,49 +76,41 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
   handleDisableIconBtn = variants => Object.values(variants).includes(true);
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
 
     return (
       <div className={classes.wrapperPanel}>
-        <Button
+        <Select
+          value={this.state.selected}
+          onChange={this.handleChange}
+          name="selected"
+          autoWidth
           classes={{
-            root: classes.rootBtn,
+            root: classes.rootSelect,
+            select: classes.select,
+          }}
+          renderValue={value => {
+            return (
+              <>
+                <FontAwesomeIcon icon={faSyncAlt} style={{ marginRight: 8 }} />
+                {value}
+              </>
+            );
           }}
         >
-          <Select
-            value={this.state.selected}
-            onChange={this.handleChange}
-            name="selected"
-            autoWidth
-            classes={{
-              root: classes.rootSelect,
-              select: classes.select,
-            }}
-            renderValue={value => {
-              return (
-                <>
-                  <FontAwesomeIcon
-                    icon={faSyncAlt}
-                    style={{ marginRight: 8 }}
-                  />
-                  {value}
-                </>
-              );
-            }}
-          >
-            <MenuItem value={GenerateType.Generate}>
-              {GenerateType.Generate}
-            </MenuItem>
-            <MenuItem value={GenerateType.GenerateWithNewLogo}>
-              {GenerateType.GenerateWithNewLogo}
-            </MenuItem>
-          </Select>
-        </Button>
+          <MenuItem value={GenerateType.Generate}>
+            {GenerateType.Generate}
+          </MenuItem>
+          <MenuItem value={GenerateType.GenerateWithNewLogo}>
+            {GenerateType.GenerateWithNewLogo}
+          </MenuItem>
+        </Select>
+
         <Tooltip title="Download Selected Video" placement="top">
           <div
             style={{
               position: 'relative',
-              borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+              borderLeft: theme.custom.border,
               borderRadius: 0,
             }}
           >
@@ -136,7 +128,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           <div
             style={{
               position: 'relative',
-              borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+              borderLeft: theme.custom.border,
               borderRadius: 0,
             }}
           >
@@ -159,7 +151,7 @@ const styles = (theme: Theme) => {
   return createStyles({
     wrapperPanel: {
       display: 'flex',
-      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      borderBottom: theme.custom.border,
       borderBottomLeftRadius: theme.shape.borderRadius,
     },
     rootSelect: {
@@ -172,15 +164,12 @@ const styles = (theme: Theme) => {
       height: 50,
       display: 'flex',
       alignItems: 'center',
-      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderLeft: theme.custom.border,
       borderBottomLeftRadius: theme.shape.borderRadius,
     },
-    rootBtn: {
-      textTransform: 'capitalize',
-      padding: 0,
-    },
+
     wrapperBtn: {
-      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderLeft: theme.custom.border,
       background: theme.palette.action.disabledBackground,
       borderRadius: 0,
       display: 'flex',
@@ -192,4 +181,4 @@ const styles = (theme: Theme) => {
   });
 };
 
-export default withStyles(styles)(ToolsPanel);
+export default withStyles(styles, { withTheme: true })(ToolsPanel);

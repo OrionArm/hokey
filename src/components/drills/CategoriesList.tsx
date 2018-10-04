@@ -23,6 +23,7 @@ const styles = (theme: Theme) =>
   createStyles({
     item: {
       paddingLeft: 24,
+      fontFamily: 'Poppins,sans-serif',
     },
     selectedItem: {
       borderLeft: `3px solid ${theme.palette.primary.main}`,

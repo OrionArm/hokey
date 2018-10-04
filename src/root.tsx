@@ -4,13 +4,15 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
 import store, { history } from './store';
-import theme from './theme';
+import theme from './theme/';
 import './styles/index.css';
 
-export const Root: React.SFC<any> = ({ children }) => (
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <Router history={history}>{children}</Router>
-    </MuiThemeProvider>
-  </Provider>
-);
+export const Root: React.SFC<any> = ({ children }) => {
+  return (
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <Router history={history}>{children}</Router>
+      </MuiThemeProvider>
+    </Provider>
+  );
+};
