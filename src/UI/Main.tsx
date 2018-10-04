@@ -7,7 +7,7 @@ export const Main: SFC<any> = ({ children }) => {
       container
       justify="space-between"
       component="main"
-      style={{ marginTop: 24, padding: '0 24px' }}
+      style={{ margin: '24px auto 0', padding: '0 24px', maxWidth: 1500 }}
     >
       {children}
     </Grid>

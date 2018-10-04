@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
-  DialogContentText,
 } from '@material-ui/core';
 
 type Props = {
@@ -32,21 +31,14 @@ const DeleteLogoModal: SFC<Props> = ({
     >
       <DialogTitle id="alert-dialog-title">Attention</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete logo? All existing drills will use
-          this logo until you'll generate them again.
-        </DialogContentText>
+        Are you sure you want to delete logo? All existing drills will use this
+        logo until you'll generate them again.
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={confirm}
-          variant="contained"
-          color="secondary"
-          autoFocus
-        >
-          Ok
+        <Button onClick={confirm} variant="contained" color="primary" autoFocus>
+          Delete
         </Button>
-        <Button onClick={onClose} variant="contained" color="primary">
+        <Button onClick={onClose} variant="contained">
           Cancel
         </Button>
       </DialogActions>

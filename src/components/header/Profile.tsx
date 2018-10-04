@@ -54,6 +54,7 @@ const styles = (theme: Theme) => ({
     borderBottom: `1px solid ${theme.palette.text.secondary}`,
     textDecoration: 'none',
     transition: '0.3s',
+    cursor: 'pointer',
     '&:hover, &:focus': {
       borderBottom: '1px solid transparent',
       opacity: 0.7,

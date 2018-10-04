@@ -8,6 +8,7 @@ import {
   withStyles,
   Card,
   Theme,
+  WithStyles,
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -16,14 +17,13 @@ import { Mark } from 'src/UI/';
 import { WrapperLogoImg } from 'src/UI';
 
 type Props = {
-  classes?: any;
   theme: Theme;
   logo: LogoModel;
   pickDefaultLogo?: (logo: LogoModel) => void;
   editLogo?: (logo: LogoModel) => void;
   deleteLogo?: (logo: LogoModel) => void;
   regenerateWithNewLogo?: (logoId: string) => void;
-};
+} & WithStyles<typeof styles>;
 const LogoItem: React.SFC<Props> = ({
   classes,
   theme,
@@ -51,30 +51,27 @@ const LogoItem: React.SFC<Props> = ({
         <WrapperLogoImg>
           <img className={classes.media} title={logo.name} src={logo.url} />
           <div className={classes.logoHovering}>
-            {!logo.isMain && (
-              <FormControlLabel
-                value={radioLabel}
-                classes={{
-                  label: classes.labelRadio,
-                }}
-                checked={regenerateWithNewLogo ? false : logo.isMain}
-                control={
-                  <Radio
-                    classes={{
-                      root: classes.rootRadio,
-                      checked: classes.checkedRadio,
-                    }}
-                    onChange={(onRegenerateWithNewLogo || setDefault) as any}
-                  />
-                }
-                label={radioLabel}
-              />
-            )}
+            <FormControlLabel
+              value={radioLabel}
+              classes={{
+                label: classes.labelRadio,
+              }}
+              checked={regenerateWithNewLogo ? false : logo.isMain}
+              control={
+                <Radio
+                  classes={{
+                    root: classes.rootRadio,
+                    checked: classes.checkedRadio,
+                  }}
+                  onChange={(onRegenerateWithNewLogo || setDefault) as any}
+                />
+              }
+              label={radioLabel}
+            />
             <div className={classes.HoverGroupButton}>
               {onEditLogo && (
                 <Button
                   classes={{
-                    root: classes.btn,
                     label: classes.label,
                   }}
                   onClick={onEditLogo}
@@ -82,9 +79,9 @@ const LogoItem: React.SFC<Props> = ({
                   Edit
                   <FontAwesomeIcon
                     style={{
-                      marginLeft: 8,
                       color: theme.palette.secondary.main,
                     }}
+                    className={classes.svg}
                     icon={faEdit}
                   />
                 </Button>
@@ -93,16 +90,15 @@ const LogoItem: React.SFC<Props> = ({
                 <Button
                   onClick={onDeleteLogo}
                   classes={{
-                    root: classes.btn,
                     label: classes.label,
                   }}
                 >
                   Delete
                   <FontAwesomeIcon
                     style={{
-                      marginLeft: 8,
                       color: theme.palette.primary.main,
                     }}
+                    className={classes.svg}
                     icon={faTrash}
                   />
                 </Button>
@@ -116,7 +112,7 @@ const LogoItem: React.SFC<Props> = ({
           variant="headline"
           component="figcaption"
         >
-          {clearName(logo.name)}
+          {logo.name}
         </Typography>
         {logo.isMain && <Mark textContent="default" />}
       </Card>
@@ -124,10 +120,6 @@ const LogoItem: React.SFC<Props> = ({
     </>
   );
 };
-
-function clearName(name: string) {
-  return name.replace(/.png/gi, '');
-}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -186,11 +178,15 @@ const styles = (theme: Theme) =>
       height: '100%',
       objectFit: 'contain',
     },
-
     label: {
       color: theme.palette.common.white,
       display: 'flex',
-      justifyContent: 'flex-end',
+      alignItems: 'center',
+      position: 'relative',
+    },
+    svg: {
+      position: 'absolute',
+      right: 0,
     },
   });
 

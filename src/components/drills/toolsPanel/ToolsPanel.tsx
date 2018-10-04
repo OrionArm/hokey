@@ -18,6 +18,7 @@ import { DownloadDrill, CurrentLoadingType } from 'src/store/drils/model';
 import ControlBtn from '../ControlBtn';
 
 interface ToolsPanelProps extends WithStyles<typeof styles> {
+  theme: Theme;
   checkedIds: string[];
   selectedUserId: string;
   regenerateDrillsRequest: typeof regenerateDrillsRequest;
@@ -35,7 +36,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
   state = { selected: GenerateType.Generate };
 
   render() {
-    const { classes, access } = this.props;
+    const { classes, access, theme } = this.props;
 
     return (
       <div className={classes.wrapperPanel}>
@@ -48,7 +49,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           <div
             style={{
               position: 'relative',
-              borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+              borderLeft: theme.custom.border,
               borderRadius: 0,
             }}
           >
@@ -66,7 +67,7 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
           <div
             style={{
               position: 'relative',
-              borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+              borderLeft: theme.custom.border,
               borderRadius: 0,
             }}
           >
@@ -125,11 +126,11 @@ const styles = (theme: Theme) => {
   return createStyles({
     wrapperPanel: {
       display: 'flex',
-      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      borderBottom: theme.custom.border,
       borderBottomLeftRadius: theme.shape.borderRadius,
     },
     wrapperBtn: {
-      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderLeft: theme.custom.border,
       background: theme.palette.action.disabledBackground,
       borderRadius: 0,
       display: 'flex',
@@ -141,4 +142,4 @@ const styles = (theme: Theme) => {
   });
 };
 
-export default withStyles(styles)(ToolsPanel);
+export default withStyles(styles, { withTheme: true })(ToolsPanel);
