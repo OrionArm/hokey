@@ -17,7 +17,12 @@ import {
 import { DownloadDrill, CurrentLoadingType } from 'src/store/drils/model';
 import ControlBtn from '../ControlBtn';
 
-interface ToolsPanelProps extends WithStyles<typeof styles> {
+export enum GenerateType {
+  Generate            = 'Generate',
+  GenerateWithNewLogo = 'Generate with new logo',
+}
+
+type Props = {
   theme: Theme;
   checkedIds: string[];
   selectedUserId: string;
@@ -25,14 +30,9 @@ interface ToolsPanelProps extends WithStyles<typeof styles> {
   downloadDrillsRequest: typeof downloadDrillsRequest;
   loadingData: DownloadDrill;
   access: boolean;
-}
+} & WithStyles<typeof styles>;
 
-export enum GenerateType {
-  Generate            = 'Generate',
-  GenerateWithNewLogo = 'Generate with new logo',
-}
-
-class ToolsPanel extends Component<ToolsPanelProps, any> {
+class ToolsPanel extends Component<Props, any> {
   state = { selected: GenerateType.Generate };
 
   render() {
@@ -86,7 +86,6 @@ class ToolsPanel extends Component<ToolsPanelProps, any> {
   }
 
   handleChange = (value: string) => {
-    console.log('value', value);
     this.setState({
       selected: value,
     });

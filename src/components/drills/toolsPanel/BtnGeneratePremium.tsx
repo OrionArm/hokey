@@ -2,7 +2,6 @@ import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import React, { SFC } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  Button,
   createStyles,
   MenuItem,
   Select,
@@ -20,40 +19,34 @@ const BtnGeneratePremium: SFC<Props> = ({ selected, handleChange, classes }) => 
   const click = () => handleChange(selected);
 
   return (
-    <Button
+    <Select
+      value={selected}
+      onChange={click}
+      name="selected"
+      autoWidth
       classes={{
-        root: classes.rootBtn,
+        root: classes.rootSelect,
+        select: classes.select,
       }}
-    >
-      <Select
-        value={selected}
-        onChange={click}
-        name="selected"
-        autoWidth
-        classes={{
-          root: classes.rootSelect,
-          select: classes.select,
-        }}
-        renderValue={
-          value => {
-            return <>
-              <FontAwesomeIcon
-                icon={faSyncAlt}
-                style={{ marginRight: 8 }}
-              />
-              {value}
-            </>;
-          }
+      renderValue={
+        value => {
+          return <>
+            <FontAwesomeIcon
+              icon={faSyncAlt}
+              style={{ marginRight: 8 }}
+            />
+            {value}
+          </>;
         }
-      >
-        <MenuItem value={GenerateType.Generate}>
-          {GenerateType.Generate}
-        </MenuItem>
-        <MenuItem value={GenerateType.GenerateWithNewLogo}>
-          {GenerateType.GenerateWithNewLogo}
-        </MenuItem>
-      </Select>
-    </Button>
+      }
+    >
+      <MenuItem value={GenerateType.Generate}>
+        {GenerateType.Generate}
+      </MenuItem>
+      <MenuItem value={GenerateType.GenerateWithNewLogo}>
+        {GenerateType.GenerateWithNewLogo}
+      </MenuItem>
+    </Select>
   );
 };
 
@@ -69,7 +62,7 @@ const styles = (theme: Theme) => {
       height: 50,
       display: 'flex',
       alignItems: 'center',
-      borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+      borderLeft: theme.custom.border,
       borderBottomLeftRadius: theme.shape.borderRadius,
     },
     rootBtn: {

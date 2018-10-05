@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { SFC } from 'react';
 import {
   Button,
-  createStyles,
+  createStyles, Theme,
   withStyles,
   WithStyles,
 } from '@material-ui/core';
@@ -17,7 +17,7 @@ const BtnGeneratePremium: SFC<Props> = ({ selected, handleChange, classes }) => 
 
   return <Button
     classes={{
-      root: classes.rootBtn,
+      root: classes.wrapperBtn,
     }}
     onClick={click}
   >
@@ -29,11 +29,17 @@ const BtnGeneratePremium: SFC<Props> = ({ selected, handleChange, classes }) => 
   </Button>;
 };
 
-const styles = () => {
+const styles = (theme: Theme) => {
   return createStyles({
-    rootBtn: {
-      textTransform: 'capitalize',
-      padding: 0,
+    wrapperBtn: {
+      borderLeft: theme.custom.border,
+      background: theme.palette.action.disabledBackground,
+      borderRadius: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 50,
+      height: '100%',
     },
   });
 };

@@ -63,7 +63,8 @@ class DrillsBar extends Component<Props, State> {
             selectedUserId,
             actions,
             loadingData,
-          access,}         = this.props;
+            access,
+          }         = this.props;
     const drillsIds = Object.keys(drills.data);
 
     return (
@@ -85,7 +86,7 @@ class DrillsBar extends Component<Props, State> {
                 root: classes.rootLabel,
               }}
               onChange={this.toggleAll}
-              control={<Checkbox color="primary" />}
+              control={<Checkbox color="primary"/>}
               label="All"
             />
             <FormControlLabel
@@ -93,10 +94,9 @@ class DrillsBar extends Component<Props, State> {
                 root: classes.rootLabel,
               }}
               onChange={this.toggleAnimated}
-              control={<Checkbox color="primary" />}
+              control={<Checkbox color="primary"/>}
               label="Animated"
             />
-            {/* </Button> */}
           </div>
           <ToolsPanel
             checkedIds={this.checkedIdsAsArray}
@@ -107,34 +107,38 @@ class DrillsBar extends Component<Props, State> {
             access={access}
           />
         </header>
-        {!drills.loading && drills ? (
-          <List>
-            {drillsIds.map((id: string) => (
-              <DrillsItem
-                key={id}
-                onCheck={this.handleToggle(id)}
-                drill={drills.data[id]}
-                checked={this.state.checkedIds[id]}
-                selectDrill={actions.selectDrill}
-                isSelected={this.isDrillSelected(id)}
-              />
-            ))}
-          </List>
-        ) : (
-          <ContentLoader
-            height={150}
-            width={373}
-            speed={2}
-            primaryColor="#f3f3f3"
-            secondaryColor="#ecebeb"
-          >
-            <rect x="5.5" y="5" rx="0" ry="0" width="365" height="20" />
-            <rect x="5.5" y="35" rx="0" ry="0" width="365" height="20" />
-            <rect x="5.5" y="65" rx="0" ry="0" width="365" height="20" />
-            <rect x="5.5" y="95" rx="0" ry="0" width="365" height="20" />
-            <rect x="5.5" y="125" rx="0" ry="0" width="365" height="20" />
-          </ContentLoader>
-        )}
+        {
+          !drills.loading && drills
+            ?
+            <List>
+              {
+                drillsIds.map((id: string) => (
+                  <DrillsItem
+                    key={id}
+                    onCheck={this.handleToggle(id)}
+                    drill={drills.data[id]}
+                    checked={this.state.checkedIds[id]}
+                    selectDrill={actions.selectDrill}
+                    isSelected={this.isDrillSelected(id)}
+                  />
+                ))
+              }
+            </List>
+            : (
+              <ContentLoader
+                height={150}
+                width={373}
+                speed={2}
+                primaryColor="#f3f3f3"
+                secondaryColor="#ecebeb"
+              >
+                <rect x="5.5" y="5" rx="0" ry="0" width="365" height="20"/>
+                <rect x="5.5" y="35" rx="0" ry="0" width="365" height="20"/>
+                <rect x="5.5" y="65" rx="0" ry="0" width="365" height="20"/>
+                <rect x="5.5" y="95" rx="0" ry="0" width="365" height="20"/>
+                <rect x="5.5" y="125" rx="0" ry="0" width="365" height="20"/>
+              </ContentLoader>
+            )}
       </Paper>
     );
   }
@@ -191,24 +195,27 @@ function toggleDrills(payload: {
   checkedIds: State['checkedIds'];
   filter?: string;
 }): State['checkedIds'] {
-  const drills = payload.drills;
-  const checked = payload.checked;
-  const checkedIds = payload.checkedIds;
+  const drills                = payload.drills;
+  const checked               = payload.checked;
+  const checkedIds            = payload.checkedIds;
   const drillIdList: string[] = Object.keys(drills);
-  const filter = payload.filter;
-  return drillIdList.reduce((acc, drillId) => {
-    let filtered;
-    if (filter === 'hasAnimation') {
-      filtered = drills[drillId].hasAnimation;
-    } else {
-      filtered = true;
-    }
-    if (filtered) {
-      acc[drillId] = checked;
+  const filter                = payload.filter;
+  return drillIdList.reduce(
+    (acc, drillId) => {
+      let filtered;
+      if (filter === 'hasAnimation') {
+        filtered = drills[drillId].hasAnimation;
+      } else {
+        filtered = true;
+      }
+      if (filtered) {
+        acc[drillId] = checked;
+        return acc;
+      }
       return acc;
-    }
-    return acc;
-  },                        checkedIds);
+    },
+    checkedIds,
+  );
 }
 
 const styles = (theme: Theme) =>
