@@ -4,20 +4,22 @@ import {
   withStyles,
   Typography,
   Paper,
+  WithStyles,
 } from '@material-ui/core';
+import { compose } from 'redux';
 import Slide from '@material-ui/core/Slide';
 import React, { Component } from 'react';
 import { DrillDetailed } from 'src/store/drils/model';
 import { NormLogos } from 'src/store/logos/interface';
-
 import LogoItem from '../logos/LogoItem';
 
 type Props = {
-  classes: any;
   selectedDrill: DrillDetailed | null;
   logos: NormLogos;
+  isHoverOpen: null | string;
+  handleHover: (id: string) => void;
   regenerateWithNewLogo(logoId: string): void;
-};
+} & WithStyles<typeof styles>;
 
 class AvailableLogos extends Component<Props> {
   state = {
@@ -50,8 +52,8 @@ class AvailableLogos extends Component<Props> {
                   <LogoItem
                     logo={logos[id]}
                     regenerateWithNewLogo={regenerateWithNewLogo}
-                    isHoverOpen={this.state.isHoverOpen === id}
-                    onHoverHandle={() => this.handleHover(id)}
+                    isHoverOpen={this.props.isHoverOpen === id}
+                    onHoverHandle={() => this.props.handleHover(id)}
                   />
                 </Grid>
               );
@@ -61,13 +63,8 @@ class AvailableLogos extends Component<Props> {
       </Slide>
     );
   }
-
-  handleHover = hoveringLogo =>
-    this.setState({
-      isHoverOpen: hoveringLogo,
-    })
 }
 
 const styles = createStyles({});
 
-export default withStyles(styles)(AvailableLogos);
+export default compose(withStyles(styles))(AvailableLogos);

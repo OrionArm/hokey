@@ -15,6 +15,7 @@ import { LogoModel } from 'src/store/logos/model';
 import { RootState } from 'src/store/rootReducers';
 import LogoItem from './LogoItem';
 import LogoHeader from './LogoHeader';
+import HoveringLogo from '../commons/HocHoveringLogo';
 
 type modalStateNames = 'deleteModal' | 'addModal' | 'editModal';
 type modalState = Record<modalStateNames, boolean>;
@@ -26,7 +27,9 @@ const modalState: modalState = {
 const selectedLogo: any = null; // fix  change any to LogoModel
 
 type State = Readonly<typeof initialState>;
-type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
+type Props = WithStyles<typeof styles> &
+  injectDispatchProps &
+  injectStateProps & { isHoverOpen: string | null; handleHover: any };
 
 const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
@@ -41,7 +44,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ),
 });
 
-const initialState = { modalState, selectedLogo, isHoverOpen: null };
+const initialState = { modalState, selectedLogo };
 
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
@@ -107,8 +110,8 @@ class LogoListPage extends Component<Props, State> {
               return (
                 <LogoItem
                   key={`${id}_${logos[id].name}`}
-                  isHoverOpen={this.state.isHoverOpen === id}
-                  onHoverHandle={() => this.handleHover(id)}
+                  isHoverOpen={this.props.isHoverOpen === id}
+                  onHoverHandle={() => this.props.handleHover(id)}
                   logo={logos[id]}
                   pickDefaultLogo={this.setDefaultLogo}
                   editLogo={this.openEditPopup}
@@ -121,11 +124,6 @@ class LogoListPage extends Component<Props, State> {
       </>
     );
   }
-
-  handleHover = hoveringLogo =>
-    this.setState({
-      isHoverOpen: hoveringLogo,
-    })
 
   openEditPopup = (logo: LogoModel) => {
     this.setState({
@@ -194,18 +192,6 @@ const styles = (theme: Theme) =>
       //   display: 'block',
       // },
     },
-    logosHoverBlock: {
-      width: '100%',
-      height: 200,
-      backgroundColor: '#4e4e4e',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      padding: theme.spacing.unit * 3,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
     media: {
       width: '100%',
       height: 200,
@@ -224,4 +210,5 @@ export default compose(
     null,
     { pure: false },
   ),
+  HoveringLogo,
 )(LogoListPage);

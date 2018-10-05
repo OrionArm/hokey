@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Grid, Typography } from '@material-ui/core';
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators, Dispatch, compose } from 'redux';
 
 import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import { DrillDetailed } from 'src/store/drils/model';
@@ -18,6 +18,7 @@ import AvailableLogos from './AvailableLogos';
 import CategoriesBar from './CategoriesBar';
 import DetailsBar from './DetailsBar';
 import DrillsBar from './DrillsBar';
+import HoveringLogo from '../commons/HocHoveringLogo';
 
 const mapStateToProps = (state: RootState) => ({
   showLogoBar: hasUserProAccessSelector(state) || isUserAnAdminSelector(state),
@@ -31,8 +32,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 type Props = {
-  classes: any;
   selectedDrill: DrillDetailed | null;
+  isHoverOpen: null | string;
+  handleHover: (id: string) => void;
 } & ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps>;
 type State = Readonly<typeof initialState>;
@@ -65,6 +67,8 @@ class DrillsPage extends React.Component<Props, State> {
               />
               {this.state.selectedTab === 2 && (
                 <AvailableLogos
+                  isHoverOpen={this.props.isHoverOpen}
+                  handleHover={this.props.handleHover}
                   logos={logos}
                   regenerateWithNewLogo={this.regenerateWithNewLogo}
                   selectedDrill={selectDrill}
@@ -111,7 +115,10 @@ class DrillsPage extends React.Component<Props, State> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  HoveringLogo,
 )(DrillsPage);
