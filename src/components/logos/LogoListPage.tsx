@@ -86,10 +86,10 @@ class LogoListPage extends Component<Props, State> {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(225px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(215px, 1fr))',
             gridGap: 24,
             width: '100%',
-            alignItems: 'stretch',
+            alignItems: 'start',
           }}
         >
           {loading ? (

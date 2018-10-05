@@ -12,7 +12,7 @@ import { LogoModel } from 'src/store/logos/model';
 import { Mark } from 'src/UI/';
 import { WrapperLogoImg } from 'src/UI';
 import LogoHovering from './LogoHovering';
-
+import ReadMore from '../commons/ReadMore';
 type Props = {
   theme: Theme;
   logo: LogoModel;
@@ -23,6 +23,7 @@ type Props = {
   deleteLogo?: (logo: LogoModel) => void;
   regenerateWithNewLogo?: (logoId: string) => void;
 } & WithStyles<typeof styles>;
+
 const LogoItem: React.SFC<Props> = ({
   classes,
   logo,
@@ -36,9 +37,14 @@ const LogoItem: React.SFC<Props> = ({
 }) => {
   return (
     <>
-      <Card component="figure" className={classes.card} onClick={onHoverHandle}>
+      <Card component="figure" className={classes.card}>
         <WrapperLogoImg>
-          <img className={classes.media} title={logo.name} src={logo.url} />
+          <img
+            className={classes.media}
+            title={logo.name}
+            src={logo.url}
+            onClick={onHoverHandle}
+          />
           {isHoverOpen && (
             <LogoHovering
               logo={logo}
@@ -55,7 +61,7 @@ const LogoItem: React.SFC<Props> = ({
           variant="headline"
           component="figcaption"
         >
-          {logo.name}
+          <ReadMore lines={1}>{logo.name}</ReadMore>
         </Typography>
         {logo.isMain && !isHoverOpen && <Mark textContent="default" />}
       </Card>

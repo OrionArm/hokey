@@ -35,6 +35,7 @@ import {
 import { RootState } from 'src/store/rootReducers';
 import { getUserId } from 'src/store/user/store/selectors';
 import ControllBtn from './ControlBtn';
+import ReadMore from '../commons/ReadMore';
 
 const mapStateToProps = (state: RootState, props) => {
   return {
@@ -114,7 +115,7 @@ class DrillsItem extends Component<Props, object> {
             onChange={this.props.onCheck}
           />
           <ListItemText
-            primary={this.props.drill.name}
+            primary={<ReadMore lines={1}> {this.props.drill.name}</ReadMore>}
             style={{ wordBreak: 'break-all' }}
           />
           <div
@@ -137,7 +138,7 @@ class DrillsItem extends Component<Props, object> {
             </Tooltip>
             {this.props.isRegenerating ? (
               <LinearProgress
-                style={{ width: 130 }}
+                style={{ width: 116 }}
                 variant="query"
                 color="secondary"
               />
