@@ -3,7 +3,7 @@ import Header from 'src/components/header/Header';
 import { Loading, InCenter } from 'src/UI';
 
 type Props = {};
-const PreloadPage: SFC<Props> = props => {
+const PreloadPage: SFC<Props> = () => {
   return (
     <>
       <Header />

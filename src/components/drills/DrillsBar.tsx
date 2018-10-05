@@ -20,7 +20,7 @@ import {
   getSelectedDrillSelector,
 } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
-import { getUserId } from 'src/store/selectors';
+import { getUserId, isLogosAvailableSelector } from 'src/store/user/store/selectors';
 import {
   getDrillRequest,
   regenerateDrillsRequest,
@@ -28,7 +28,7 @@ import {
 } from 'src/store/drils/actions';
 
 import DrillsItem from './DrillsItem';
-import ToolsPanel from './ToolsPanel';
+import ToolsPanel from './toolsPanel/ToolsPanel';
 
 type State = Readonly<{ checkedIds: { [id: string]: boolean } }>;
 type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
@@ -38,7 +38,9 @@ const mapStateToProps    = (state: RootState) => ({
   drills: getDrillsSelector(state),
   selectedDrill: getSelectedDrillSelector(state),
   selectedUserId: getUserId(state),
+  access: isLogosAvailableSelector(state),
 });
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(
     {
@@ -51,54 +53,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 class DrillsBar extends Component<Props, State> {
-  readonly state = {
-    checkedIds: {},
-  };
-
-  get checkedIdsAsArray() {
-    return Object.keys(this.state.checkedIds).filter(
-      id => this.state.checkedIds[id],
-    );
-  }
-
-  handleToggle = (id: string) => () => {
-    const checkedIds = {
-      ...this.state.checkedIds,
-      [id]: !this.state.checkedIds[id],
-    };
-    this.setState({ checkedIds });
-  }
-
-  toggleAll = (event: any, checked: boolean) => {
-    const checkedIds = toggleDrills(
-      {
-        checked,
-        drills: this.props.drills.data,
-        checkedIds: this.state.checkedIds,
-      },
-    );
-
-    this.setState({ checkedIds });
-  }
-
-  toggleAnimated = (event: any, checked: boolean) => {
-    const checkedIds = toggleDrills(
-      {
-        checked,
-        drills: this.props.drills.data,
-        filter: 'hasAnimation',
-        checkedIds: this.state.checkedIds,
-      },
-    );
-
-    this.setState({ checkedIds });
-  }
-
-  isDrillSelected = (id: string) => {
-    return this.props.selectedDrill
-      ? this.props.selectedDrill.id === id
-      : false;
-  }
+  readonly state = { checkedIds: {} };
 
   public render() {
     const {
@@ -107,6 +62,7 @@ class DrillsBar extends Component<Props, State> {
             selectedUserId,
             actions,
             loadingData,
+            access,
           }         = this.props;
     const drillsIds = Object.keys(drills.data);
 
@@ -170,6 +126,7 @@ class DrillsBar extends Component<Props, State> {
             regenerateDrillsRequest={actions.regenerateDrillsRequest}
             downloadDrillsRequest={actions.downloadDrillsRequest}
             loadingData={loadingData}
+            access={access}
           />
         </header>
         {
@@ -206,6 +163,51 @@ class DrillsBar extends Component<Props, State> {
         }
       </Paper>
     );
+  }
+
+  get checkedIdsAsArray() {
+    return Object.keys(this.state.checkedIds).filter(
+      id => this.state.checkedIds[id],
+    );
+  }
+
+  handleToggle = (id: string) => () => {
+    const checkedIds = {
+      ...this.state.checkedIds,
+      [id]: !this.state.checkedIds[id],
+    };
+    this.setState({ checkedIds });
+  }
+
+  toggleAll = (event: any, checked: boolean) => {
+    const checkedIds = toggleDrills(
+      {
+        checked,
+        drills: this.props.drills.data,
+        checkedIds: this.state.checkedIds,
+      },
+    );
+
+    this.setState({ checkedIds });
+  }
+
+  toggleAnimated = (event: any, checked: boolean) => {
+    const checkedIds = toggleDrills(
+      {
+        checked,
+        drills: this.props.drills.data,
+        filter: 'hasAnimation',
+        checkedIds: this.state.checkedIds,
+      },
+    );
+
+    this.setState({ checkedIds });
+  }
+
+  isDrillSelected = (id: string) => {
+    return this.props.selectedDrill
+      ? this.props.selectedDrill.id === id
+      : false;
   }
 }
 

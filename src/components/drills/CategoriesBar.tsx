@@ -17,10 +17,7 @@ import {
   getDrillsCategoriesRequest,
   searchDrillsByIdRequest,
 } from 'src/store/drils/actions';
-import {
-  DrillCategoriesGrouped,
-  DrillCategoryType, NormDrills,
-} from 'src/store/drils/model';
+import { DrillCategoryType } from 'src/store/drils/model';
 import {
   getCategoriesRequestStatusSelector,
   getGrouppedCategoriesSelector,
@@ -28,39 +25,27 @@ import {
 } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import userActions from 'src/store/user/store/actions';
-import { isUserAnAdminSelector } from 'src/store/user/store/selectors';
+import { userAdminAccessSelector } from 'src/store/user/store/selectors';
 import { CategoriesList } from './CategoriesList';
 import SearchField from 'src/components/search/SearchField';
 import SearchSelection from 'src/components/search/SearchSelection';
-
-export interface ICategoriesProps extends WithStyles<typeof styles> {
-  categories: DrillCategoriesGrouped;
-  drills: { loading: boolean; data: NormDrills };
-  actions: {
-    searchDrillsByIdRequest: typeof searchDrillsByIdRequest;
-    getDrillsByCategoryIdRequest: typeof getDrillsByCategoryIdRequest;
-    getDrillsCategoriesRequest: typeof getDrillsCategoriesRequest;
-    selectUser: typeof userActions.selectUser;
-  };
-  loading: boolean;
-  isAdmin: boolean;
-}
 
 export enum SearchType {
   User  = 'User',
   Drill = 'Drill',
 }
-
-export interface ICategoriesState {
-  categoryType: string;
-  searchType: SearchType;
-}
+//
+// type State = {
+//   categoryType: string;
+//   searchType: SearchType;
+// }
+type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
 
 const mapStateToProps    = (state: RootState) => ({
   categories: getGrouppedCategoriesSelector(state),
   drills: getDrillsSelector(state),
   loading: getCategoriesRequestStatusSelector(state),
-  isAdmin: isUserAnAdminSelector(state),
+  access: userAdminAccessSelector(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(
@@ -75,7 +60,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   ),
 });
 
-class CategoriesBar extends Component<ICategoriesProps, any> {
+class CategoriesBar extends Component<Props, any> {
   state = {
     categoryType: DrillCategoryType.Public,
     searchType: SearchType.User,
@@ -86,11 +71,11 @@ class CategoriesBar extends Component<ICategoriesProps, any> {
   }
 
   render() {
-    const { isAdmin, classes } = this.props;
+    const { access, classes } = this.props;
     return (
       <Paper>
         {
-          isAdmin
+          access
           &&
           <Grid
             container
@@ -195,6 +180,9 @@ const styles = (theme: Theme) => createStyles(
       borderTop: '1px solid rgba(0, 0, 0, 0.12)',
     },
   });
+
+type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
+type injectStateProps = ReturnType<typeof mapStateToProps>;
 
 export default compose(
   connect(

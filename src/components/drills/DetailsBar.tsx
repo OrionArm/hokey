@@ -32,9 +32,10 @@ const mapStateToProps = (state: RootState) => ({
   animation: getSelectedDrillAnimationSelector(state),
   logo: getSelectedDrillLogoSelector(state),
   showLogo: isLogosAvailableSelector(state),
+  access: isLogosAvailableSelector(state),
 });
 
-export interface DetailsProps extends WithStyles<typeof styles> {
+export interface Props extends WithStyles<typeof styles> {
   theme: Theme;
   preview: string;
   animation: string;
@@ -42,14 +43,16 @@ export interface DetailsProps extends WithStyles<typeof styles> {
   showLogo: boolean;
   selectedTab: number;
   onTabChange: (index: number) => void;
+  access?: boolean;
 }
 
-class DetailsBar extends Component<DetailsProps, any> {
+class DetailsBar extends Component<Props, any> {
   public render() {
-    const { classes, logo, animation } = this.props;
+    const { classes, logo, animation, access } = this.props;
     const logoKey = logo && logo.slice(logo.indexOf('.com') + 3);
     const animationKey =
       animation && animation.slice(animation.indexOf('.com') + 3);
+
     return (
       <Paper style={{ marginBottom: 24 }}>
         <Tabs
@@ -70,12 +73,14 @@ class DetailsBar extends Component<DetailsProps, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          {this.props.showLogo && (
+          {
+            this.props.showLogo && access
+            &&
             <Tab
               classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
               label="Logo"
             />
-          )}
+          }
         </Tabs>
         <SwipeableViews
           index={this.props.selectedTab}

@@ -1,26 +1,31 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 
-type Props = { addLogo(): void };
-const LogoHeader: React.SFC<Props> = ({ addLogo }) => {
+type Props = { addLogo(): void, access: boolean };
+const LogoHeader: React.SFC<Props> = ({ addLogo, access }) => {
   const onClick = () => addLogo();
   return (
-      <Grid
-        item
-        container
-        justify="space-between"
-        md={12}
-        style={{ marginBottom: 16 }}
-      >
+    <Grid
+      item
+      container
+      justify="space-between"
+      md={12}
+      style={{ marginBottom: 16 }}
+    >
       <Typography variant="headline">My Logos</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onClick}
-      >
-        new logos
-      </Button>
-      </Grid>
+      {
+        access
+        &&
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onClick}
+        >
+          new logos
+        </Button>
+      }
+
+    </Grid>
   );
 };
 

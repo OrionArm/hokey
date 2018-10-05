@@ -7,11 +7,11 @@ import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import { DrillDetailed } from 'src/store/drils/model';
 import { getSelectedDrillSelector } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
-import { getUserId } from 'src/store/selectors';
 import toastActions, { ToastType } from 'src/store/toast/actions';
 import {
-  hasUserProAccessSelector,
-  isUserAnAdminSelector,
+  getUserId,
+  userProAccessSelector,
+  userAdminAccessSelector,
 } from 'src/store/user/store/selectors';
 import ConfirmChangeLogoModal from 'src/components/drills/modals/ConfirmChangeLogoModal';
 import AvailableLogos from './AvailableLogos';
@@ -20,7 +20,7 @@ import DetailsBar from './DetailsBar';
 import DrillsBar from './DrillsBar';
 
 const mapStateToProps = (state: RootState) => ({
-  showLogoBar: hasUserProAccessSelector(state) || isUserAnAdminSelector(state),
+  showLogoBar: userProAccessSelector(state) || userAdminAccessSelector(state),
   selectDrill: getSelectedDrillSelector(state),
   logos: state.watermarks.logos,
   selectedUserId: getUserId(state),
@@ -33,8 +33,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 type Props = {
   classes: any;
   selectedDrill: DrillDetailed | null;
-} & ReturnType<typeof mapDispatchToProps> &
-  ReturnType<typeof mapStateToProps>;
+} & ReturnType<typeof mapDispatchToProps>
+  & ReturnType<typeof mapStateToProps>;
 type State = Readonly<typeof initialState>;
 const initialState = { openModal: false, selectedLogoId: '', selectedTab: 0 };
 
@@ -57,7 +57,8 @@ class DrillsPage extends React.Component<Props, State> {
           <Grid item md={selectDrill ? 6 : 9}>
             <DrillsBar />
           </Grid>
-          {selectDrill ? (
+          {
+            selectDrill ? (
             <Grid item md={3}>
               <DetailsBar
                 selectedTab={this.state.selectedTab}
@@ -71,7 +72,8 @@ class DrillsPage extends React.Component<Props, State> {
                 />
               )}
             </Grid>
-          ) : null}
+          ) : null
+          }
         </Grid>
         <ConfirmChangeLogoModal
           open={this.state.openModal}
