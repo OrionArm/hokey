@@ -33,7 +33,7 @@ import {
   getLoadingData,
 } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
-import { getUserId } from 'src/store/selectors';
+import { getUserId } from 'src/store/user/store/selectors';
 import ControllBtn from './ControlBtn';
 
 const mapStateToProps = (state: RootState, props) => {

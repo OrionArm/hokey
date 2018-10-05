@@ -10,7 +10,7 @@ import {
   DrillDetailed,
   DrillStatus, NormDrills,
 } from './model';
-import { getUserId } from 'src/store/selectors';
+import { getUserId } from 'src/store/user/store/selectors';
 import { toastActions, ToastType } from 'src/store/toast/actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import {
@@ -215,7 +215,6 @@ function* drillGenerationStatusError(
     }
     if (drillName) {
       const message = `Drill ${drillName} was not generated!`;
-      console.log(message);
       yield put(toastActions.showToast(message, ToastType.Error));
     }
     // yield put();

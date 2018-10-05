@@ -6,7 +6,7 @@ import { logoIdList, LogoResponse, NormLogos } from 'src/store/logos/interface';
 import { LogoModel } from 'src/store/logos/model';
 import { errorHandler } from 'src/utils/errorHandler';
 import logosAPI, { ICheckDeleted } from 'src/store/logos/api';
-import { getUserId } from 'src/store/selectors';
+import { getUserId } from 'src/store/user/store/selectors';
 
 function* watcher() {
   yield takeLatest(fromActions.GET_LOGOS_REQUEST, getLogos);

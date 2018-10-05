@@ -1,17 +1,29 @@
 import React, { SFC } from 'react';
-import { Route, Switch } from 'react-router';
-import DrillsPage from 'src/components/drills/DrillsPage';
-import LogoListPage from 'src/components/logos/LogoListPage';
-import { Main } from 'src/UI';
-import { Header } from '../../components/header/index';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router';
+import { compose } from 'redux';
 
-const ProtectedContent: SFC<any> = () => {
+import DrillsPage from 'src/components/drills/DrillsPage';
+import Header from 'src/components/header/Header';
+import LogoListPage from 'src/components/logos/LogoListPage';
+import { RootState } from 'src/store/rootReducers';
+import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
+import { Main } from 'src/UI';
+import MainMenu from 'src/components/mainMenu';
+
+const mapStateToProps    = (state: RootState) => ({
+  access: isLogosAvailableSelector(state),
+});
+type Props = injectStateProps;
+
+const ProtectedContent: SFC<Props> = ({ access }) => {
   return (
     <>
       <Header/>
+      <MainMenu />
       <Main>
         <Switch>
-          <Route path="/logos" component={LogoListPage}/>
+          {access && <Route path="/logos" component={LogoListPage}/>}
           <Route exect path="/drills" component={DrillsPage}/>
         </Switch>
       </Main>
@@ -19,4 +31,9 @@ const ProtectedContent: SFC<any> = () => {
   );
 };
 
-export default ProtectedContent;
+type injectStateProps = ReturnType<typeof mapStateToProps>;
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps),
+)(ProtectedContent);

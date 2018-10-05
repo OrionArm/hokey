@@ -1,9 +1,9 @@
 import * as fromActions from './actions';
 
-export interface UserState {
+export type UserState  = {
   profile: IUser | null;
   selectedUserId: string | 'me';
-}
+};
 
 export const initialState: UserState = {
   profile: null,

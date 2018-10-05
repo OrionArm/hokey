@@ -11,6 +11,7 @@ import Slide from '@material-ui/core/Slide';
 import React, { Component } from 'react';
 import { DrillDetailed } from 'src/store/drils/model';
 import { NormLogos } from 'src/store/logos/interface';
+
 import LogoItem from '../logos/LogoItem';
 
 type Props = {

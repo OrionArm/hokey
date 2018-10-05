@@ -13,6 +13,7 @@ import {
 import { logosActions } from 'src/store/logos/actions';
 import { LogoModel } from 'src/store/logos/model';
 import { RootState } from 'src/store/rootReducers';
+import { logoAndAdminSelector } from 'src/store/user/store/selectors';
 import LogoItem from './LogoItem';
 import LogoHeader from './LogoHeader';
 import HoveringLogo from '../commons/HocHoveringLogo';
@@ -34,6 +35,7 @@ type Props = WithStyles<typeof styles> &
 const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
   loading: state.watermarks.loading,
+  access: logoAndAdminSelector(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -44,7 +46,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ),
 });
 
-const initialState = { modalState, selectedLogo };
+const initialState = { modalState, selectedLogo, isHoverOpen: null };
 
 class LogoListPage extends Component<Props, State> {
   readonly state = initialState;
@@ -54,7 +56,7 @@ class LogoListPage extends Component<Props, State> {
   }
 
   render() {
-    const { loading, logos } = this.props;
+    const { loading, logos, access } = this.props;
     const logosIds: string[] = Object.keys(logos);
 
     return (
@@ -80,7 +82,7 @@ class LogoListPage extends Component<Props, State> {
           close={this.closePopup}
           confirm={this.confirmEdit}
         />
-        <LogoHeader addLogo={this.openAddPopup} />
+        <LogoHeader addLogo={this.openAddPopup} access={access} />
         <div
           style={{
             display: 'grid',
@@ -124,6 +126,11 @@ class LogoListPage extends Component<Props, State> {
       </>
     );
   }
+
+  handleHover = hoveringLogo =>
+    this.setState({
+      isHoverOpen: hoveringLogo,
+    })
 
   openEditPopup = (logo: LogoModel) => {
     this.setState({

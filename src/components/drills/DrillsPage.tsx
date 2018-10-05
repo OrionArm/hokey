@@ -7,11 +7,11 @@ import { regenerateDrillsRequest } from 'src/store/drils/actions';
 import { DrillDetailed } from 'src/store/drils/model';
 import { getSelectedDrillSelector } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
-import { getUserId } from 'src/store/selectors';
 import toastActions, { ToastType } from 'src/store/toast/actions';
 import {
-  hasUserProAccessSelector,
-  isUserAnAdminSelector,
+  getUserId,
+  userProAccessSelector,
+  userAdminAccessSelector,
 } from 'src/store/user/store/selectors';
 import ConfirmChangeLogoModal from 'src/components/drills/modals/ConfirmChangeLogoModal';
 import AvailableLogos from './AvailableLogos';
@@ -21,7 +21,7 @@ import DrillsBar from './DrillsBar';
 import HoveringLogo from '../commons/HocHoveringLogo';
 
 const mapStateToProps = (state: RootState) => ({
-  showLogoBar: hasUserProAccessSelector(state) || isUserAnAdminSelector(state),
+  showLogoBar: userProAccessSelector(state) || userAdminAccessSelector(state),
   selectDrill: getSelectedDrillSelector(state),
   logos: state.watermarks.logos,
   selectedUserId: getUserId(state),

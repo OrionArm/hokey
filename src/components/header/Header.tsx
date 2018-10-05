@@ -1,7 +1,6 @@
 import { AppBar, Toolbar } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Logo } from 'src/UI';
-import MainManu from '../mainMenu';
 import Profile from './Profile';
 
 type Props = {};
@@ -15,7 +14,6 @@ class Header extends Component<Props, any> {
           <Logo/>
           <Profile/>
         </Toolbar>
-        <MainManu/>
       </AppBar>
     );
   }
