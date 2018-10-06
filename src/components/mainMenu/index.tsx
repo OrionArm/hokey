@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
   MenuList,
   MenuItem,
+  withStyles,
+  WithStyles,
+  createStyles,
+  Theme,
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImage, faHockeyPuck } from '@fortawesome/free-solid-svg-icons';
@@ -19,39 +24,72 @@ const mapStateToProps = (state: RootState) => ({
 
 class MainMenu extends Component<Props, object> {
   public render() {
-    const { access } = this.props;
+    const { access, classes } = this.props;
     return (
-      <MenuList className={'main-menu menu-list'}>
-        <MenuItem className={'main-menu__item'}>
+      <MenuList className={classes.list}>
+        <MenuItem className={classes.menuItem}>
           <NavLink
-            className={'main-menu__link menu-btn'}
+            className={classes.linkItem}
             to="/drills"
-            activeClassName={'main-menu__link--active'}
+            activeClassName={classes.LinkSelected}
           >
-            <FontAwesomeIcon icon={faHockeyPuck} className={'menu-btn__icon'}/>
-            {/*<i className="fas fa-hockey-sticks" />*/}
-            <span className={'menu-btn__text'}>My Drills</span>
+            <FontAwesomeIcon icon={faHockeyPuck} className={classes.icon} />
+            My Drills
           </NavLink>
         </MenuItem>
-        {
-          access
-          &&
-          <MenuItem className={'main-menu__item'}>
+        {access && (
+          <MenuItem className={classes.menuItem}>
             <NavLink
-              className={'main-menu__link menu-btn'}
+              className={classes.linkItem}
               to="/logos"
-              activeClassName={'main-menu__link--active'}
+              activeClassName={classes.LinkSelected}
             >
-              <FontAwesomeIcon icon={faFileImage} className={'menu-btn__icon'}/>
-              <span className={'menu-btn__text'}>My Logos</span>
+              <FontAwesomeIcon icon={faFileImage} className={classes.icon} />
+              My Logos
             </NavLink>
           </MenuItem>
-        }
+        )}
       </MenuList>
     );
   }
 }
 
-type injectStateProps = ReturnType<typeof mapStateToProps>;
+type injectStateProps = ReturnType<typeof mapStateToProps> &
+  WithStyles<typeof styles>;
 
-export default connect(mapStateToProps)(MainMenu);
+const styles = ({ palette, spacing, shadows }: Theme) =>
+  createStyles({
+    list: {
+      display: 'flex',
+      alignItems: 'center',
+      backgroundColor: palette.common.white,
+      padding: '0 24px',
+      boxShadow: shadows['2'],
+    },
+    menuItem: {
+      height: '100%',
+      padding: 0,
+    },
+
+    linkItem: {
+      color: palette.text.secondary,
+      textDecoration: 'none',
+      padding: '12px 16px',
+    },
+    LinkSelected: {
+      color: palette.primary.main,
+    },
+    icon: {
+      marginRight: spacing.unit,
+    },
+  });
+
+export default compose(
+  connect(
+    mapStateToProps,
+    null,
+    null,
+    { pure: false },
+  ),
+  withStyles(styles),
+)(MainMenu);
