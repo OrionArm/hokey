@@ -4,17 +4,7 @@ import FileLoadButton from './FileLoadButton';
 import Mark from './Mark';
 import { Loading } from './Loading';
 import { Logo } from './Logo';
-import WrapperLogoImg from './WrapperLogoImg';
 
 import { GenericModal } from './GenericModal';
 
-export {
-  Main,
-  InCenter,
-  FileLoadButton,
-  Loading,
-  Logo,
-  GenericModal,
-  Mark,
-  WrapperLogoImg,
-};
+export { Main, InCenter, FileLoadButton, Loading, Logo, GenericModal, Mark };

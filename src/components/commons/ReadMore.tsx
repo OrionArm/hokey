@@ -30,8 +30,6 @@ class ReadMore extends Component<Props> {
     const { children, lines } = this.props;
 
     const { expanded } = this.state;
-    console.log(!expanded);
-
     return (
       <p style={{ margin: 0, maxWidth: 500 }} onClick={this.toggleLines}>
         <Truncate lines={!expanded && lines} onTruncate={this.handleTruncate}>

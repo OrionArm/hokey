@@ -10,7 +10,6 @@ import {
 
 import { LogoModel } from 'src/store/logos/model';
 import { Mark } from 'src/UI/';
-import { WrapperLogoImg } from 'src/UI';
 import LogoHovering from './LogoHovering';
 import ReadMore from '../commons/ReadMore';
 type Props = {
@@ -38,13 +37,18 @@ const LogoItem: React.SFC<Props> = ({
   return (
     <>
       <Card component="figure" className={classes.card}>
-        <WrapperLogoImg>
-          <img
-            className={classes.media}
-            title={logo.name}
-            src={logo.url}
-            onClick={onHoverHandle}
-          />
+        <div
+          onMouseEnter={onHoverHandle}
+          style={{
+            height: 250,
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <img className={classes.media} title={logo.name} src={logo.url} />
           {isHoverOpen && (
             <LogoHovering
               logo={logo}
@@ -54,7 +58,7 @@ const LogoItem: React.SFC<Props> = ({
               regenerateWithNewLogo={regenerateWithNewLogo}
             />
           )}
-        </WrapperLogoImg>
+        </div>
         <Typography
           style={{ padding: 8, wordWrap: 'break-word' }}
           align="center"

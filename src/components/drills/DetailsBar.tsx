@@ -19,12 +19,9 @@ import {
 } from 'src/store/drils/selectors';
 import { RootState } from 'src/store/rootReducers';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
-import { WrapperLogoImg } from 'src/UI/';
 
 const TabContainer = props => {
-  return (
-    <WrapperLogoImg style={{ padding: 16 }}>{props.children}</WrapperLogoImg>
-  );
+  return <div style={{ padding: 16, height: 250 }}>{props.children}</div>;
 };
 
 const mapStateToProps = (state: RootState) => ({
@@ -73,14 +70,16 @@ class DetailsBar extends Component<Props, any> {
             classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
             label="Animation"
           />
-          {
-            this.props.showLogo && access
-            &&
-            <Tab
-              classes={{ root: classes.tabRoot, selected: classes.tabSelected }}
-              label="Logo"
-            />
-          }
+          {this.props.showLogo &&
+            access && (
+              <Tab
+                classes={{
+                  root: classes.tabRoot,
+                  selected: classes.tabSelected,
+                }}
+                label="Logo"
+              />
+            )}
         </Tabs>
         <SwipeableViews
           index={this.props.selectedTab}

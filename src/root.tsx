@@ -5,15 +5,12 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import store, { history } from './store';
 import theme from './theme/';
-import './styles/index.css';
 
 export const Root: React.SFC<any> = ({ children }) => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <MuiThemeProvider theme={theme}>
-          {children}
-        </MuiThemeProvider>
+        <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
       </ConnectedRouter>
     </Provider>
   );

@@ -16,18 +16,23 @@ export default function withOnChangeString<T extends OnChangeNative>(
 ) {
   return class extends React.Component<OnChangeHoFProps & T, {}> {
     state = {
-      isHoverOpen: null,
+      selectedLogo: null,
     };
     static displayName = `withOnChangeString(${Child.displayName ||
       Child.name})`;
 
-    handleHover = isHoverOpen => this.setState({ isHoverOpen });
+    handleHover = selectedLogo => {
+      this.setState({
+        selectedLogo:
+          selectedLogo === this.state.selectedLogo ? null : selectedLogo,
+      });
+    }
 
     render() {
       return (
         <Child
           {...this.props}
-          isHoverOpen={this.state.isHoverOpen}
+          isHoverOpen={this.state.selectedLogo}
           handleHover={this.handleHover}
         />
       );
