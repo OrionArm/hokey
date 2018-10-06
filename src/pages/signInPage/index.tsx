@@ -91,6 +91,9 @@ class SignInPage extends Component<Props, State> {
             fontWeight: 300,
             fontSize: '1.2rem',
           }}
+          classes={{
+            label: classes.textBtn,
+          }}
         >
           Log in
         </Button>
@@ -138,6 +141,9 @@ const styles = (theme: Theme) => {
       '&:after': {
         borderBottomColor: theme.palette.secondary.main,
       },
+    },
+    textBtn: {
+      fontFamily: 'Poppins,sans-serif',
     },
   };
 };

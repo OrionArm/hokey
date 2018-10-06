@@ -31,7 +31,7 @@ import SearchField from 'src/components/search/SearchField';
 import SearchSelection from 'src/components/search/SearchSelection';
 
 export enum SearchType {
-  User  = 'User',
+  User = 'User',
   Drill = 'Drill',
 }
 //
@@ -41,7 +41,7 @@ export enum SearchType {
 // }
 type Props = WithStyles<typeof styles> & injectDispatchProps & injectStateProps;
 
-const mapStateToProps    = (state: RootState) => ({
+const mapStateToProps = (state: RootState) => ({
   categories: getGrouppedCategoriesSelector(state),
   drills: getDrillsSelector(state),
   loading: getCategoriesRequestStatusSelector(state),
@@ -74,9 +74,7 @@ class CategoriesBar extends Component<Props, any> {
     const { access, classes } = this.props;
     return (
       <Paper>
-        {
-          access
-          &&
+        {access && (
           <Grid
             container
             style={{
@@ -93,9 +91,8 @@ class CategoriesBar extends Component<Props, any> {
               searchType={this.state.searchType}
             />
           </Grid>
-        }
-        {
-          this.state.searchType !== SearchType.Drill &&
+        )}
+        {this.state.searchType !== SearchType.Drill && (
           <>
             <Select
               value={this.state.categoryType}
@@ -114,28 +111,26 @@ class CategoriesBar extends Component<Props, any> {
                 Custom Categories
               </MenuItem>
             </Select>
-            {
-              this.props.loading
-                ?
-                <ContentLoader
-                  height={200}
-                  width={373}
-                  speed={2}
-                  primaryColor="#f3f3f3"
-                  secondaryColor="#ecebeb"
-                >
-                  <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38"/>
-                  <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38"/>
-                  <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38"/>
-                </ContentLoader>
-                :
-                <CategoriesList
-                  categories={this.props.categories[this.state.categoryType]}
-                  onSelectCategory={this.getDrills}
-                />
-            }
+            {this.props.loading ? (
+              <ContentLoader
+                height={200}
+                width={373}
+                speed={2}
+                primaryColor="#f3f3f3"
+                secondaryColor="#ecebeb"
+              >
+                <rect x="5.5" y="8" rx="0" ry="0" width="365" height="38" />
+                <rect x="5.5" y="68" rx="0" ry="0" width="365" height="38" />
+                <rect x="5.5" y="128" rx="0" ry="0" width="365" height="38" />
+              </ContentLoader>
+            ) : (
+              <CategoriesList
+                categories={this.props.categories[this.state.categoryType]}
+                onSelectCategory={this.getDrills}
+              />
+            )}
           </>
-        }
+        )}
       </Paper>
     );
   }
@@ -162,14 +157,16 @@ class CategoriesBar extends Component<Props, any> {
 
   isDrillExist = () => {
     const drillsIds = Object.keys(this.props.drills.data);
-    return drillsIds.length === 0
-      && !this.props.drills.loading
-      && this.state.searchType === SearchType.Drill;
+    return (
+      drillsIds.length === 0 &&
+      !this.props.drills.loading &&
+      this.state.searchType === SearchType.Drill
+    );
   }
 }
 
-const styles = (theme: Theme) => createStyles(
-  {
+const styles = (theme: Theme) =>
+  createStyles({
     select: {
       paddingLeft: 8,
       paddingTop: 0,

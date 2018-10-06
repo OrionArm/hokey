@@ -10,9 +10,15 @@ class Header extends Component<Props, any> {
   public render() {
     return (
       <AppBar position="static">
-        <Toolbar className={'app-toolbar'}>
-          <Logo/>
-          <Profile/>
+        <Toolbar
+          style={{
+            backgroundColor: '#4F5467',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Logo />
+          <Profile />
         </Toolbar>
       </AppBar>
     );
