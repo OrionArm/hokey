@@ -230,9 +230,9 @@ type injectDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type injectStateProps = ReturnType<typeof mapStateToProps>;
 
 export default compose(
-  withStyles(styles),
   connect(
     mapStateToProps,
     mapDispatchToProps,
   ),
+  withStyles(styles),
 )(DrillsBar);

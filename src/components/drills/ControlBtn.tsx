@@ -18,6 +18,7 @@ interface Props extends WithStyles<typeof styles> {
   drillsId?: string;
   hasAnimation?: boolean;
 }
+
 const handleDisableIconBtn = variants => {
   const values = Object.values(variants);
   const normalizeString = values.map(
