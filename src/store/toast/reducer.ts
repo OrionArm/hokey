@@ -19,7 +19,7 @@ export const reducer = (
     case fromActions.CLEAR_TOAST: {
       return {
         ...state,
-        ...initialState,
+        isOpen: false,
       };
     }
     default:
