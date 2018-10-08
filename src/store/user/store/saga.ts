@@ -4,6 +4,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import userAPI from 'src/store/user/store/api';
 import * as fromActions from './actions';
 import * as fromTokenActions from '../token/actions';
+import * as fromToastActions from 'src/store/toast/actions';
 import { errorHandler } from 'src/utils/errorHandler';
 import { logosActions } from 'src/store/logos/actions';
 
@@ -45,15 +46,18 @@ function* tokenLogin(action: fromActions.tokenLogin) {
 
 function* logIn(action: fromActions.loginRequest) {
   try {
-    const response                 = yield call(userAPI.login, action.payload);
-    const userData: ILoginResponse = response.data;
-    const token: string = userData.jwt;
-    const user: IUser   = userData.user;
+    const userData: ILoginResponse = yield call(userAPI.login, action.payload);
+    const token: string            = userData.jwt;
+    const user: IUser              = userData.user;
     yield put(fromTokenActions.tokenActions.setToState(token));
     yield put(fromTokenActions.tokenActions.setToResponse(token));
     yield put(fromActions.userActions.loginSuccess(user));
     yield put(push('/'));
   } catch (error) {
+    const message = 'Incorrect login or password';
+    yield put(fromActions.userActions.loginFail(error.message));
+    yield put(fromToastActions.toastActions.showToast(message, fromToastActions.ToastType.Error));
+
     yield call(errorHandler, error);
     // yield put(FluxToast.Actions.showToast('Failed', ToastType.Error));
   }

@@ -1,8 +1,9 @@
 import { AxiosPromise } from 'axios';
 import request from '../../../utils/request';
 
-function login(loginRequest: ILoginRequest): AxiosPromise<ILoginResponse> {
-  return request.post('/login', loginRequest);
+function login(loginRequest: ILoginRequest): Promise<ILoginResponse> {
+  return request.post('/login', loginRequest)
+    .then(response => response.data);
 }
 
 function loginWithToken(): AxiosPromise<ILoginResponse> {
