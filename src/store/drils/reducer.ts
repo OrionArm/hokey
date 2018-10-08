@@ -49,13 +49,13 @@ const drills = (
   action: fromActions.drillActions,
 ): DrillsState['drills'] => {
   switch (action.type) {
-    case fromActions.SEARCH_DRILLS_REQUEST:
+    case fromActions.SEARCH_DRILL_BY_ID_REQUEST:
     case fromActions.GET_DRILLS_REQUEST:
       return { data: {}, loading: true };
-    case fromActions.SEARCH_DRILLS_SUCCESS:
+    case fromActions.SEARCH_DRILL_BY_ID_SUCCESS:
     case fromActions.GET_DRILLS_SUCCESS:
       return { data: action.payload.drills, loading: false };
-    case fromActions.SEARCH_DRILLS_FAIL:
+    case fromActions.SEARCH_DRILL_BY_ID_FAIL:
     case fromActions.GET_DRILLS_FAIL:
       return { data: {}, loading: false };
     default:

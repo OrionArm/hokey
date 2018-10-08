@@ -16,6 +16,15 @@ export class DrillModel {
 
     return drill;
   }
+  static searchResponseToModel(json: serchDrillByIdRequest): DrillModel {
+    const drill        = new DrillModel();
+    drill.id           = json.drillid;
+    drill.name         = json.drillname;
+    drill.hasAnimation = json.has_animation === '1';
+    drill.userId       = json.userid;
+
+    return drill;
+  }
 }
 export type NormDrills = {
   [key: string]: DrillModel,
@@ -97,4 +106,64 @@ export type getDrillsByCategoryIdResponse = {
   drillname: string;
   has_animation: string;
   user_id: string;
+};
+
+export type serchDrillByIdRequest = {
+  ageid: string,
+  associationid: string,
+  categoryid: string,
+  comments: string,
+  complete: string,
+  custcat: string,
+  custcat2: string,
+  d1: string,
+  d2: string,
+  d3: string,
+  d4: string,
+  d5: string,
+  date: string,
+  dde: null,
+  deleted: string,
+  description: string,
+  diagramcount: string,
+  diagramtype: string,
+  drillid: string,
+  drilllang: string,
+  drillname:  string,
+  featured: string,
+  file: string,
+  halfice: string,
+  has_animation: string,
+  has_gif: string,
+  image: string,
+  image2: string,
+  image3: string,
+  image4: string,
+  image5: string,
+  is_copy: string,
+  keypoints: string,
+  lastmodified: string,
+  medthumbnail: string,
+  moderated: string,
+  notes: string,
+  paid: string,
+  pdf: string,
+  pdfgen: string,
+  postid: null | string,
+  'public': string,
+  rating: string,
+  s3url_1: string,
+  s3url_2: string,
+  s3url_3: string,
+  s3url_4: string,
+  s3url_5: string,
+  sharelink: null | string,
+  source: string,
+  teamshare: string,
+  thumbnail: string,
+  use_count: null | string,
+  userid: string,
+  vert: string,
+  vimeo: string,
+  youtube: string,
 };
