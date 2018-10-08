@@ -124,7 +124,7 @@ class ToolsPanel extends Component<Props, any> {
     });
   }
 
-  handleDisableIconBtn = variants => Object.values(variants).includes(true);
+  // handleDisableIconBtn = variants => Object.values(variants).includes(true);
 }
 
 const styles = (theme: Theme) => {

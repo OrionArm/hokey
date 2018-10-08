@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import AsyncSelect from 'react-select/lib/AsyncCreatable';
 import {
   MenuItem,
@@ -9,8 +9,6 @@ import {
   Theme,
   TextField,
 } from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import userActions from 'src/store/user/store/actions';
 import drillsApi from 'src/store/drils/api';
 import {
@@ -105,7 +103,7 @@ class SearchField extends Component<ISearchFieldProps, any> {
   public render() {
     const { classes } = this.props;
     const selectStyles = {
-      container: base => ({
+      container: (base: any) => ({
         ...base,
         flexGrow: 1,
       }),
@@ -117,7 +115,7 @@ class SearchField extends Component<ISearchFieldProps, any> {
         controlShouldRenderValue={!this.props.isDrillExist()}
         // onCreateOption={this.searchDrill}
         isValidNewOption={this.validateSearchInput}
-        formatCreateLabel={value => `Search ${value}`}
+        formatCreateLabel={(value: ReactNode) => `Search ${value}`}
         noOptionsMessage={() => 'Enter id drill'}
         onChange={this.handleSelect}
         placeholder={this.searchPlaceholder}
@@ -160,7 +158,7 @@ const styles = (theme: Theme) =>
     placeholder: {},
   });
 
-function Option(props) {
+function Option(props: any) {
   return (
     <MenuItem
       buttonRef={props.innerRef}
@@ -173,7 +171,7 @@ function Option(props) {
   );
 }
 
-function Menu(props) {
+function Menu(props: any) {
   return (
     <Paper
       square
@@ -184,10 +182,11 @@ function Menu(props) {
     </Paper>
   );
 }
-function inputComponent({ inputRef, ...props }) {
+
+function inputComponent({ inputRef, ...props }: any) {
   return <div ref={inputRef} {...props} />;
 }
-function Control(props) {
+function Control(props: any) {
   return (
     <TextField
       fullWidth
@@ -206,24 +205,24 @@ function Control(props) {
   );
 }
 
-const DropdownIndicator = ({ selectProps }) => (
-  <div style={{ paddingRight: 8 }}>
-    <FontAwesomeIcon
-      className={
-        selectProps.isDrillExist()
-          ? selectProps.classes.svgSearchErorr
-          : selectProps.classes.svgSearch
-      }
-      icon={faSearch}
-    />
-  </div>
-);
+// const DropdownIndicator = ({ selectProps }: any) => (
+//   <div style={{ paddingRight: 8 }}>
+//     <FontAwesomeIcon
+//       className={
+//         selectProps.isDrillExist()
+//           ? selectProps.classes.svgSearchErorr
+//           : selectProps.classes.svgSearch
+//       }
+//       icon={faSearch}
+//     />
+//   </div>
+// );
 
-const components: any = {
-  DropdownIndicator,
+const components: ReactNode = {
   Control,
   Option,
   Menu,
+  DropdownIndicator: null,
   IndicatorSeparator: null,
 };
 

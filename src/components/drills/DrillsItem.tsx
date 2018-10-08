@@ -37,7 +37,7 @@ import { getUserId } from 'src/store/user/store/selectors';
 import ControllBtn from './ControlBtn';
 import ReadMore from '../commons/ReadMore';
 
-const mapStateToProps = (state: RootState, props) => {
+const mapStateToProps = (state: RootState, props: any) => {
   return {
     selectedUserId: getUserId(state),
     loadingData: getLoadingData(state),
@@ -104,7 +104,7 @@ class DrillsItem extends Component<Props, object> {
           button
           onClick={this.selectDrill}
           selected={this.props.isSelected}
-          style={{ display: 'flex' }}
+          style={{ display: 'flex', paddingTop: 8, paddingBottom: 8 }}
         >
           <Checkbox
             checked={Boolean(this.props.checked)}

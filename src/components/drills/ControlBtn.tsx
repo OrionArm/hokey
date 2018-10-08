@@ -18,7 +18,7 @@ interface Props extends WithStyles<typeof styles> {
   drillsId?: string;
   hasAnimation?: boolean;
 }
-const handleDisableIconBtn = variants => {
+const handleDisableIconBtn = (variants: boolean) => {
   const values = Object.values(variants);
   const normalizeString = values.map(
     value => (typeof value === 'string' ? true : value),
@@ -61,7 +61,8 @@ const ControlBtn: React.SFC<Props> = ({
         className={isAll() ? '' : classes.iconBtn}
         onClick={onDownload}
         disabled={
-          handlePropsDisabled() || handleDisableIconBtn(loadingData.loading)
+          handlePropsDisabled() ||
+          handleDisableIconBtn(Boolean(loadingData.loading))
         }
       >
         {children}

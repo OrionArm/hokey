@@ -25,6 +25,7 @@ enum fileError {
 }
 
 type Props = {
+  theme: Theme;
   open: boolean;
   modalName: string;
   item: any;
@@ -52,7 +53,7 @@ class AddLogoModal extends Component<Props, State> {
   readonly state: State = initialState;
 
   render() {
-    const { open, classes, modalName } = this.props;
+    const { open, classes, theme, modalName } = this.props;
     const { preview, file, fileValid } = this.state;
     const Buttons = () => (
       <>
@@ -72,7 +73,7 @@ class AddLogoModal extends Component<Props, State> {
     );
     const Content = () => (
       <>
-        <div style={{ border: '1px solid rgba(0, 0, 0, 0.12)' }}>
+        <div style={{ border: theme.custom.border }}>
           {fileValid === fileError.incorrectExtension ? (
             <Typography variant="subheading" align="center" color={'error'}>
               You can load only PNG file
@@ -86,20 +87,16 @@ class AddLogoModal extends Component<Props, State> {
           {file && preview ? (
             <>
               <img style={{ maxWidth: '100%', height: 'auto' }} src={preview} />
-              {/*TODO: clear img input by click*/}
             </>
           ) : (
-            <div
-              className={'img-uploader__hint uploader-hint'}
-              style={{ height: 200 }}
-            >
+            <div className={classes.wrapperUpload}>
               <FontAwesomeIcon
                 icon={faCloudUploadAlt}
-                className={'uploader-hint__picture'}
+                className={classes.icon}
               />
-              <span className={'uploader-hint__text'}>
+              <p className={classes.text}>
                 Use only *.png files 610*360px max size
-              </span>
+              </p>
               <FileLoadButton onClick={this.onUploadFiles} />
             </div>
           )}
@@ -217,9 +214,29 @@ function getImageSize(file: File): Promise<ImageSettings> {
 
 const styles = (theme: Theme) =>
   createStyles({
+    wrapperUpload: {
+      height: 200,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+    },
+    icon: {
+      height: 50,
+      width: '80px !important',
+      color: '#DEE2E6',
+    },
+    text: {
+      fontFamily: 'Poppins,sans-serif',
+      fontSize: 12,
+      lineHeight: ' 18px',
+      fontWeight: 300,
+      margin: 0,
+    },
     spacing: {
       marginTop: theme.spacing.unit,
     },
   });
 
-export default withStyles(styles)(AddLogoModal);
+export default withStyles(styles, { withTheme: true })(AddLogoModal);

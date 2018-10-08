@@ -9,11 +9,17 @@ import request from 'src/utils/request';
 import {
   DrillStatusType,
   GeneratedDrillStatusResponse,
-  GeneratedStatusResponse, getDrillsByCategoryIdRequest,
-  RegenerateDrill, DrillDetailed, DrillModel, NormDrills,
+  GeneratedStatusResponse,
+  getDrillsByCategoryIdRequest,
+  RegenerateDrill,
+  DrillDetailed,
+  DrillModel,
+  NormDrills,
 } from './model';
 
-function getDrillsByCategoryId(payload: getDrillsByCategoryIdRequest): AxiosPromise<NormDrills> {
+function getDrillsByCategoryId(
+  payload: getDrillsByCategoryIdRequest,
+): AxiosPromise<NormDrills> {
   const { id, categoryType, userId } = payload;
 
   return request
@@ -101,7 +107,10 @@ function getDrill(
   });
 }
 
-function regenerate({ drill_ids, userId }: {
+function regenerate({
+  drill_ids,
+  userId,
+}: {
   drill_ids: string[];
   userId: number | string | 'me';
 }): AxiosPromise<any> {
@@ -130,7 +139,7 @@ function regenerateWithNewLogo(payload: RegenerateDrill): AxiosPromise<any> {
 
 function searchUsers(value: string, type: SearchType): AxiosPromise<any[]> {
   return request.get('/users', { params: { value, type } }).then(response => {
-    const users   = response.data.map((user: any) => ({
+    const users = response.data.map((user: any) => ({
       value: user.userid,
       label: user.username,
     }));
@@ -140,7 +149,8 @@ function searchUsers(value: string, type: SearchType): AxiosPromise<any[]> {
 }
 
 function searchDrills(value: string): AxiosPromise<NormDrills> {
-  return request.get('/drills', { params: { value } })
+  return request
+    .get('/drills', { params: { value } })
     .then(res => res.data.reduce(normalizeDrills, {}));
 }
 
@@ -150,14 +160,14 @@ function checkGenerationStatus(userId: string, generation_ids: string) {
       params: { generation_ids },
     })
     .then(response => {
-      const data: GeneratedStatusResponse      = response.data;
-      const list: string[]                     = Object.keys(data);
+      const data: GeneratedStatusResponse = response.data;
+      const list: string[] = Object.keys(data);
       const init: GeneratedDrillStatusResponse = {
         generatedIds: [],
         generatedErrorIds: [],
       };
 
-      function checkGenerationStatusReducer(acc, id) {
+      function checkGenerationStatusReducer(acc: any, id: string) {
         if (id && data[id] === DrillStatusType.error) {
           acc.generatedErrorIds.push(id);
         }
@@ -177,8 +187,9 @@ function checkGenerationStatus(userId: string, generation_ids: string) {
 
 function normalizeDrills(
   acc: NormDrills,
-  drillResponse: getDrillsByCategoryIdResponse): NormDrills {
-  const drill   = DrillModel.responseToModel(drillResponse);
+  drillResponse: getDrillsByCategoryIdResponse,
+): NormDrills {
+  const drill = DrillModel.responseToModel(drillResponse);
   acc[drill.id] = drill;
   return acc;
 }

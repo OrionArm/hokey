@@ -27,7 +27,7 @@ const Profile: SFC<Props> = ({ userName, logOut, classes }) => {
           {userName}
         </Typography>
         <a onClick={onLogOut} className={classes.textLogout}>
-          ( log out )
+          {'( log out )'}
         </a>
       </div>
     );
@@ -57,11 +57,9 @@ const styles = (theme: Theme) => ({
     cursor: 'pointer',
     '&:hover, &:focus': {
       borderBottom: '1px solid transparent',
-      opacity: 0.7,
       textDecoration: 'none',
     },
     '&:active': {
-      opacity: 1,
       color: theme.palette.text.secondary,
       borderBottom: `1px solid ${theme.palette.text.secondary}`,
       textDecoration: 'none',

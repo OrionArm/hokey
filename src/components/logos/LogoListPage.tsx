@@ -127,7 +127,7 @@ class LogoListPage extends Component<Props, State> {
     );
   }
 
-  handleHover = hoveringLogo =>
+  handleHover = (hoveringLogo: any) =>
     this.setState({
       isHoverOpen: hoveringLogo,
     })
@@ -153,7 +153,7 @@ class LogoListPage extends Component<Props, State> {
     this.closePopup('editModal');
   }
 
-  confirmAdd = ({ image, name }) => {
+  confirmAdd = ({ image, name }: any) => {
     this.props.addLogo({ image, name });
   }
 

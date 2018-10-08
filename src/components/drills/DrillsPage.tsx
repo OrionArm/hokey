@@ -44,6 +44,7 @@ class DrillsPage extends React.Component<Props, State> {
   readonly state = initialState;
   public render() {
     const { selectDrill, logos } = this.props;
+
     return (
       <>
         <Typography

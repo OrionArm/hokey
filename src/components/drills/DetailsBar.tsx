@@ -20,8 +20,8 @@ import {
 import { RootState } from 'src/store/rootReducers';
 import { isLogosAvailableSelector } from 'src/store/user/store/selectors';
 
-const TabContainer = props => {
-  return <div style={{ padding: 16, height: 250 }}>{props.children}</div>;
+const TabContainer = ({ children }: any) => {
+  return <div style={{ padding: 16, height: 250 }}>{children}</div>;
 };
 
 const mapStateToProps = (state: RootState) => ({
@@ -118,7 +118,7 @@ class DetailsBar extends Component<Props, any> {
 const styles = (theme: Theme) =>
   createStyles({
     tabsRoot: {
-      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      borderBottom: theme.custom.border,
     },
     tabsIndicator: {
       display: 'none',

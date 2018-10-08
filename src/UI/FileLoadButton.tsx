@@ -1,14 +1,26 @@
 import React, { ChangeEvent } from 'react';
-import { Button, createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
+import {
+  Button,
+  createStyles,
+  Theme,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
 
-const styles = (theme: Theme) => createStyles({
-  uploadInput: {
-    display: 'none',
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    uploadInput: {
+      display: 'none',
+    },
+    uploadBtn: {
+      fontSize: 0,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100%',
+      width: '100%',
+    },
+  });
 
 interface IFileLoadButton extends WithStyles<typeof styles> {
   onClick(e: ChangeEvent<HTMLInputElement>): void;
@@ -25,12 +37,7 @@ const FileLoadButton: React.SFC<IFileLoadButton> = ({ classes, onClick }) => {
         onChange={onClick}
       />
       <label htmlFor="outlined-button-file">
-        <Button
-          variant="contained"
-          color="secondary"
-          component="span"
-          className={'uploader-hint__button'}
-        >
+        <Button disableRipple component="span" className={classes.uploadBtn}>
           Upload
         </Button>
       </label>

@@ -37,17 +37,7 @@ const LogoItem: React.SFC<Props> = ({
   return (
     <>
       <Card component="figure" className={classes.card}>
-        <div
-          onMouseEnter={onHoverHandle}
-          style={{
-            height: 250,
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-          }}
-        >
+        <div onMouseEnter={onHoverHandle} className={classes.wrapperImg}>
           <img className={classes.media} title={logo.name} src={logo.url} />
           {isHoverOpen && (
             <LogoHovering
@@ -60,10 +50,10 @@ const LogoItem: React.SFC<Props> = ({
           )}
         </div>
         <Typography
-          style={{ padding: 8, wordWrap: 'break-word' }}
           align="center"
           variant="headline"
           component="figcaption"
+          className={classes.figcaption}
         >
           <ReadMore lines={1}>{logo.name}</ReadMore>
         </Typography>
@@ -83,10 +73,22 @@ const styles = (theme: Theme) =>
       justifyContent: 'space-between',
       margin: 0,
     },
+    wrapperImg: {
+      height: 250,
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+    },
     media: {
       backgroundColor: theme.palette.common.white,
       width: '100%',
       objectFit: 'contain',
+    },
+    figcaption: {
+      padding: 8,
+      fontWeight: 300,
     },
   });
 

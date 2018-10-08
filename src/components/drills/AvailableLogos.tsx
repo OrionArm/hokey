@@ -5,13 +5,13 @@ import {
   Typography,
   Paper,
   WithStyles,
+  Theme,
+  Slide,
 } from '@material-ui/core';
 import { compose } from 'redux';
-import Slide from '@material-ui/core/Slide';
 import React, { Component } from 'react';
 import { DrillDetailed } from 'src/store/drils/model';
 import { NormLogos } from 'src/store/logos/interface';
-
 import LogoItem from '../logos/LogoItem';
 
 type Props = {
@@ -23,11 +23,8 @@ type Props = {
 } & WithStyles<typeof styles>;
 
 class AvailableLogos extends Component<Props> {
-  state = {
-    isHoverOpen: null,
-  };
   render() {
-    const { logos, regenerateWithNewLogo } = this.props;
+    const { logos, regenerateWithNewLogo, classes } = this.props;
     const logosIds: string[] = Object.keys(logos);
 
     return (
@@ -36,10 +33,7 @@ class AvailableLogos extends Component<Props> {
           <Grid container spacing={24} direction="column">
             <Grid item>
               <Typography
-                style={{
-                  borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-                  paddingBottom: 8,
-                }}
+                className={classes.title}
                 variant="title"
                 color="primary"
                 component="h4"
@@ -66,6 +60,12 @@ class AvailableLogos extends Component<Props> {
   }
 }
 
-const styles = createStyles({});
+const styles = (theme: Theme) =>
+  createStyles({
+    title: {
+      borderBottom: theme.custom.border,
+      paddingBottom: theme.spacing.unit,
+    },
+  });
 
 export default compose(withStyles(styles))(AvailableLogos);

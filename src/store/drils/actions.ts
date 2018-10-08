@@ -99,8 +99,8 @@ export type updateGenerationStatus = ReturnType<typeof updateGenerationStatus>;
 
 export const DRILL_GENERATION_STATUS_ERROR =
   '[drills] DRILL_GENERATION_STATUS_ERROR';
-export const drillGenerationStatusError = ({ errorDrillId: string }) =>
-  createAction(DRILL_GENERATION_STATUS_ERROR, { errorDrillId: string });
+export const drillGenerationStatusError = ({ errorDrillId }: any) =>
+  createAction(DRILL_GENERATION_STATUS_ERROR, { errorDrillId });
 export type drillGenerationStatusError = ReturnType<
   typeof drillGenerationStatusError
 >;

@@ -10,7 +10,7 @@ import {
   Slide,
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { LogoModel } from 'src/store/logos/model';
 
 type Props = {
@@ -92,7 +92,7 @@ const LogoItem: React.SFC<Props> = ({
                   color: theme.palette.primary.main,
                 }}
                 className={classes.svg}
-                icon={faTrash}
+                icon={faTimesCircle}
               />
             </Button>
           )}
@@ -150,7 +150,9 @@ const styles = (theme: Theme) =>
     },
     svg: {
       position: 'absolute',
-      right: 0,
+      right: -2,
+      width: '18px !important',
+      height: '18px !important',
     },
   });
 

@@ -21,10 +21,9 @@ export default function withOnChangeString<T extends OnChangeNative>(
     static displayName = `withOnChangeString(${Child.displayName ||
       Child.name})`;
 
-    handleHover = selectedLogo => {
+    handleHover = (selectedLogo: string) => {
       this.setState({
-        selectedLogo:
-          selectedLogo === this.state.selectedLogo ? null : selectedLogo,
+        selectedLogo,
       });
     }
 
