@@ -12,16 +12,19 @@ import {
 import React, { ChangeEvent, Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { RootState } from 'src/store/rootReducers';
 
 import userActions from 'src/store/user/store/actions';
 
+const mapStateToProps = (state: RootState) => ({
+});
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   loginRequest: (userData: ILoginRequest) =>
     dispatch(userActions.loginRequest(userData)),
 });
 
 type State = Readonly<typeof initialState>;
-type Props = WithStyles<typeof styles> & injectProps;
+type Props = WithStyles<typeof styles> & injectProps & injectStateProps;
 const initialState = { username: '', password: '' };
 
 class SignInPage extends Component<Props, State> {
@@ -101,7 +104,7 @@ class SignInPage extends Component<Props, State> {
     );
   }
 
-  private handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+  private handleSubmit         = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     event.stopPropagation();
     const loginData: ILoginRequest = {
@@ -110,15 +113,13 @@ class SignInPage extends Component<Props, State> {
     };
     this.props.loginRequest(loginData);
   }
-  private handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+  private handleNameChange     = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ ...this.state, username: event.target.value });
   }
   private handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ ...this.state, password: event.target.value });
   }
 }
-
-type injectProps = ReturnType<typeof mapDispatchToProps>;
 
 const styles = (theme: Theme) => {
   return {
@@ -148,9 +149,12 @@ const styles = (theme: Theme) => {
   };
 };
 
+type injectProps = ReturnType<typeof mapDispatchToProps>;
+type injectStateProps = ReturnType<typeof mapStateToProps>;
+
 export default withStyles(styles)(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   )(SignInPage),
 );
