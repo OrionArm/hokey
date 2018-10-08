@@ -43,7 +43,7 @@ const LogoItem: React.SFC<Props> = ({
 
   return (
     <Slide direction="down" in>
-      <div className={classes.logoHovering}>
+      <div className={`${classes.logoHovering} logo-hovering`}>
         <FormControlLabel
           value={radioLabel}
           classes={{

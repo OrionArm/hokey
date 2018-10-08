@@ -27,7 +27,7 @@ const Profile: SFC<Props> = ({ userName, logOut, classes }) => {
           {userName}
         </Typography>
         <a onClick={onLogOut} className={classes.textLogout}>
-          {'( log out )'}
+          {'( Log Out )'}
         </a>
       </div>
     );

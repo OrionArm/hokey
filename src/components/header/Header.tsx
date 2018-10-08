@@ -2,6 +2,7 @@ import { AppBar, Toolbar } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Logo } from 'src/UI';
 import Profile from './Profile';
+import LogoImg from 'src/assets/hockeyshare-logo.png';
 
 type Props = {};
 
@@ -17,7 +18,7 @@ class Header extends Component<Props, any> {
             alignItems: 'center',
           }}
         >
-          <Logo />
+          <Logo LogoImg={LogoImg} />
           <Profile />
         </Toolbar>
       </AppBar>

@@ -7,7 +7,6 @@ import {
   Theme,
   WithStyles,
 } from '@material-ui/core';
-
 import { LogoModel } from 'src/store/logos/model';
 import { Mark } from 'src/UI/';
 import LogoHovering from './LogoHovering';
@@ -49,6 +48,7 @@ const LogoItem: React.SFC<Props> = ({
             />
           )}
         </div>
+
         <Typography
           align="center"
           variant="headline"
