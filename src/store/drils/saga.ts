@@ -33,7 +33,7 @@ function* watcher() {
     takeLatest(actions.GET_DRILLS_REQUEST, getDrillsListSaga),
     takeLatest(actions.GET_CATEGORIES_REQUEST, getCategoriesSaga),
     takeLatest(actions.GET_DRILL_REQUEST, getDrillSaga),
-    takeLatest(actions.SEARCH_DRILLS_REQUEST, searchDrillsListSaga),
+    takeLatest(actions.SEARCH_DRILL_BY_ID_REQUEST, searchDrillsListSaga),
     takeLatest(actions.REGENERATE_DRILLS_REQUEST, regenerateDrillsSaga),
     takeLatest(actions.DOWNLOAD_DRILLS_REQUEST, downloadDrillsSaga),
     takeLatest(
@@ -139,7 +139,6 @@ function* downloadDrillsSaga({ payload }: actions.downloadDrillsRequest) {
 function* searchDrillsListSaga(action: actions.searchDrillsByIdRequest) {
   try {
     const drills: NormDrills = yield call(api.searchDrills, action.payload.id);
-
     yield put(actions.searchDrillsByIdSuccess(drills));
     // yield put(FluxToast.Actions.showToast('Success', ToastType.Success));
   } catch (error) {
@@ -197,6 +196,7 @@ function* getDrillSaga(action: actions.getDrillRequest) {
     const drill: DrillDetailed = response.data;
     yield put(actions.getDrillSuccess(drill));
   } catch (error) {
+    yield put(actions.getDrillFail(error));
     yield call(errorHandler, error);
   }
 }

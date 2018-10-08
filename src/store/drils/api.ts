@@ -17,9 +17,7 @@ import {
   NormDrills,
 } from './model';
 
-function getDrillsByCategoryId(
-  payload: getDrillsByCategoryIdRequest,
-): AxiosPromise<NormDrills> {
+function getDrillsByCategoryId(payload: getDrillsByCategoryIdRequest): AxiosPromise<NormDrills> {
   const { id, categoryType, userId } = payload;
 
   return request
@@ -138,20 +136,22 @@ function regenerateWithNewLogo(payload: RegenerateDrill): AxiosPromise<any> {
 }
 
 function searchUsers(value: string, type: SearchType): AxiosPromise<any[]> {
-  return request.get('/users', { params: { value, type } }).then(response => {
-    const users = response.data.map((user: any) => ({
-      value: user.userid,
-      label: user.username,
-    }));
-    response.data = users;
-    return response;
-  });
+  return request
+    .get('/users', { params: { value, type } })
+    .then(response => {
+      const users = response.data.map((user: any) => ({
+        value: user.userid,
+        label: user.username,
+      }));
+      response.data = users;
+      return response;
+    });
 }
 
-function searchDrills(value: string): AxiosPromise<NormDrills> {
-  return request
-    .get('/drills', { params: { value } })
-    .then(res => res.data.reduce(normalizeDrills, {}));
+function searchDrills(value: string): Promise<NormDrills> {
+  return request.get('/drills', { params: { value } })
+    .then(response => DrillModel.searchResponseToModel(response.data))
+    .then(drill => ({ [drill.id]: drill }));
 }
 
 function checkGenerationStatus(userId: string, generation_ids: string) {
