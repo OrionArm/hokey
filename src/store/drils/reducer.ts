@@ -16,7 +16,6 @@ export interface DrillsState {
     data: NormDrills;
   };
   selectedDrill: DrillDetailed | null;
-
   downloadDrill: DownloadDrill;
   generationStatus: DrillStatus;
 }

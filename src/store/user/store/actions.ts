@@ -9,6 +9,10 @@ export const LOGIN_SUCCESS = '[user] LOGIN_SUCCESS';
 const loginSuccess         = (user: IUser) => createAction(LOGIN_SUCCESS, user);
 export type loginSuccess = ReturnType<typeof loginSuccess>;
 
+export const LOGIN_FAIL = '[user] LOGIN_FAIL';
+const loginFail         = (payload: { errorMessage: string }) => createAction(LOGIN_FAIL, payload);
+export type loginFail = ReturnType<typeof loginFail>;
+
 export const LOGOUT_REQUEST = '[user] LOGOUT_REQUEST';
 const logoutRequest         = () => createAction(LOGOUT_REQUEST);
 export type logoutRequest = ReturnType<typeof logoutRequest>;
@@ -18,12 +22,13 @@ const tokenLogin         = (payload: { token: string }) => createAction(TOKEN_LO
 export type tokenLogin = ReturnType<typeof tokenLogin>;
 
 export const SELECT_USER = '[user] SELECT_USER';
-const selectUser = (id: string | 'me') => createAction(SELECT_USER, { id });
+const selectUser         = (id: string | 'me') => createAction(SELECT_USER, { id });
 export type selectUser = ReturnType<typeof selectUser>;
 
 export const userActions = {
   loginRequest,
   loginSuccess,
+  loginFail,
   logoutRequest,
   tokenLogin,
   selectUser,

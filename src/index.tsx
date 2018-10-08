@@ -4,10 +4,6 @@ import App from './components/App';
 import { Root } from './root';
 
 ReactDOM.render(
-  <>
-    <Root>
-      <App />
-    </Root>
-  </>,
+  <Root><App/></Root>,
   document.getElementById('root') as HTMLElement,
 );
