@@ -62,7 +62,7 @@ const LogoItem: React.SFC<Props> = ({
         >
           <ReadMore lines={1}>{logo.name}</ReadMore>
         </Typography>
-        {logo.isMain && !isHoverOpen && <Mark textContent="default" />}
+        {logo.isMain && !isHoverOpen && <Mark textContent="Default" />}
       </Card>
       {children ? children : null}
     </>

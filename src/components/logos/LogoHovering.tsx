@@ -156,6 +156,7 @@ const styles = (theme: Theme) =>
       width: '20px !important',
       height: '20px !important',
       right: -4,
+      top: 0,
       borderRadius: '50%',
       display: 'flex',
       alignItems: 'center',
