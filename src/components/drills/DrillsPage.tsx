@@ -35,6 +35,7 @@ type Props = {
   selectedDrill: DrillDetailed | null;
   isHoverOpen: null | string;
   handleHover: (id: string) => void;
+  closeHover: any;
 } & ReturnType<typeof mapDispatchToProps> &
   ReturnType<typeof mapStateToProps>;
 type State = Readonly<typeof initialState>;
@@ -70,6 +71,7 @@ class DrillsPage extends React.Component<Props, State> {
                 <AvailableLogos
                   isHoverOpen={this.props.isHoverOpen}
                   handleHover={this.props.handleHover}
+                  closeHover={this.props.closeHover}
                   logos={logos}
                   regenerateWithNewLogo={this.regenerateWithNewLogo}
                   selectedDrill={selectDrill}

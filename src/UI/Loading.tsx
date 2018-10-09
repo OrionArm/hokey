@@ -4,7 +4,6 @@ import InCenter from './InCenter';
 
 type Props = {
   style?: CSSProperties;
-  classes?: any;
 };
 export const Loading: SFC<Props> = props => {
   return (

@@ -9,6 +9,7 @@ import {
   WithStyles,
   Slide,
 } from '@material-ui/core';
+import ClickOutHandler from 'react-onclickout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import { LogoModel } from 'src/store/logos/model';
@@ -20,15 +21,21 @@ type Props = {
   editLogo?: (logo: LogoModel) => void;
   deleteLogo?: (logo: LogoModel) => void;
   regenerateWithNewLogo?: (logoId: string) => void;
+  closeHover: () => null;
 } & WithStyles<typeof styles>;
+
+const onClickOut = (e, closeHover) => {
+  return closeHover();
+};
+
 const LogoItem: React.SFC<Props> = ({
   classes,
-  theme,
   logo,
   pickDefaultLogo,
   editLogo,
   deleteLogo,
   regenerateWithNewLogo,
+  closeHover,
 }) => {
   const setDefault = pickDefaultLogo ? () => pickDefaultLogo(logo) : null;
   const onEditLogo = editLogo ? () => editLogo(logo) : null;
@@ -43,53 +50,57 @@ const LogoItem: React.SFC<Props> = ({
 
   return (
     <Slide direction="down" in>
-      <div className={`${classes.logoHovering} logo-hovering`}>
-        <FormControlLabel
-          value={radioLabel}
-          classes={{
-            label: classes.labelRadio,
-          }}
-          checked={regenerateWithNewLogo ? false : logo.isMain}
-          control={
-            <Radio
-              classes={{
-                root: classes.rootRadio,
-                checked: classes.checkedRadio,
-              }}
-              onChange={(onRegenerateWithNewLogo || setDefault) as any}
-            />
-          }
-          label={radioLabel}
-        />
-        <div className={classes.HoverGroupButton}>
-          {onEditLogo && (
-            <Button
-              classes={{
-                label: classes.label,
-              }}
-              onClick={onEditLogo}
-            >
-              Edit
-              <div className={`${classes.wrapperSvg} ${classes.wrapperEdit}`}>
-                <FontAwesomeIcon className={classes.svg} icon={faPen} />
-              </div>
-            </Button>
-          )}
-          {onDeleteLogo && (
-            <Button
-              onClick={onDeleteLogo}
-              classes={{
-                label: classes.label,
-              }}
-            >
-              <div className={`${classes.wrapperSvg} ${classes.wrapperDelete}`}>
-                <FontAwesomeIcon className={classes.svg} icon={faTimes} />
-              </div>
-              Delete
-            </Button>
-          )}
+      <ClickOutHandler onClickOut={e => onClickOut(e, closeHover)}>
+        <div className={classes.logoHovering}>
+          <FormControlLabel
+            value={radioLabel}
+            classes={{
+              label: classes.labelRadio,
+            }}
+            checked={regenerateWithNewLogo ? false : logo.isMain}
+            control={
+              <Radio
+                classes={{
+                  root: classes.rootRadio,
+                  checked: classes.checkedRadio,
+                }}
+                onChange={(onRegenerateWithNewLogo || setDefault) as any}
+              />
+            }
+            label={radioLabel}
+          />
+          <div className={classes.HoverGroupButton}>
+            {onEditLogo && (
+              <Button
+                classes={{
+                  label: classes.label,
+                }}
+                onClick={onEditLogo}
+              >
+                Edit
+                <div className={`${classes.wrapperSvg} ${classes.wrapperEdit}`}>
+                  <FontAwesomeIcon className={classes.svg} icon={faPen} />
+                </div>
+              </Button>
+            )}
+            {onDeleteLogo && (
+              <Button
+                onClick={onDeleteLogo}
+                classes={{
+                  label: classes.label,
+                }}
+              >
+                <div
+                  className={`${classes.wrapperSvg} ${classes.wrapperDelete}`}
+                >
+                  <FontAwesomeIcon className={classes.svg} icon={faTimes} />
+                </div>
+                Delete
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      </ClickOutHandler>
     </Slide>
   );
 };

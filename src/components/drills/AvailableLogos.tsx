@@ -18,6 +18,7 @@ type Props = {
   selectedDrill: DrillDetailed | null;
   logos: NormLogos;
   isHoverOpen: null | string;
+  closeHover: any;
   handleHover: (id: string) => void;
   regenerateWithNewLogo(logoId: string): void;
 } & WithStyles<typeof styles>;
@@ -49,6 +50,7 @@ class AvailableLogos extends Component<Props> {
                     regenerateWithNewLogo={regenerateWithNewLogo}
                     isHoverOpen={this.props.isHoverOpen === id}
                     onHoverHandle={() => this.props.handleHover(id)}
+                    closeHover={this.props.closeHover}
                   />
                 </Grid>
               );

@@ -3,11 +3,13 @@ import * as React from 'react';
 // Output props
 export interface OnChangeHoFProps {
   handleHover?: (value: string) => void;
+  closeHover: () => null;
 }
 
 // Input props
 export interface OnChangeNative {
   handleHover: React.ChangeEventHandler<HTMLInputElement>;
+  closeHover: React.ChangeEventHandler<HTMLInputElement>;
   isHoverOpen: null | string;
 }
 
@@ -21,9 +23,14 @@ export default function withOnChangeString<T extends OnChangeNative>(
     static displayName = `withOnChangeString(${Child.displayName ||
       Child.name})`;
 
-    handleHover = (selectedLogo: string) => {
+    handleHover = (selectedLogo: string | null) => {
       this.setState({
         selectedLogo,
+      });
+    }
+    closeHover = () => {
+      this.setState({
+        selectedLogo: null,
       });
     }
 
@@ -32,6 +39,7 @@ export default function withOnChangeString<T extends OnChangeNative>(
         <Child
           {...this.props}
           isHoverOpen={this.state.selectedLogo}
+          closeHover={this.closeHover}
           handleHover={this.handleHover}
         />
       );

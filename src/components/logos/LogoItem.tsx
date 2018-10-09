@@ -11,11 +11,13 @@ import { LogoModel } from 'src/store/logos/model';
 import { Mark } from 'src/UI/';
 import LogoHovering from './LogoHovering';
 import ReadMore from '../commons/ReadMore';
+
 type Props = {
   theme: Theme;
   logo: LogoModel;
-  isHoverOpen?: boolean | null;
+  isHoverOpen: boolean;
   onHoverHandle?: any;
+  closeHover: () => null;
   pickDefaultLogo?: (logo: LogoModel) => void;
   editLogo?: (logo: LogoModel) => void;
   deleteLogo?: (logo: LogoModel) => void;
@@ -32,12 +34,14 @@ const LogoItem: React.SFC<Props> = ({
   deleteLogo,
   pickDefaultLogo,
   regenerateWithNewLogo,
+  closeHover,
 }) => {
   return (
     <>
       <Card component="figure" className={classes.card}>
         <div onMouseEnter={onHoverHandle} className={classes.wrapperImg}>
           <img className={classes.media} title={logo.name} src={logo.url} />
+
           {isHoverOpen && (
             <LogoHovering
               logo={logo}
@@ -45,6 +49,7 @@ const LogoItem: React.SFC<Props> = ({
               deleteLogo={deleteLogo}
               pickDefaultLogo={pickDefaultLogo}
               regenerateWithNewLogo={regenerateWithNewLogo}
+              closeHover={closeHover}
             />
           )}
         </div>

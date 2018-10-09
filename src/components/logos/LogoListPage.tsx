@@ -30,7 +30,11 @@ const selectedLogo: any = null; // fix  change any to LogoModel
 type State = Readonly<typeof initialState>;
 type Props = WithStyles<typeof styles> &
   injectDispatchProps &
-  injectStateProps & { isHoverOpen: string | null; handleHover: any };
+  injectStateProps & {
+    isHoverOpen: string | null;
+    handleHover: any;
+    closeHover: any;
+  };
 
 const mapStateToProps = (state: RootState) => ({
   logos: state.watermarks.logos,
@@ -58,7 +62,6 @@ class LogoListPage extends Component<Props, State> {
   render() {
     const { loading, logos, access } = this.props;
     const logosIds: string[] = Object.keys(logos);
-
     return (
       <>
         <DeleteLogoModal
@@ -114,6 +117,7 @@ class LogoListPage extends Component<Props, State> {
                   key={`${id}_${logos[id].name}`}
                   isHoverOpen={this.props.isHoverOpen === id}
                   onHoverHandle={() => this.props.handleHover(id)}
+                  closeHover={this.props.closeHover}
                   logo={logos[id]}
                   pickDefaultLogo={this.setDefaultLogo}
                   editLogo={this.openEditPopup}
