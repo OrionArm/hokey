@@ -5,32 +5,26 @@ import { GenericModal } from 'src/UI';
 type Props = {
   open: boolean;
   close(modalName: string): void;
-  confirm(): void;
   classes?: any;
   modalName: string;
 };
 
-const ConfirmChangeLogoModal: SFC<Props> = ({ open, confirm, close, modalName }) => {
+const NeedGenerateDrillModal: SFC<Props> = ({ open, close, modalName }) => {
   const handleClose = () => close(modalName);
   const Buttons     = () => (
-    <>
       <Button
-        onClick={confirm}
+        onClick={handleClose}
         variant="contained"
         color="primary"
         autoFocus
         style={{ marginRight: 16 }}
       >
-        Generate
+        Ok
       </Button>
-      <Button onClick={handleClose} variant="contained">
-        Cancel
-      </Button>
-    </>
   );
   const Content     = () => (
     <Typography variant="subheading">
-      Logo will be changed after video generation. Generate video?
+      At first you need create animation!
     </Typography>
   );
 
@@ -39,7 +33,7 @@ const ConfirmChangeLogoModal: SFC<Props> = ({ open, confirm, close, modalName })
       modalName={modalName}
       open={open}
       close={close}
-      title="Attention"
+      title="You can't add logo on this drill"
       buttons={Buttons}
     >
       <Content/>
@@ -56,4 +50,4 @@ const styles = (theme: Theme) => ({
   },
 });
 
-export default withStyles(styles)(ConfirmChangeLogoModal);
+export default withStyles(styles)(NeedGenerateDrillModal);
