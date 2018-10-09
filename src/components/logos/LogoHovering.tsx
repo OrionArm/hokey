@@ -10,7 +10,7 @@ import {
   Slide,
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPen } from '@fortawesome/free-solid-svg-icons';
 import { LogoModel } from 'src/store/logos/model';
 
 type Props = {
@@ -70,13 +70,9 @@ const LogoItem: React.SFC<Props> = ({
               onClick={onEditLogo}
             >
               Edit
-              <FontAwesomeIcon
-                style={{
-                  color: theme.palette.secondary.main,
-                }}
-                className={classes.svg}
-                icon={faEdit}
-              />
+              <div className={`${classes.wrapperSvg} ${classes.wrapperEdit}`}>
+                <FontAwesomeIcon className={classes.svg} icon={faPen} />
+              </div>
             </Button>
           )}
           {onDeleteLogo && (
@@ -86,14 +82,10 @@ const LogoItem: React.SFC<Props> = ({
                 label: classes.label,
               }}
             >
+              <div className={`${classes.wrapperSvg} ${classes.wrapperDelete}`}>
+                <FontAwesomeIcon className={classes.svg} icon={faTimes} />
+              </div>
               Delete
-              <FontAwesomeIcon
-                style={{
-                  color: theme.palette.primary.main,
-                }}
-                className={classes.svg}
-                icon={faTimesCircle}
-              />
             </Button>
           )}
         </div>
@@ -148,11 +140,27 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       position: 'relative',
     },
-    svg: {
+    wrapperSvg: {
       position: 'absolute',
-      right: -2,
-      width: '18px !important',
-      height: '18px !important',
+      width: '20px !important',
+      height: '20px !important',
+      right: -4,
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    wrapperEdit: {
+      backgroundColor: theme.palette.secondary.main,
+    },
+    wrapperDelete: {
+      backgroundColor: theme.palette.error.main,
+    },
+    svg: {
+      width: '12px !important',
+      height: '12px !important',
+      // backgroundColor: 'red',
+      color: theme.palette.common.white,
     },
   });
 
